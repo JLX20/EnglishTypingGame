@@ -55,37 +55,39 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CalibrationWindow.xaml.cs">
-      <DependentUpon>CalibrationWindow.xaml</DependentUpon>
+    <Compile Include="GameWindow.xaml.cs">
+      <DependentUpon>GameWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CardsLibraryWindow.xaml.cs">
-      <DependentUpon>CardsLibraryWindow.xaml</DependentUpon>
+    <Compile Include="LearnWindow.xaml.cs">
+      <DependentUpon>LearnWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RhythmGameWindow.xaml.cs">
-      <DependentUpon>RhythmGameWindow.xaml</DependentUpon>
+    <Compile Include="LessonRepository.cs" />
+    <Compile Include="MiniGameRepository.cs" />
+    <Compile Include="MiniGamesMenuWindow.xaml.cs">
+      <DependentUpon>MiniGamesMenuWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MiniGameWindow.xaml.cs">
+      <DependentUpon>MiniGameWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models.cs" />
+    <Compile Include="ProgressService.cs" />
+    <Compile Include="ProgressWindow.xaml.cs">
+      <DependentUpon>ProgressWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResultsWindow.xaml.cs">
+      <DependentUpon>ResultsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsService.cs" />
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TestDriveWindow.xaml.cs">
-      <DependentUpon>TestDriveWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WordLearningDialog.xaml.cs">
-      <DependentUpon>WordLearningDialog.xaml</DependentUpon>
-    </Compile>
-    <Page Include="CalibrationWindow.xaml">
+    <Compile Include="ThemeService.cs" />
+    <Compile Include="WindowNavigationService.cs" />
+    <Page Include="GameWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CardsLibraryWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="LearningHubWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="LevelsWindow.xaml">
+    <Page Include="LearnWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -97,18 +99,23 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataManager.cs" />
-    <Compile Include="LearningHubWindow.xaml.cs">
-      <DependentUpon>LearningHubWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="LevelsWindow.xaml.cs">
-      <DependentUpon>LevelsWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="RhythmGameWindow.xaml">
+    <Page Include="MiniGamesMenuWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MiniGameWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ProgressWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResultsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -116,17 +123,8 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TestDriveWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WordLearningDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Word.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -1,5 +1,4 @@
-﻿// MainWindow.xaml.cs
-using System.Windows;
+﻿using System.Windows;
 
 namespace EnglishTypingGame
 {
@@ -8,35 +7,99 @@ namespace EnglishTypingGame
         public MainWindow()
         {
             InitializeComponent();
+
+            SettingsData settings = SettingsService.Load();
+            ThemeService.ApplyTheme(settings.ThemeName, settings.BackgroundName);
+
+            TopicComboBox.ItemsSource = LessonRepository.GetTopicsForUi();
+            TopicComboBox.SelectedIndex = 0;
+
+            RefreshStats();
         }
 
-        private void LevelsBtn_Click(object sender, RoutedEventArgs e)
+        private string SelectedTopic
         {
-            var levelsWindow = new LevelsWindow();
-            levelsWindow.Show();
-            this.Close();
+            get
+            {
+                string topic = TopicComboBox.SelectedItem as string;
+
+                if (string.IsNullOrWhiteSpace(topic))
+                    return "Все темы";
+
+                return topic;
+            }
         }
 
-        private void CardsBtn_Click(object sender, RoutedEventArgs e)
+        private void LearnButton_Click(object sender, RoutedEventArgs e)
         {
-            var cardsWindow = new CardsLibraryWindow();
-            cardsWindow.Show();
-            this.Close();
+            WindowNavigationService.Navigate(this, new LearnWindow(SelectedTopic));
         }
 
-        private void SettingsBtn_Click(object sender, RoutedEventArgs e)
+        private void MiniGamesButton_Click(object sender, RoutedEventArgs e)
         {
-            var settingsWindow = new SettingsWindow();
-            settingsWindow.Owner = this;
-            settingsWindow.ShowDialog();
+            WindowNavigationService.Navigate(this, new MiniGamesMenuWindow(SelectedTopic));
         }
 
-        private void ExitBtn_Click(object sender, RoutedEventArgs e)
+        private void ClassicGameButton_Click(object sender, RoutedEventArgs e)
         {
-            var result = MessageBox.Show("Вы уверены, что хотите выйти?", "Выход",
-                MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes)
-                Application.Current.Shutdown();
+            WindowNavigationService.Navigate(this, new GameWindow(SelectedTopic, "TranslationToEnglish"));
+        }
+
+        private void MistakesButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProgressData progress = ProgressService.Load();
+
+            if (progress.Mistakes == null || progress.Mistakes.Count == 0)
+            {
+                MessageBox.Show(
+                    "Пока нет ошибок. Сначала сыграй обычный раунд или мини-игру.",
+                    "Нет ошибок",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
+                return;
+            }
+
+            WindowNavigationService.Navigate(this, new GameWindow("Все темы", "Mistakes"));
+        }
+
+        private void ProgressButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowNavigationService.Navigate(this, new ProgressWindow());
+        }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowNavigationService.Navigate(this, new SettingsWindow());
+        }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowNavigationService.Shutdown();
+        }
+
+        private void RefreshStats()
+        {
+            ProgressData progress = ProgressService.Load();
+
+            double totalAccuracy = 0;
+
+            if (progress.TotalWords > 0)
+                totalAccuracy = progress.CorrectWords * 100.0 / progress.TotalWords;
+
+            int mistakeCount = progress.Mistakes == null ? 0 : progress.Mistakes.Count;
+            int learnedCount = progress.LearnedWords == null ? 0 : progress.LearnedWords.Count;
+
+            StatsText.Text =
+                "Изучено слов: " + learnedCount + "\n" +
+                "Раундов сыграно: " + progress.TotalRounds + "\n" +
+                "Всего заданий: " + progress.TotalWords + "\n" +
+                "Правильных ответов: " + progress.CorrectWords + "\n" +
+                "Общая точность: " + totalAccuracy.ToString("0.0") + "%\n" +
+                "Лучшая точность: " + progress.BestAccuracy.ToString("0.0") + "%\n" +
+                "Лучший WPM: " + progress.BestWpm.ToString("0.0") + "\n" +
+                "Серия дней: " + progress.CurrentStreak + "\n" +
+                "Слов с ошибками: " + mistakeCount;
         }
     }
 }

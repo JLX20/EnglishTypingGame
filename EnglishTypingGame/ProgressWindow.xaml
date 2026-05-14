@@ -1,0 +1,120 @@
+﻿<Window x:Class="EnglishTypingGame.ProgressWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Мой прогресс"
+        Height="750"
+        Width="880"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanMinimize"
+        Background="{DynamicResource WindowBgBrush}">
+
+    <Grid Margin="30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="Мой прогресс"
+                   FontSize="36"
+                   FontWeight="Bold"
+                   Margin="0,0,0,20"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.9*"/>
+                <ColumnDefinition Width="1.1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0"
+                    Background="{DynamicResource CardBgBrush}"
+                    CornerRadius="30"
+                    Padding="24"
+                    Margin="0,0,16,0"
+                    Effect="{StaticResource CardShadow}">
+
+                <StackPanel>
+                    <TextBlock Text="Общая статистика"
+                               FontSize="23"
+                               FontWeight="Bold"
+                               Margin="0,0,0,18"/>
+
+                    <TextBlock x:Name="ProgressText"
+                               FontSize="17"
+                               Foreground="{DynamicResource DarkTextBrush}"
+                               LineHeight="33"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="1"
+                    Background="{DynamicResource CardBgBrush}"
+                    CornerRadius="30"
+                    Padding="24"
+                    Effect="{StaticResource CardShadow}">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Слова с ошибками"
+                               FontSize="23"
+                               FontWeight="Bold"
+                               Margin="0,0,0,18"/>
+
+                    <Border Grid.Row="1"
+                            Background="{DynamicResource SoftBgBrush}"
+                            CornerRadius="22"
+                            Padding="10">
+
+                        <DataGrid x:Name="MistakesGrid"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  CanUserAddRows="False"
+                                  HeadersVisibility="Column"
+                                  FontSize="14">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Слово"
+                                                    Binding="{Binding English}"
+                                                    Width="*"/>
+
+                                <DataGridTextColumn Header="Перевод"
+                                                    Binding="{Binding Russian}"
+                                                    Width="*"/>
+
+                                <DataGridTextColumn Header="Ошибок"
+                                                    Binding="{Binding Count}"
+                                                    Width="70"/>
+
+                                <DataGridTextColumn Header="Последний ответ"
+                                                    Binding="{Binding LastWrongAnswer}"
+                                                    Width="120"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,20,0,0">
+
+            <Button Content="Сбросить прогресс"
+                    Width="175"
+                    Height="48"
+                    Background="{DynamicResource ButtonDangerBrush}"
+                    Click="ResetButton_Click"/>
+
+            <Button Content="Закрыть"
+                    Width="120"
+                    Height="48"
+                    Background="{DynamicResource ButtonNeutralBrush}"
+                    Click="CloseButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
