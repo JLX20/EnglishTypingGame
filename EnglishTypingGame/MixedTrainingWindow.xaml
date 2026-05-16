@@ -1,0 +1,132 @@
+﻿<Window x:Class="EnglishTypingGame.MixedTrainingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Смешанная тренировка"
+        Height="720"
+        Width="1020"
+        MinHeight="680"
+        MinWidth="900"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        Loaded="Window_Loaded"
+        Background="{DynamicResource WindowBgBrush}">
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Смешанная тренировка"
+                           FontSize="{DynamicResource TitleFontSize}"
+                           FontWeight="Bold"/>
+
+                <TextBlock x:Name="TopicText"
+                           FontSize="{DynamicResource SubtitleFontSize}"
+                           Foreground="{DynamicResource SecondaryTextBrush}"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <Border Grid.Column="1"
+                    Background="{DynamicResource CardBgBrush}"
+                    CornerRadius="24"
+                    Padding="16,10"
+                    Effect="{StaticResource SoftShadow}">
+                <TextBlock x:Name="ScoreText"
+                           FontSize="{DynamicResource NormalFontSize}"
+                           FontWeight="SemiBold"
+                           MinWidth="180"
+                           TextAlignment="Center"/>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="1"
+                Background="{DynamicResource CardBgBrush}"
+                CornerRadius="30"
+                Padding="24"
+                Effect="{StaticResource CardShadow}">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <ProgressBar x:Name="ProgressBar"
+                             Grid.Row="0"
+                             Height="14"
+                             Minimum="0"
+                             Maximum="100"
+                             Margin="0,0,0,18"/>
+
+                <Border Grid.Row="1"
+                        Background="{DynamicResource SoftBgBrush}"
+                        CornerRadius="26"
+                        Padding="24">
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Viewbox Grid.Row="0"
+                                 Stretch="Uniform"
+                                 StretchDirection="DownOnly">
+
+                            <TextBlock x:Name="PromptText"
+                                       Width="820"
+                                       FontSize="{DynamicResource PromptFontSize}"
+                                       FontWeight="Bold"
+                                       TextWrapping="Wrap"
+                                       TextAlignment="Center"/>
+                        </Viewbox>
+
+                        <StackPanel x:Name="AnswerPanel"
+                                    Grid.Row="1"
+                                    HorizontalAlignment="Center"
+                                    Margin="0,24,0,0"/>
+
+                        <TextBlock x:Name="FeedbackText"
+                                   Grid.Row="2"
+                                   FontSize="{DynamicResource NormalFontSize}"
+                                   FontWeight="SemiBold"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,18,0,0"/>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <WrapPanel Grid.Row="2"
+                   HorizontalAlignment="Right"
+                   Margin="0,14,0,0">
+
+            <Button Content="Не знаю"
+                    Width="120"
+                    Height="48"
+                    FontSize="{DynamicResource ButtonFontSize}"
+                    Background="{DynamicResource ButtonWarningBrush}"
+                    Click="DontKnowButton_Click"/>
+
+            <Button Content="В меню"
+                    Width="120"
+                    Height="48"
+                    FontSize="{DynamicResource ButtonFontSize}"
+                    Background="{DynamicResource ButtonNeutralBrush}"
+                    Click="CloseButton_Click"/>
+        </WrapPanel>
+    </Grid>
+</Window>

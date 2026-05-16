@@ -42,6 +42,7 @@ namespace EnglishTypingGame
                 "Слов с ошибками: " + mistakesCount;
 
             MistakesGrid.ItemsSource = progress.Mistakes;
+            TopicStatsGrid.ItemsSource = ProgressService.GetTopicProgress();
         }
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)

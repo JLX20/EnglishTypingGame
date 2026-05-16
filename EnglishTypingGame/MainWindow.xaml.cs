@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace EnglishTypingGame
 {
@@ -9,10 +10,15 @@ namespace EnglishTypingGame
             InitializeComponent();
 
             SettingsData settings = SettingsService.Load();
-            ThemeService.ApplyTheme(settings.ThemeName, settings.BackgroundName);
+            ThemeService.ApplyTheme(settings.ThemeName, settings.BackgroundName, settings.TextSizeName);
 
             TopicComboBox.ItemsSource = LessonRepository.GetTopicsForUi();
             TopicComboBox.SelectedIndex = 0;
+
+            LevelComboBox.ItemsSource = LessonQueryService.GetLevelsForUi();
+            LevelComboBox.SelectedIndex = 0;
+
+            InputModeComboBox.SelectedIndex = 0;
 
             RefreshStats();
         }
@@ -30,9 +36,46 @@ namespace EnglishTypingGame
             }
         }
 
+        private string SelectedLevel
+        {
+            get
+            {
+                string level = LevelComboBox.SelectedItem as string;
+
+                if (string.IsNullOrWhiteSpace(level))
+                    return "Все уровни";
+
+                return level;
+            }
+        }
+
+        private GameInputMode SelectedInputMode
+        {
+            get
+            {
+                ComboBoxItem item = InputModeComboBox.SelectedItem as ComboBoxItem;
+
+                if (item == null || item.Tag == null)
+                    return GameInputMode.RussianToEnglish;
+
+                string tag = item.Tag.ToString();
+
+                if (tag == "EnglishToRussian")
+                    return GameInputMode.EnglishToRussian;
+
+                if (tag == "ExampleToWord")
+                    return GameInputMode.ExampleToWord;
+
+                if (tag == "Mixed")
+                    return GameInputMode.Mixed;
+
+                return GameInputMode.RussianToEnglish;
+            }
+        }
+
         private void LearnButton_Click(object sender, RoutedEventArgs e)
         {
-            WindowNavigationService.Navigate(this, new LearnWindow(SelectedTopic));
+            WindowNavigationService.Navigate(this, new LearnWindow(SelectedTopic, SelectedLevel));
         }
 
         private void GrammarButton_Click(object sender, RoutedEventArgs e)
@@ -40,14 +83,26 @@ namespace EnglishTypingGame
             WindowNavigationService.Navigate(this, new GrammarLearnWindow());
         }
 
+        private void StudyPathButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowNavigationService.Navigate(this, new StudyPathWindow(SelectedTopic, SelectedLevel));
+        }
+
         private void MiniGamesButton_Click(object sender, RoutedEventArgs e)
         {
             WindowNavigationService.Navigate(this, new MiniGamesMenuWindow(SelectedTopic));
         }
 
+        private void MixedTrainingButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowNavigationService.Navigate(this, new MixedTrainingWindow(SelectedTopic, SelectedLevel));
+        }
+
         private void ClassicGameButton_Click(object sender, RoutedEventArgs e)
         {
-            WindowNavigationService.Navigate(this, new GameWindow(SelectedTopic, "TranslationToEnglish"));
+            WindowNavigationService.Navigate(
+                this,
+                new GameWindow(SelectedTopic, "TranslationToEnglish", SelectedLevel, SelectedInputMode));
         }
 
         private void MistakesButton_Click(object sender, RoutedEventArgs e)
@@ -65,7 +120,9 @@ namespace EnglishTypingGame
                 return;
             }
 
-            WindowNavigationService.Navigate(this, new GameWindow("Все темы", "Mistakes"));
+            WindowNavigationService.Navigate(
+                this,
+                new GameWindow("Все темы", "Mistakes", "Все уровни", GameInputMode.RussianToEnglish));
         }
 
         private void ProgressButton_Click(object sender, RoutedEventArgs e)

@@ -215,6 +215,14 @@
                             Background="{DynamicResource ButtonMainBrush}"
                             Click="CheckButton_Click"/>
 
+                    <Button x:Name="DontKnowButton"
+                            Content="Не знаю"
+                            Width="120"
+                            Height="48"
+                            FontSize="{DynamicResource ButtonFontSize}"
+                            Background="{DynamicResource ButtonWarningBrush}"
+                            Click="DontKnowButton_Click"/>
+
                     <Button Content="Выйти"
                             Width="120"
                             Height="48"

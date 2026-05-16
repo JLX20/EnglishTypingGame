@@ -47,34 +47,52 @@ namespace EnglishTypingGame
         public int TotalWords { get; set; }
         public int CorrectWords { get; set; }
         public int TotalMistakes { get; set; }
+
         public double BestAccuracy { get; set; }
         public double BestWpm { get; set; }
-        public int CurrentStreak { get; set; }
-        public DateTime LastPlayedDate { get; set; }
 
-        public List<MistakeRecord> Mistakes { get; set; }
+        public int CurrentStreak { get; set; }
+        public DateTime LastPracticeDate { get; set; }
+
         public List<string> LearnedWords { get; set; }
+        public List<MistakeRecord> Mistakes { get; set; }
+
+        public List<string> CompletedPathSteps { get; set; }
 
         public ProgressData()
         {
-            Mistakes = new List<MistakeRecord>();
             LearnedWords = new List<string>();
+            Mistakes = new List<MistakeRecord>();
+            CompletedPathSteps = new List<string>();
+
+            LastPracticeDate = DateTime.MinValue;
         }
     }
 
     public class GameResult
     {
         public string GameName { get; set; }
+        public string Topic { get; set; }
+        public string Level { get; set; }
+        public string Mode { get; set; }
+
         public int TotalWords { get; set; }
         public int CorrectWords { get; set; }
         public int WrongWords { get; set; }
+
         public double Accuracy { get; set; }
         public double Wpm { get; set; }
+
         public TimeSpan Duration { get; set; }
+
         public List<MistakeRecord> Mistakes { get; set; }
 
         public GameResult()
         {
+            GameName = "";
+            Topic = "Все темы";
+            Level = "Все уровни";
+            Mode = "";
             Mistakes = new List<MistakeRecord>();
         }
     }

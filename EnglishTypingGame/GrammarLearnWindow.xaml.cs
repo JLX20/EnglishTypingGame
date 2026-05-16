@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,17 +9,17 @@ namespace EnglishTypingGame
 {
     public partial class GrammarLearnWindow : Window
     {
-        private List<GrammarRule> _rules;
+        private List<GrammarLesson> _lessons;
         private GrammarRule _currentRule;
 
         public GrammarLearnWindow()
         {
             InitializeComponent();
 
-            CategoryComboBox.ItemsSource = GrammarRuleRepository.GetCategories();
-            CategoryComboBox.SelectedIndex = 0;
+            _lessons = GrammarLessonRepository.GetLessons();
 
-            LoadRules("Все правила");
+            LessonComboBox.ItemsSource = _lessons;
+            LessonComboBox.SelectedIndex = 0;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -29,23 +28,20 @@ namespace EnglishTypingGame
             WindowNavigationService.HandleCloseToMain(this, e);
         }
 
-        private void LoadRules(string category)
+        private void LessonComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _rules = GrammarRuleRepository.GetRules(category);
+            GrammarLesson lesson = LessonComboBox.SelectedItem as GrammarLesson;
 
-            RulesListBox.ItemsSource = null;
-            RulesListBox.ItemsSource = _rules;
-
-            if (_rules.Count > 0)
-                RulesListBox.SelectedIndex = 0;
-        }
-
-        private void CategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (CategoryComboBox.SelectedItem == null)
+            if (lesson == null)
                 return;
 
-            LoadRules(CategoryComboBox.SelectedItem.ToString());
+            LessonDescriptionText.Text = lesson.Description;
+
+            RulesListBox.ItemsSource = null;
+            RulesListBox.ItemsSource = lesson.Rules;
+
+            if (lesson.Rules.Count > 0)
+                RulesListBox.SelectedIndex = 0;
         }
 
         private void RulesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -95,7 +91,6 @@ namespace EnglishTypingGame
                 return;
 
             string userAnswer = PracticeAnswerBox.Text.Trim();
-            string correctAnswer = _currentRule.PracticeAnswer.Trim();
 
             if (string.IsNullOrWhiteSpace(userAnswer))
             {
@@ -104,7 +99,7 @@ namespace EnglishTypingGame
                 return;
             }
 
-            if (userAnswer.ToLower() == correctAnswer.ToLower())
+            if (SoftAnswerComparer.IsCorrect(userAnswer, _currentRule.PracticeAnswer))
             {
                 PracticeFeedbackText.Foreground = Brushes.ForestGreen;
                 PracticeFeedbackText.Text = "Правильно! " + _currentRule.PracticeExplanation;

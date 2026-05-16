@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
@@ -8,17 +9,25 @@ namespace EnglishTypingGame
     public partial class LearnWindow : Window
     {
         private readonly string _topic;
+        private readonly string _level;
         private readonly List<WordItem> _words;
         private int _index;
 
         public LearnWindow(string topic)
+            : this(topic, "Все уровни")
+        {
+        }
+
+        public LearnWindow(string topic, string level)
         {
             InitializeComponent();
 
             _topic = topic;
-            _words = LessonRepository.GetWords(topic);
+            _level = level;
 
-            TopicText.Text = "Тема: " + topic;
+            _words = LessonQueryService.GetWords(topic, level);
+
+            TopicText.Text = "Тема: " + topic + " | Сложность: " + level;
 
             ShowWord();
         }
@@ -33,7 +42,12 @@ namespace EnglishTypingGame
         {
             if (_words.Count == 0)
             {
-                MessageBox.Show("В этой теме пока нет слов.");
+                MessageBox.Show(
+                    "В этой теме и сложности пока нет слов.",
+                    "Нет слов",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
                 WindowNavigationService.NavigateToMain(this);
                 return;
             }
@@ -80,7 +94,7 @@ namespace EnglishTypingGame
                 return;
             }
 
-            if (answer.ToLower() == word.English.ToLower())
+            if (SoftAnswerComparer.IsCorrect(answer, word.English))
             {
                 PracticeFeedbackText.Foreground = Brushes.ForestGreen;
                 PracticeFeedbackText.Text = "Правильно!";
@@ -93,7 +107,7 @@ namespace EnglishTypingGame
             else
             {
                 PracticeFeedbackText.Foreground = Brushes.Firebrick;
-                PracticeFeedbackText.Text = "Есть ошибка. Посмотри на английское слово выше.";
+                PracticeFeedbackText.Text = "Есть ошибка.";
             }
         }
 
@@ -122,6 +136,11 @@ namespace EnglishTypingGame
 
             ProgressService.MarkWordAsLearned(word.English);
 
+            int learnedInThisList = _words.Count(w => ProgressService.IsWordLearned(w.English));
+
+            if (learnedInThisList >= _words.Count)
+                ProgressService.MarkPathStepCompleted(_topic, "Words");
+
             PracticeFeedbackText.Foreground = Brushes.ForestGreen;
             PracticeFeedbackText.Text = "Слово сохранено как выученное.";
         }
@@ -133,7 +152,9 @@ namespace EnglishTypingGame
 
         private void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
-            WindowNavigationService.Navigate(this, new GameWindow(_topic, "TranslationToEnglish"));
+            WindowNavigationService.Navigate(
+                this,
+                new GameWindow(_topic, "TranslationToEnglish", _level, GameInputMode.RussianToEnglish));
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

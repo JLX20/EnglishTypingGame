@@ -18,12 +18,12 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="0,0,0,14">
-            <TextBlock Text="Изучение правил"
+            <TextBlock Text="Изучение правил по урокам"
                        FontSize="{DynamicResource TitleFontSize}"
                        FontWeight="Bold"
                        TextWrapping="Wrap"/>
 
-            <TextBlock Text="Артикли, предлоги, времена, части речи, глаголы и существительные."
+            <TextBlock x:Name="LessonDescriptionText"
                        FontSize="{DynamicResource SubtitleFontSize}"
                        Foreground="{DynamicResource SecondaryTextBrush}"
                        TextWrapping="Wrap"
@@ -49,15 +49,15 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0" Margin="0,0,0,12">
-                        <TextBlock Text="Раздел правил"
+                        <TextBlock Text="Урок"
                                    FontSize="{DynamicResource NormalFontSize}"
-                                   FontWeight="SemiBold"
-                                   TextWrapping="Wrap"/>
+                                   FontWeight="SemiBold"/>
 
-                        <ComboBox x:Name="CategoryComboBox"
+                        <ComboBox x:Name="LessonComboBox"
                                   Height="46"
                                   Margin="0,8,0,0"
-                                  SelectionChanged="CategoryComboBox_SelectionChanged"/>
+                                  DisplayMemberPath="Title"
+                                  SelectionChanged="LessonComboBox_SelectionChanged"/>
                     </StackPanel>
 
                     <Border Grid.Row="1"
@@ -131,87 +131,52 @@
                                            TextWrapping="Wrap"
                                            Margin="0,6,0,14"/>
 
-                                <Border Background="{DynamicResource CardBgBrush}"
-                                        CornerRadius="20"
-                                        Padding="16"
-                                        Margin="0,0,0,12">
-                                    <StackPanel>
-                                        <TextBlock Text="Коротко"
-                                                   FontSize="{DynamicResource NormalFontSize}"
-                                                   FontWeight="Bold"
-                                                   Margin="0,0,0,6"/>
-                                        <TextBlock x:Name="ShortExplanationText"
-                                                   FontSize="{DynamicResource NormalFontSize}"
-                                                   TextWrapping="Wrap"
-                                                   LineHeight="26"/>
-                                    </StackPanel>
-                                </Border>
+                                <TextBlock x:Name="ShortExplanationText"
+                                           FontSize="{DynamicResource NormalFontSize}"
+                                           TextWrapping="Wrap"
+                                           LineHeight="27"
+                                           Margin="0,0,0,14"/>
 
-                                <Border Background="{DynamicResource CardBgBrush}"
-                                        CornerRadius="20"
-                                        Padding="16"
-                                        Margin="0,0,0,12">
-                                    <StackPanel>
-                                        <TextBlock Text="Когда использовать"
-                                                   FontSize="{DynamicResource NormalFontSize}"
-                                                   FontWeight="Bold"
-                                                   Margin="0,0,0,6"/>
-                                        <TextBlock x:Name="WhenToUseText"
-                                                   FontSize="{DynamicResource NormalFontSize}"
-                                                   TextWrapping="Wrap"
-                                                   LineHeight="26"/>
-                                    </StackPanel>
-                                </Border>
+                                <TextBlock Text="Когда использовать"
+                                           FontSize="{DynamicResource NormalFontSize}"
+                                           FontWeight="Bold"/>
 
-                                <Border Background="{DynamicResource CardBgBrush}"
-                                        CornerRadius="20"
-                                        Padding="16"
-                                        Margin="0,0,0,12">
-                                    <StackPanel>
-                                        <TextBlock Text="Формула / исключения"
-                                                   FontSize="{DynamicResource NormalFontSize}"
-                                                   FontWeight="Bold"
-                                                   Margin="0,0,0,6"/>
-                                        <TextBlock x:Name="FormulaText"
-                                                   FontSize="{DynamicResource NormalFontSize}"
-                                                   FontWeight="SemiBold"
-                                                   Foreground="{DynamicResource ButtonMainBrush}"
-                                                   TextWrapping="Wrap"
-                                                   LineHeight="27"/>
-                                    </StackPanel>
-                                </Border>
+                                <TextBlock x:Name="WhenToUseText"
+                                           FontSize="{DynamicResource NormalFontSize}"
+                                           TextWrapping="Wrap"
+                                           LineHeight="27"
+                                           Margin="0,4,0,14"/>
 
-                                <Border Background="{DynamicResource CardBgBrush}"
-                                        CornerRadius="20"
-                                        Padding="16"
-                                        Margin="0,0,0,12">
-                                    <StackPanel>
-                                        <TextBlock Text="Примеры"
-                                                   FontSize="{DynamicResource NormalFontSize}"
-                                                   FontWeight="Bold"
-                                                   Margin="0,0,0,6"/>
-                                        <TextBlock x:Name="ExamplesText"
-                                                   FontSize="{DynamicResource NormalFontSize}"
-                                                   TextWrapping="Wrap"
-                                                   LineHeight="26"/>
-                                    </StackPanel>
-                                </Border>
+                                <TextBlock Text="Формула / исключения"
+                                           FontSize="{DynamicResource NormalFontSize}"
+                                           FontWeight="Bold"/>
 
-                                <Border Background="{DynamicResource CardBgBrush}"
-                                        CornerRadius="20"
-                                        Padding="16"
-                                        Margin="0,0,0,12">
-                                    <StackPanel>
-                                        <TextBlock Text="Частые ошибки"
-                                                   FontSize="{DynamicResource NormalFontSize}"
-                                                   FontWeight="Bold"
-                                                   Margin="0,0,0,6"/>
-                                        <TextBlock x:Name="CommonMistakesText"
-                                                   FontSize="{DynamicResource NormalFontSize}"
-                                                   TextWrapping="Wrap"
-                                                   LineHeight="26"/>
-                                    </StackPanel>
-                                </Border>
+                                <TextBlock x:Name="FormulaText"
+                                           FontSize="{DynamicResource NormalFontSize}"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource ButtonMainBrush}"
+                                           TextWrapping="Wrap"
+                                           LineHeight="27"
+                                           Margin="0,4,0,14"/>
+
+                                <TextBlock Text="Примеры"
+                                           FontSize="{DynamicResource NormalFontSize}"
+                                           FontWeight="Bold"/>
+
+                                <TextBlock x:Name="ExamplesText"
+                                           FontSize="{DynamicResource NormalFontSize}"
+                                           TextWrapping="Wrap"
+                                           LineHeight="27"
+                                           Margin="0,4,0,14"/>
+
+                                <TextBlock Text="Частые ошибки"
+                                           FontSize="{DynamicResource NormalFontSize}"
+                                           FontWeight="Bold"/>
+
+                                <TextBlock x:Name="CommonMistakesText"
+                                           FontSize="{DynamicResource NormalFontSize}"
+                                           TextWrapping="Wrap"
+                                           LineHeight="27"/>
                             </StackPanel>
                         </ScrollViewer>
 

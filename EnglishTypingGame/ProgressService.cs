@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
@@ -17,6 +18,9 @@ namespace EnglishTypingGame
         {
             try
             {
+                if (!Directory.Exists(FolderPath))
+                    Directory.CreateDirectory(FolderPath);
+
                 if (!File.Exists(FilePath))
                     return new ProgressData();
 
@@ -27,14 +31,9 @@ namespace EnglishTypingGame
                     ProgressData data = serializer.Deserialize(stream) as ProgressData;
 
                     if (data == null)
-                        data = new ProgressData();
+                        return new ProgressData();
 
-                    if (data.Mistakes == null)
-                        data.Mistakes = new System.Collections.Generic.List<MistakeRecord>();
-
-                    if (data.LearnedWords == null)
-                        data.LearnedWords = new System.Collections.Generic.List<string>();
-
+                    FixNullCollections(data);
                     return data;
                 }
             }
@@ -46,107 +45,235 @@ namespace EnglishTypingGame
 
         public static void Save(ProgressData data)
         {
-            if (!Directory.Exists(FolderPath))
-                Directory.CreateDirectory(FolderPath);
-
-            XmlSerializer serializer = new XmlSerializer(typeof(ProgressData));
-
-            using (FileStream stream = new FileStream(FilePath, FileMode.Create))
+            try
             {
-                serializer.Serialize(stream, data);
-            }
-        }
+                if (data == null)
+                    data = new ProgressData();
 
-        public static void ApplyResult(GameResult result)
-        {
-            ProgressData data = Load();
+                FixNullCollections(data);
 
-            data.TotalRounds++;
-            data.TotalWords += result.TotalWords;
-            data.CorrectWords += result.CorrectWords;
-            data.TotalMistakes += result.WrongWords;
+                if (!Directory.Exists(FolderPath))
+                    Directory.CreateDirectory(FolderPath);
 
-            if (result.Accuracy > data.BestAccuracy)
-                data.BestAccuracy = result.Accuracy;
+                XmlSerializer serializer = new XmlSerializer(typeof(ProgressData));
 
-            if (result.Wpm > data.BestWpm)
-                data.BestWpm = result.Wpm;
-
-            UpdateStreak(data);
-
-            foreach (MistakeRecord mistake in result.Mistakes)
-            {
-                AddMistake(data, mistake.English, mistake.Russian, mistake.LastWrongAnswer);
-            }
-
-            Save(data);
-        }
-
-        public static void AddMistake(ProgressData data, string english, string russian, string wrongAnswer)
-        {
-            MistakeRecord existing = data.Mistakes.FirstOrDefault(m =>
-                m.English.Equals(english, StringComparison.OrdinalIgnoreCase));
-
-            if (existing == null)
-            {
-                data.Mistakes.Add(new MistakeRecord
+                using (FileStream stream = new FileStream(FilePath, FileMode.Create))
                 {
-                    English = english,
-                    Russian = russian,
-                    Count = 1,
-                    LastWrongAnswer = wrongAnswer,
-                    LastPracticed = DateTime.Now
-                });
+                    serializer.Serialize(stream, data);
+                }
             }
-            else
+            catch
             {
-                existing.Count++;
-                existing.LastWrongAnswer = wrongAnswer;
-                existing.LastPracticed = DateTime.Now;
             }
         }
 
-        public static void MarkWordAsLearned(string english)
+        private static void FixNullCollections(ProgressData data)
         {
-            ProgressData data = Load();
+            if (data.LearnedWords == null)
+                data.LearnedWords = new List<string>();
 
-            bool alreadyExists = data.LearnedWords.Any(w =>
-                w.Equals(english, StringComparison.OrdinalIgnoreCase));
+            if (data.Mistakes == null)
+                data.Mistakes = new List<MistakeRecord>();
 
-            if (!alreadyExists)
-            {
-                data.LearnedWords.Add(english);
-                Save(data);
-            }
+            if (data.CompletedPathSteps == null)
+                data.CompletedPathSteps = new List<string>();
         }
 
         public static bool IsWordLearned(string english)
         {
-            ProgressData data = Load();
+            if (string.IsNullOrWhiteSpace(english))
+                return false;
 
-            return data.LearnedWords.Any(w =>
+            ProgressData progress = Load();
+
+            return progress.LearnedWords.Any(w =>
                 w.Equals(english, StringComparison.OrdinalIgnoreCase));
         }
 
-        public static void Reset()
+        public static void MarkWordAsLearned(string english)
         {
-            if (File.Exists(FilePath))
-                File.Delete(FilePath);
+            if (string.IsNullOrWhiteSpace(english))
+                return;
+
+            ProgressData progress = Load();
+
+            if (!progress.LearnedWords.Any(w => w.Equals(english, StringComparison.OrdinalIgnoreCase)))
+                progress.LearnedWords.Add(english);
+
+            Save(progress);
         }
 
-        private static void UpdateStreak(ProgressData data)
+        public static void MarkPathStepCompleted(string topic, string step)
+        {
+            ProgressData progress = Load();
+
+            string key = BuildPathKey(topic, step);
+
+            if (!progress.CompletedPathSteps.Contains(key))
+                progress.CompletedPathSteps.Add(key);
+
+            Save(progress);
+        }
+
+        public static bool IsPathStepCompleted(string topic, string step)
+        {
+            ProgressData progress = Load();
+
+            string key = BuildPathKey(topic, step);
+
+            return progress.CompletedPathSteps.Contains(key);
+        }
+
+        private static string BuildPathKey(string topic, string step)
+        {
+            if (string.IsNullOrWhiteSpace(topic))
+                topic = "Все темы";
+
+            if (string.IsNullOrWhiteSpace(step))
+                step = "Step";
+
+            return topic.Trim().ToLowerInvariant() + "::" + step.Trim().ToLowerInvariant();
+        }
+
+        public static void ApplyResult(GameResult result)
+        {
+            if (result == null)
+                return;
+
+            ProgressData progress = Load();
+
+            progress.TotalRounds++;
+            progress.TotalWords += result.TotalWords;
+            progress.CorrectWords += result.CorrectWords;
+            progress.TotalMistakes += result.WrongWords;
+
+            if (result.Accuracy > progress.BestAccuracy)
+                progress.BestAccuracy = result.Accuracy;
+
+            if (result.Wpm > progress.BestWpm)
+                progress.BestWpm = result.Wpm;
+
+            UpdateStreak(progress);
+            AddMistakes(progress, result.Mistakes);
+
+            Save(progress);
+        }
+
+        private static void UpdateStreak(ProgressData progress)
         {
             DateTime today = DateTime.Today;
 
-            if (data.LastPlayedDate.Date == today)
+            if (progress.LastPracticeDate == DateTime.MinValue)
+            {
+                progress.CurrentStreak = 1;
+            }
+            else
+            {
+                DateTime last = progress.LastPracticeDate.Date;
+
+                if (last == today)
+                {
+                }
+                else if (last == today.AddDays(-1))
+                {
+                    progress.CurrentStreak++;
+                }
+                else
+                {
+                    progress.CurrentStreak = 1;
+                }
+            }
+
+            progress.LastPracticeDate = today;
+        }
+
+        private static void AddMistakes(ProgressData progress, List<MistakeRecord> mistakes)
+        {
+            if (mistakes == null)
                 return;
 
-            if (data.LastPlayedDate.Date == today.AddDays(-1))
-                data.CurrentStreak++;
-            else
-                data.CurrentStreak = 1;
+            foreach (MistakeRecord mistake in mistakes)
+            {
+                if (mistake == null || string.IsNullOrWhiteSpace(mistake.English))
+                    continue;
 
-            data.LastPlayedDate = today;
+                MistakeRecord existing = progress.Mistakes.FirstOrDefault(m =>
+                    m.English.Equals(mistake.English, StringComparison.OrdinalIgnoreCase));
+
+                if (existing == null)
+                {
+                    mistake.Count = Math.Max(1, mistake.Count);
+                    mistake.LastPracticed = DateTime.Now;
+                    progress.Mistakes.Add(mistake);
+                }
+                else
+                {
+                    existing.Count += Math.Max(1, mistake.Count);
+                    existing.Russian = mistake.Russian;
+                    existing.LastWrongAnswer = mistake.LastWrongAnswer;
+                    existing.LastPracticed = DateTime.Now;
+                }
+            }
+        }
+
+        public static List<TopicProgressInfo> GetTopicProgress()
+        {
+            ProgressData progress = Load();
+
+            List<TopicProgressInfo> result = new List<TopicProgressInfo>();
+
+            foreach (string topicUi in LessonRepository.GetTopicsForUi())
+            {
+                if (topicUi == "Все темы")
+                    continue;
+
+                List<WordItem> words = LessonRepository.GetWords(topicUi);
+
+                int total = words.Count;
+
+                int learned = words.Count(w =>
+                    progress.LearnedWords.Any(l =>
+                        l.Equals(w.English, StringComparison.OrdinalIgnoreCase)));
+
+                int mistakes = 0;
+
+                foreach (MistakeRecord mistake in progress.Mistakes)
+                {
+                    WordItem word = LessonRepository.FindWordByEnglish(mistake.English);
+
+                    if (word != null &&
+                        words.Any(w => w.English.Equals(word.English, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        mistakes++;
+                    }
+                }
+
+                double percent = 0;
+
+                if (total > 0)
+                    percent = learned * 100.0 / total;
+
+                int stars = 0;
+
+                if (percent >= 90)
+                    stars = 3;
+                else if (percent >= 60)
+                    stars = 2;
+                else if (percent >= 30)
+                    stars = 1;
+
+                result.Add(new TopicProgressInfo
+                {
+                    TopicName = topicUi,
+                    TotalWords = total,
+                    LearnedWords = learned,
+                    MistakeWords = mistakes,
+                    LearnedPercent = percent,
+                    Stars = stars
+                });
+            }
+
+            return result;
         }
     }
 }

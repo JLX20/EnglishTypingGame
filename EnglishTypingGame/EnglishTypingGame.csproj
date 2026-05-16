@@ -55,17 +55,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GameInputMode.cs" />
     <Compile Include="GameWindow.xaml.cs">
       <DependentUpon>GameWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="GrammarLearnWindow.xaml.cs">
       <DependentUpon>GrammarLearnWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GrammarLesson.cs" />
+    <Compile Include="GrammarLessonRepository.cs" />
     <Compile Include="GrammarRule.cs" />
     <Compile Include="GrammarRuleRepository.cs" />
     <Compile Include="LearnWindow.xaml.cs">
       <DependentUpon>LearnWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LessonQueryService.cs" />
     <Compile Include="LessonRepository.cs" />
     <Compile Include="MiniGameRepository.cs" />
     <Compile Include="MiniGamesMenuWindow.xaml.cs">
@@ -73,6 +77,10 @@
     </Compile>
     <Compile Include="MiniGameWindow.xaml.cs">
       <DependentUpon>MiniGameWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MixedTrainingRepository.cs" />
+    <Compile Include="MixedTrainingWindow.xaml.cs">
+      <DependentUpon>MixedTrainingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models.cs" />
     <Compile Include="ProgressService.cs" />
@@ -86,7 +94,12 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SoftAnswerComparer.cs" />
+    <Compile Include="StudyPathWindow.xaml.cs">
+      <DependentUpon>StudyPathWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ThemeService.cs" />
+    <Compile Include="TopicProgressInfo.cs" />
     <Compile Include="WindowNavigationService.cs" />
     <Page Include="GameWindow.xaml">
       <SubType>Designer</SubType>
@@ -120,6 +133,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MixedTrainingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ProgressWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -129,6 +146,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StudyPathWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

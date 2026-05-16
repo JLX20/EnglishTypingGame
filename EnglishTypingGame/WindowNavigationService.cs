@@ -46,8 +46,6 @@ namespace EnglishTypingGame
             if (_isNavigating || _isShuttingDown)
                 return;
 
-            // Если пользователь нажал крестик, программа должна нормально закрыться,
-            // а не пытаться открыть главное меню.
             _isShuttingDown = true;
             e.Cancel = false;
             Application.Current.Shutdown();

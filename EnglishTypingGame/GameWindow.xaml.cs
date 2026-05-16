@@ -17,8 +17,11 @@ namespace EnglishTypingGame
     {
         private readonly string _topic;
         private readonly string _mode;
+        private readonly string _level;
+        private readonly GameInputMode _inputMode;
         private readonly SettingsData _settings;
         private readonly Stopwatch _stopwatch;
+        private readonly Random _random;
 
         private List<WordItem> _words;
         private List<MistakeRecord> _mistakes;
@@ -31,15 +34,25 @@ namespace EnglishTypingGame
         private int _typedChars;
 
         private bool _answerLocked;
+        private GameInputMode _currentQuestionMode;
 
         public GameWindow(string topic, string mode)
+            : this(topic, mode, "Все уровни", GameInputMode.RussianToEnglish)
+        {
+        }
+
+        public GameWindow(string topic, string mode, string level, GameInputMode inputMode)
         {
             InitializeComponent();
 
             _topic = topic;
             _mode = mode;
+            _level = level;
+            _inputMode = inputMode;
+
             _settings = SettingsService.Load();
             _stopwatch = new Stopwatch();
+            _random = new Random(Guid.NewGuid().GetHashCode());
 
             _words = new List<WordItem>();
             _mistakes = new List<MistakeRecord>();
@@ -60,14 +73,12 @@ namespace EnglishTypingGame
 
             if (_words.Count == 0)
             {
-                MessageBox.Show("Нет слов для игры.");
+                MessageBox.Show("Нет слов для выбранной темы и сложности.");
                 WindowNavigationService.NavigateToMain(this);
                 return;
             }
 
-            ModeTitleText.Text = _mode == "Mistakes"
-                ? "Тренировка ошибок"
-                : "Обычная игра";
+            ModeTitleText.Text = BuildWindowTitle();
 
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromMilliseconds(300);
@@ -77,6 +88,23 @@ namespace EnglishTypingGame
             _stopwatch.Start();
 
             ShowQuestion();
+        }
+
+        private string BuildWindowTitle()
+        {
+            if (_mode == "Mistakes")
+                return "Тренировка ошибок";
+
+            if (_inputMode == GameInputMode.EnglishToRussian)
+                return "Обычная игра: английский → русский";
+
+            if (_inputMode == GameInputMode.ExampleToWord)
+                return "Обычная игра: пример → слово";
+
+            if (_inputMode == GameInputMode.Mixed)
+                return "Обычная игра: смешанный режим";
+
+            return "Обычная игра: русский → английский";
         }
 
         private void LoadWords()
@@ -102,7 +130,7 @@ namespace EnglishTypingGame
             }
             else
             {
-                _words = LessonRepository.GetWords(_topic)
+                _words = LessonQueryService.GetWords(_topic, _level)
                     .OrderBy(w => Guid.NewGuid())
                     .Take(_settings.WordsPerRound)
                     .ToList();
@@ -127,11 +155,17 @@ namespace EnglishTypingGame
 
             WordItem word = _words[_index];
 
-            ProgressText.Text = "Слово " + (_index + 1) + " из " + _words.Count;
+            _currentQuestionMode = GetQuestionMode();
+
+            ProgressText.Text =
+                "Слово " + (_index + 1) + " из " + _words.Count +
+                " | Тема: " + _topic +
+                " | Сложность: " + _level;
+
             RoundProgressBar.Value = _index * 100.0 / _words.Count;
 
-            PromptTitleText.Text = "Напиши английский перевод:";
-            BigPromptText.Text = word.Russian;
+            PromptTitleText.Text = BuildPromptTitle();
+            BigPromptText.Text = BuildPrompt(word);
 
             InputBox.IsEnabled = true;
             InputBox.Clear();
@@ -143,13 +177,85 @@ namespace EnglishTypingGame
             FeedbackText.Text = "";
             WordPreviewText.Inlines.Clear();
 
-            BuildPreview("", word.English);
+            BuildPreview("", GetMainCorrectAnswer(word));
 
             Dispatcher.BeginInvoke(new Action(delegate
             {
                 InputBox.Focus();
                 Keyboard.Focus(InputBox);
             }), DispatcherPriority.Input);
+        }
+
+        private GameInputMode GetQuestionMode()
+        {
+            if (_inputMode != GameInputMode.Mixed)
+                return _inputMode;
+
+            int value = _random.Next(0, 3);
+
+            if (value == 0)
+                return GameInputMode.RussianToEnglish;
+
+            if (value == 1)
+                return GameInputMode.EnglishToRussian;
+
+            return GameInputMode.ExampleToWord;
+        }
+
+        private string BuildPromptTitle()
+        {
+            if (_currentQuestionMode == GameInputMode.EnglishToRussian)
+                return "Напиши русский перевод:";
+
+            if (_currentQuestionMode == GameInputMode.ExampleToWord)
+                return "Вставь пропущенное английское слово:";
+
+            return "Напиши английский перевод:";
+        }
+
+        private string BuildPrompt(WordItem word)
+        {
+            if (_currentQuestionMode == GameInputMode.EnglishToRussian)
+                return word.English;
+
+            if (_currentQuestionMode == GameInputMode.ExampleToWord)
+            {
+                if (!string.IsNullOrWhiteSpace(word.Example) &&
+                    word.Example.ToLower().Contains(word.English.ToLower()))
+                {
+                    return ReplaceIgnoreCase(word.Example, word.English, "_____");
+                }
+
+                return "_____ = " + word.Russian;
+            }
+
+            return word.Russian;
+        }
+
+        private string GetMainCorrectAnswer(WordItem word)
+        {
+            if (_currentQuestionMode == GameInputMode.EnglishToRussian)
+                return word.Russian;
+
+            return word.English;
+        }
+
+        private List<string> GetCorrectAnswers(WordItem word)
+        {
+            if (_currentQuestionMode == GameInputMode.EnglishToRussian)
+                return SoftAnswerComparer.SplitPossibleAnswers(word.Russian);
+
+            return SoftAnswerComparer.SplitPossibleAnswers(word.English);
+        }
+
+        private string ReplaceIgnoreCase(string source, string oldValue, string newValue)
+        {
+            int index = source.ToLower().IndexOf(oldValue.ToLower());
+
+            if (index < 0)
+                return source;
+
+            return source.Substring(0, index) + newValue + source.Substring(index + oldValue.Length);
         }
 
         private void InputBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -160,7 +266,7 @@ namespace EnglishTypingGame
             WordItem word = _words[_index];
             string answer = InputBox.Text;
 
-            BuildPreview(answer, word.English);
+            BuildPreview(answer, GetMainCorrectAnswer(word));
         }
 
         private void BuildPreview(string typedText, string correctText)
@@ -190,14 +296,7 @@ namespace EnglishTypingGame
 
                     Run run = new Run(typedChar.ToString());
 
-                    if (isCorrect)
-                    {
-                        run.Foreground = Brushes.ForestGreen;
-                    }
-                    else
-                    {
-                        run.Foreground = Brushes.Firebrick;
-                    }
+                    run.Foreground = isCorrect ? Brushes.ForestGreen : Brushes.Firebrick;
 
                     WordPreviewText.Inlines.Add(run);
                 }
@@ -226,6 +325,35 @@ namespace EnglishTypingGame
             CheckAnswer();
         }
 
+        private void DontKnowButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_answerLocked)
+                return;
+
+            if (_index >= _words.Count)
+                return;
+
+            WordItem word = _words[_index];
+
+            _answerLocked = true;
+            InputBox.IsEnabled = false;
+
+            _wrong++;
+
+            string correct = GetMainCorrectAnswer(word);
+
+            FeedbackText.Foreground = Brushes.Firebrick;
+            FeedbackText.Text = "Правильный ответ: " + correct;
+
+            AddMistake(word, "Не знаю");
+
+            if (_settings.SoundEnabled)
+                SystemSounds.Hand.Play();
+
+            _index++;
+            GoNextWithDelay(1200);
+        }
+
         private void CheckAnswer()
         {
             if (_answerLocked)
@@ -240,7 +368,7 @@ namespace EnglishTypingGame
             if (string.IsNullOrWhiteSpace(answer))
             {
                 FeedbackText.Foreground = Brushes.Firebrick;
-                FeedbackText.Text = "Сначала напиши ответ.";
+                FeedbackText.Text = "Сначала напиши ответ или нажми “Не знаю”.";
                 InputBox.Focus();
                 return;
             }
@@ -250,7 +378,7 @@ namespace EnglishTypingGame
 
             _typedChars += answer.Length;
 
-            bool isCorrect = answer.Equals(word.English, StringComparison.OrdinalIgnoreCase);
+            bool isCorrect = SoftAnswerComparer.IsCorrect(answer, GetCorrectAnswers(word));
 
             if (isCorrect)
             {
@@ -263,33 +391,46 @@ namespace EnglishTypingGame
 
                 if (_settings.SoundEnabled)
                     SystemSounds.Asterisk.Play();
+
+                _index++;
+                GoNextWithDelay(500);
             }
             else
             {
                 _wrong++;
 
+                string correct = GetMainCorrectAnswer(word);
+
                 FeedbackText.Foreground = Brushes.Firebrick;
-                FeedbackText.Text = "Ошибка. Правильно: " + word.English;
+                FeedbackText.Text = "Ошибка. Правильно: " + correct;
 
-                BuildPreview(answer, word.English);
-
-                _mistakes.Add(new MistakeRecord
-                {
-                    English = word.English,
-                    Russian = word.Russian,
-                    Count = 1,
-                    LastWrongAnswer = answer,
-                    LastPracticed = DateTime.Now
-                });
+                BuildPreview(answer, correct);
+                AddMistake(word, answer);
 
                 if (_settings.SoundEnabled)
                     SystemSounds.Hand.Play();
+
+                _index++;
+                GoNextWithDelay(1200);
             }
+        }
 
-            _index++;
+        private void AddMistake(WordItem word, string answer)
+        {
+            _mistakes.Add(new MistakeRecord
+            {
+                English = word.English,
+                Russian = word.Russian,
+                Count = 1,
+                LastWrongAnswer = answer,
+                LastPracticed = DateTime.Now
+            });
+        }
 
+        private void GoNextWithDelay(int milliseconds)
+        {
             DispatcherTimer delayTimer = new DispatcherTimer();
-            delayTimer.Interval = TimeSpan.FromMilliseconds(isCorrect ? 500 : 1100);
+            delayTimer.Interval = TimeSpan.FromMilliseconds(milliseconds);
             delayTimer.Tick += delegate
             {
                 delayTimer.Stop();
@@ -310,7 +451,10 @@ namespace EnglishTypingGame
                 total = 1;
 
             GameResult result = new GameResult();
-            result.GameName = _mode == "Mistakes" ? "Тренировка ошибок" : "Обычная игра";
+            result.GameName = BuildWindowTitle();
+            result.Topic = _topic;
+            result.Level = _level;
+            result.Mode = _inputMode.ToString();
             result.TotalWords = total;
             result.CorrectWords = _correct;
             result.WrongWords = _wrong;
@@ -322,6 +466,9 @@ namespace EnglishTypingGame
             result.Wpm = (_typedChars / 5.0) / minutes;
 
             ProgressService.ApplyResult(result);
+
+            if (_mode != "Mistakes" && result.Accuracy >= 70)
+                ProgressService.MarkPathStepCompleted(_topic, "Game");
 
             WindowNavigationService.Navigate(this, new ResultsWindow(result));
         }
