@@ -2,33 +2,37 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="English Typing Game"
-        Height="850"
-        Width="950"
+        Height="720"
+        Width="1050"
+        MinHeight="680"
+        MinWidth="950"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize"
+        ResizeMode="CanResize"
         Background="{DynamicResource WindowBgBrush}">
 
-    <Grid Margin="30">
+    <Grid Margin="26">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Margin="0,0,0,24">
+        <StackPanel Grid.Row="0" Margin="0,0,0,18">
             <TextBlock Text="English Typing Game"
-                       FontSize="40"
-                       FontWeight="Bold"/>
+                       FontSize="{DynamicResource TitleFontSize}"
+                       FontWeight="Bold"
+                       TextWrapping="Wrap"/>
 
-            <TextBlock Text="Изучай английские слова, грамматику и предложения через мини-игры."
-                       FontSize="17"
+            <TextBlock Text="Изучай английские слова, правила и предложения через мини-игры."
+                       FontSize="{DynamicResource SubtitleFontSize}"
                        Foreground="{DynamicResource SecondaryTextBrush}"
-                       Margin="0,8,0,0"/>
+                       Margin="0,6,0,0"
+                       TextWrapping="Wrap"/>
         </StackPanel>
 
         <Border Grid.Row="1"
                 Background="{DynamicResource CardBgBrush}"
                 CornerRadius="30"
-                Padding="28"
+                Padding="26"
                 Effect="{StaticResource CardShadow}">
 
             <Grid>
@@ -37,92 +41,118 @@
                     <ColumnDefinition Width="0.85*"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0">
-                    <TextBlock Text="Главное меню"
-                               FontSize="27"
+                <Grid Grid.Column="0" Margin="0,0,24,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="Главное меню"
+                               FontSize="{DynamicResource PromptFontSize}"
                                FontWeight="Bold"
-                               Margin="0,0,0,18"/>
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,14"/>
 
-                    <TextBlock Text="Выбери тему слов"
-                               FontSize="17"
-                               FontWeight="SemiBold"/>
+                    <StackPanel Grid.Row="1" Margin="0,0,0,12">
+                        <TextBlock Text="Выбери тему слов"
+                                   FontSize="{DynamicResource NormalFontSize}"
+                                   FontWeight="SemiBold"
+                                   TextWrapping="Wrap"/>
 
-                    <ComboBox x:Name="TopicComboBox"
-                              Height="46"
-                              Margin="0,8,0,20"/>
+                        <ComboBox x:Name="TopicComboBox"
+                                  Height="46"
+                                  Margin="0,8,0,0"/>
+                    </StackPanel>
 
-                    <Button Content="1. Изучать слова"
-                            Height="50"
-                            Background="{DynamicResource ButtonMainBrush}"
-                            Click="LearnButton_Click"/>
+                    <UniformGrid Grid.Row="2"
+                                 Columns="1"
+                                 Rows="8"
+                                 VerticalAlignment="Stretch">
 
-                    <Button Content="2. Мини-игры после изучения"
-                            Height="50"
-                            Background="{DynamicResource ButtonMainBrush}"
-                            Click="MiniGamesButton_Click"/>
+                        <Button Content="1. Изучать слова"
+                                Background="{DynamicResource ButtonMainBrush}"
+                                FontSize="{DynamicResource ButtonFontSize}"
+                                Click="LearnButton_Click"/>
 
-                    <Button Content="3. Обычная игра: перевод → английское слово"
-                            Height="50"
-                            Background="{DynamicResource ButtonMainBrush}"
-                            Click="ClassicGameButton_Click"/>
+                        <Button Content="2. Изучать правила"
+                                Background="{DynamicResource ButtonMainBrush}"
+                                FontSize="{DynamicResource ButtonFontSize}"
+                                Click="GrammarButton_Click"/>
 
-                    <Button Content="4. Тренировать ошибки"
-                            Height="50"
-                            Background="{DynamicResource ButtonMainBrush}"
-                            Click="MistakesButton_Click"/>
+                        <Button Content="3. Мини-игры после изучения"
+                                Background="{DynamicResource ButtonMainBrush}"
+                                FontSize="{DynamicResource ButtonFontSize}"
+                                Click="MiniGamesButton_Click"/>
 
-                    <Button Content="Мой прогресс"
-                            Height="50"
-                            Background="{DynamicResource ButtonMainBrush}"
-                            Click="ProgressButton_Click"/>
+                        <Button Content="4. Обычная игра: перевод → английское слово"
+                                Background="{DynamicResource ButtonMainBrush}"
+                                FontSize="{DynamicResource ButtonFontSize}"
+                                Click="ClassicGameButton_Click"/>
 
-                    <Button Content="Настройки"
-                            Height="50"
-                            Background="{DynamicResource ButtonMainBrush}"
-                            Click="SettingsButton_Click"/>
+                        <Button Content="5. Тренировать ошибки"
+                                Background="{DynamicResource ButtonMainBrush}"
+                                FontSize="{DynamicResource ButtonFontSize}"
+                                Click="MistakesButton_Click"/>
 
-                    <Button Content="Выход"
-                            Height="50"
-                            Background="{DynamicResource ButtonNeutralBrush}"
-                            Click="ExitButton_Click"/>
-                </StackPanel>
+                        <Button Content="Мой прогресс"
+                                Background="{DynamicResource ButtonMainBrush}"
+                                FontSize="{DynamicResource ButtonFontSize}"
+                                Click="ProgressButton_Click"/>
+
+                        <Button Content="Настройки"
+                                Background="{DynamicResource ButtonMainBrush}"
+                                FontSize="{DynamicResource ButtonFontSize}"
+                                Click="SettingsButton_Click"/>
+
+                        <Button Content="Выход"
+                                Background="{DynamicResource ButtonNeutralBrush}"
+                                FontSize="{DynamicResource ButtonFontSize}"
+                                Click="ExitButton_Click"/>
+                    </UniformGrid>
+                </Grid>
 
                 <Border Grid.Column="1"
                         Background="{DynamicResource SoftBgBrush}"
                         CornerRadius="26"
-                        Padding="24"
-                        Margin="26,0,0,0">
+                        Padding="22">
 
-                    <StackPanel>
-                        <TextBlock Text="Твой прогресс"
-                                   FontSize="25"
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Text="Твой прогресс"
+                                   FontSize="{DynamicResource PromptFontSize}"
                                    FontWeight="Bold"
-                                   Margin="0,0,0,16"/>
+                                   TextWrapping="Wrap"
+                                   Margin="0,0,0,12"/>
 
                         <TextBlock x:Name="StatsText"
-                                   FontSize="16"
+                                   Grid.Row="1"
+                                   FontSize="{DynamicResource NormalFontSize}"
                                    Foreground="{DynamicResource DarkTextBrush}"
-                                   LineHeight="30"
+                                   LineHeight="28"
                                    TextWrapping="Wrap"/>
 
-                        <Separator Margin="0,20,0,18"/>
+                        <Border Grid.Row="2"
+                                Background="{DynamicResource CardBgBrush}"
+                                CornerRadius="22"
+                                Padding="16"
+                                Margin="0,12,0,0">
 
-                        <TextBlock Text="Рекомендуемый путь:"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"
-                                   Margin="0,0,0,8"/>
-
-                        <TextBlock FontSize="15"
-                                   Foreground="{DynamicResource SecondaryTextBrush}"
-                                   LineHeight="28"
-                                   TextWrapping="Wrap">
-                            1. Изучи слова в карточках&#x0a;
-                            2. Пройди мини-игры по словам&#x0a;
-                            3. Пройди мини-игры по грамматике&#x0a;
-                            4. Повтори ошибки&#x0a;
-                            5. Открой новую тему
-                        </TextBlock>
-                    </StackPanel>
+                            <TextBlock FontSize="{DynamicResource SmallFontSize}"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       LineHeight="24"
+                                       TextWrapping="Wrap">
+                                Рекомендуемый путь: изучи слова → изучи правила → пройди мини-игры → повтори ошибки.
+                            </TextBlock>
+                        </Border>
+                    </Grid>
                 </Border>
             </Grid>
         </Border>

@@ -30,6 +30,7 @@ namespace EnglishTypingGame
         private int _wrong;
         private int _submittedChars;
         private bool _isFinishing;
+        private bool _answerLocked;
 
         private TextBox _answerBox;
         private TextBlock _answerPreview;
@@ -65,6 +66,7 @@ namespace EnglishTypingGame
         private TextBlock _speedPromptText;
         private TextBlock _speedHintText;
         private TextBox _speedAnswerBox;
+        private bool _speedAnswerLocked;
 
         public MiniGameWindow(string topic, MiniGameMode mode)
         {
@@ -74,7 +76,7 @@ namespace EnglishTypingGame
             _mode = mode;
             _settings = SettingsService.Load();
             _stopwatch = new Stopwatch();
-            _random = new Random();
+            _random = new Random(Guid.NewGuid().GetHashCode());
 
             _mistakes = new List<MistakeRecord>();
             _selectedWords = new List<string>();
@@ -84,12 +86,17 @@ namespace EnglishTypingGame
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            StopSpecialTimers();
+
             base.OnClosing(e);
+
             WindowNavigationService.HandleCloseToMain(this, e);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            ThemeService.ApplyTheme(_settings.ThemeName, _settings.BackgroundName, _settings.TextSizeName);
+
             MiniGameInfo info = MiniGameRepository.GetInfo(_mode);
 
             if (info != null)
@@ -162,6 +169,8 @@ namespace EnglishTypingGame
 
         private void ShowCurrentExercise()
         {
+            _answerLocked = false;
+
             if (_index >= _exercises.Count)
             {
                 FinishGame();
@@ -211,13 +220,13 @@ namespace EnglishTypingGame
         private void BuildWordCard(MiniGameExercise exercise)
         {
             TextBlock english = CreateBigText(exercise.Prompt);
-            english.FontSize = 54;
+            english.FontSize = GetFontSize("WordFontSize", 54);
             english.HorizontalAlignment = HorizontalAlignment.Center;
             english.Margin = new Thickness(0, 16, 0, 8);
             GamePanel.Children.Add(english);
 
             TextBlock russian = CreateBigText(exercise.RussianPrompt);
-            russian.FontSize = 30;
+            russian.FontSize = GetFontSize("PromptFontSize", 34);
             russian.Foreground = GetBrush("ButtonMainBrush", Brushes.DodgerBlue);
             russian.HorizontalAlignment = HorizontalAlignment.Center;
             russian.Margin = new Thickness(0, 0, 0, 18);
@@ -228,6 +237,7 @@ namespace EnglishTypingGame
             exampleBox.CornerRadius = new CornerRadius(24);
             exampleBox.Padding = new Thickness(20);
             exampleBox.Margin = new Thickness(0, 0, 0, 24);
+            exampleBox.MaxWidth = 820;
 
             TextBlock example = CreateNormalText("Пример: " + exercise.Explanation);
             example.TextAlignment = TextAlignment.Center;
@@ -235,8 +245,7 @@ namespace EnglishTypingGame
 
             GamePanel.Children.Add(exampleBox);
 
-            StackPanel buttons = new StackPanel();
-            buttons.Orientation = Orientation.Horizontal;
+            WrapPanel buttons = new WrapPanel();
             buttons.HorizontalAlignment = HorizontalAlignment.Center;
 
             Button knowButton = CreateButton("Знаю", 150);
@@ -247,7 +256,7 @@ namespace EnglishTypingGame
                 RegisterAnswer(true, exercise, exercise.Answer);
             };
 
-            Button repeatButton = CreateButton("Повторить позже", 190);
+            Button repeatButton = CreateButton("Повторить позже", 210);
             repeatButton.Background = GetBrush("ButtonNeutralBrush", Brushes.Gray);
             repeatButton.Click += delegate
             {
@@ -265,17 +274,24 @@ namespace EnglishTypingGame
             WrapPanel panel = new WrapPanel();
             panel.HorizontalAlignment = HorizontalAlignment.Center;
             panel.Margin = new Thickness(0, 0, 0, 20);
+            panel.MaxWidth = 840;
 
             foreach (string option in exercise.Options)
             {
                 string selectedOption = option;
 
-                Button button = CreateButton(selectedOption, 180);
+                Button button = CreateButton(selectedOption, 250);
+                button.MinHeight = 62;
                 button.Margin = new Thickness(8);
                 button.Background = GetBrush("ButtonMainBrush", Brushes.DodgerBlue);
 
                 button.Click += delegate
                 {
+                    if (_answerLocked)
+                        return;
+
+                    _answerLocked = true;
+
                     bool isCorrect = Normalize(selectedOption) == Normalize(exercise.Answer);
                     RegisterAnswer(isCorrect, exercise, selectedOption);
                 };
@@ -289,16 +305,19 @@ namespace EnglishTypingGame
         private void BuildArrangeExercise(MiniGameExercise exercise)
         {
             _answerPreview = CreateBigText("");
-            _answerPreview.FontSize = 28;
+            _answerPreview.FontSize = GetFontSize("PreviewFontSize", 30);
             _answerPreview.HorizontalAlignment = HorizontalAlignment.Center;
             _answerPreview.TextAlignment = TextAlignment.Center;
+            _answerPreview.TextWrapping = TextWrapping.Wrap;
+            _answerPreview.MaxWidth = 800;
             _answerPreview.Margin = new Thickness(0, 0, 0, 20);
 
             Border answerBox = new Border();
             answerBox.Background = GetBrush("SoftBgBrush", Brushes.LightGray);
             answerBox.CornerRadius = new CornerRadius(24);
             answerBox.Padding = new Thickness(18);
-            answerBox.MinHeight = 74;
+            answerBox.MinHeight = 78;
+            answerBox.MaxWidth = 840;
             answerBox.Child = _answerPreview;
 
             GamePanel.Children.Add(answerBox);
@@ -309,20 +328,34 @@ namespace EnglishTypingGame
                     : "Нажимай слова в правильном порядке.");
 
             hint.HorizontalAlignment = HorizontalAlignment.Center;
+            hint.TextAlignment = TextAlignment.Center;
+            hint.TextWrapping = TextWrapping.Wrap;
             hint.Margin = new Thickness(0, 8, 0, 12);
             GamePanel.Children.Add(hint);
 
             _dynamicPanel = new WrapPanel();
             _dynamicPanel.HorizontalAlignment = HorizontalAlignment.Center;
+            _dynamicPanel.MaxWidth = 850;
             _dynamicPanel.Margin = new Thickness(0, 10, 0, 20);
 
             foreach (string part in exercise.WordsToArrange)
             {
                 string selectedPart = part;
 
-                Button button = CreateButton(selectedPart, _mode == MiniGameMode.WordBuilder ? 62 : 135);
-                button.Height = _mode == MiniGameMode.WordBuilder ? 56 : 46;
-                button.FontSize = _mode == MiniGameMode.WordBuilder ? 22 : 15;
+                double buttonWidth = _mode == MiniGameMode.WordBuilder ? 66 : 160;
+
+                if (selectedPart.Length > 10 && _mode != MiniGameMode.WordBuilder)
+                    buttonWidth = 220;
+
+                if (selectedPart.Length > 18 && _mode != MiniGameMode.WordBuilder)
+                    buttonWidth = 280;
+
+                Button button = CreateButton(selectedPart, buttonWidth);
+                button.Height = _mode == MiniGameMode.WordBuilder ? 58 : 62;
+                button.FontSize = _mode == MiniGameMode.WordBuilder
+                    ? GetFontSize("InputFontSize", 22)
+                    : GetFontSize("ButtonFontSize", 15);
+
                 button.Margin = new Thickness(6);
                 button.Background = GetBrush("ButtonMainBrush", Brushes.DodgerBlue);
 
@@ -338,14 +371,18 @@ namespace EnglishTypingGame
 
             GamePanel.Children.Add(_dynamicPanel);
 
-            StackPanel buttons = new StackPanel();
-            buttons.Orientation = Orientation.Horizontal;
+            WrapPanel buttons = new WrapPanel();
             buttons.HorizontalAlignment = HorizontalAlignment.Center;
 
-            Button check = CreateButton("Проверить", 150);
+            Button check = CreateButton("Проверить", 160);
             check.Background = GetBrush("ButtonMainBrush", Brushes.DodgerBlue);
             check.Click += delegate
             {
+                if (_answerLocked)
+                    return;
+
+                _answerLocked = true;
+
                 string answer;
 
                 if (_mode == MiniGameMode.WordBuilder)
@@ -362,7 +399,7 @@ namespace EnglishTypingGame
                 }
             };
 
-            Button reset = CreateButton("Сбросить", 130);
+            Button reset = CreateButton("Сбросить", 140);
             reset.Background = GetBrush("ButtonNeutralBrush", Brushes.Gray);
             reset.Click += delegate
             {
@@ -374,6 +411,7 @@ namespace EnglishTypingGame
                         b.IsEnabled = true;
                 }
 
+                _answerLocked = false;
                 _selectedWords.Clear();
                 UpdateArrangePreview();
             };
@@ -389,21 +427,37 @@ namespace EnglishTypingGame
             if (_answerPreview == null)
                 return;
 
-            _answerPreview.Text = string.Join(" ", _selectedWords);
+            if (_mode == MiniGameMode.WordBuilder)
+            {
+                _answerPreview.Text = string.Join(" ", _selectedWords);
+            }
+            else
+            {
+                _answerPreview.Text = string.Join(" ", _selectedWords);
+            }
         }
 
         private void BuildInputExercise(MiniGameExercise exercise)
         {
             _answerBox = new TextBox();
-            _answerBox.Width = 420;
-            _answerBox.Height = 54;
+            _answerBox.Width = 520;
+            _answerBox.MaxWidth = 780;
+            _answerBox.Height = 64;
+            _answerBox.FontSize = GetFontSize("InputFontSize", 24);
+            _answerBox.FontWeight = FontWeights.SemiBold;
             _answerBox.HorizontalAlignment = HorizontalAlignment.Center;
             _answerBox.Margin = new Thickness(0, 0, 0, 18);
+            _answerBox.Background = GetBrush("InputBgBrush", Brushes.White);
+            _answerBox.Foreground = GetBrush("InputTextBrush", Brushes.Black);
+            _answerBox.CaretBrush = GetBrush("InputTextBrush", Brushes.Black);
+            _answerBox.BorderBrush = GetBrush("InputBorderBrush", Brushes.LightGray);
+            _answerBox.BorderThickness = new Thickness(2);
+            _answerBox.Padding = new Thickness(14, 8, 14, 8);
             _answerBox.KeyDown += AnswerBox_KeyDown;
 
             GamePanel.Children.Add(_answerBox);
 
-            Button check = CreateButton("Проверить", 160);
+            Button check = CreateButton("Проверить", 170);
             check.HorizontalAlignment = HorizontalAlignment.Center;
             check.Background = GetBrush("ButtonMainBrush", Brushes.DodgerBlue);
             check.Click += delegate
@@ -413,7 +467,11 @@ namespace EnglishTypingGame
 
             GamePanel.Children.Add(check);
 
-            _answerBox.Focus();
+            Dispatcher.BeginInvoke(new Action(delegate
+            {
+                _answerBox.Focus();
+                Keyboard.Focus(_answerBox);
+            }), DispatcherPriority.Input);
         }
 
         private void AnswerBox_KeyDown(object sender, KeyEventArgs e)
@@ -427,10 +485,25 @@ namespace EnglishTypingGame
 
         private void CheckInputAnswer(MiniGameExercise exercise)
         {
+            if (_answerLocked)
+                return;
+
             if (_answerBox == null)
                 return;
 
             string answer = _answerBox.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(answer))
+            {
+                FeedbackText.Foreground = Brushes.Firebrick;
+                FeedbackText.Text = "Сначала напиши ответ.";
+                _answerBox.Focus();
+                return;
+            }
+
+            _answerLocked = true;
+            _answerBox.IsEnabled = false;
+
             bool isCorrect = Normalize(answer) == Normalize(exercise.Answer);
 
             RegisterAnswer(isCorrect, exercise, answer);
@@ -462,7 +535,7 @@ namespace EnglishTypingGame
             if (userAnswer != null)
                 _submittedChars += userAnswer.Length;
 
-            await Task.Delay(isCorrect ? 500 : 1200);
+            await Task.Delay(isCorrect ? 550 : 1300);
 
             _index++;
             ShowCurrentExercise();
@@ -502,6 +575,7 @@ namespace EnglishTypingGame
         {
             _speedMode = true;
             _speedSecondsLeft = 60;
+            _speedAnswerLocked = false;
 
             _speedWords = MiniGameRepository.GetRandomWords(_topic, 50);
 
@@ -519,12 +593,16 @@ namespace EnglishTypingGame
             TextBlock title = CreateBigText("Speed Translation");
             title.HorizontalAlignment = HorizontalAlignment.Center;
             title.TextAlignment = TextAlignment.Center;
+            title.TextWrapping = TextWrapping.Wrap;
+            title.MaxWidth = 820;
             title.Margin = new Thickness(0, 0, 0, 14);
             GamePanel.Children.Add(title);
 
             TextBlock instruction = CreateNormalText("Переводи русское слово на английский. Нажимай Enter после ответа.");
             instruction.HorizontalAlignment = HorizontalAlignment.Center;
             instruction.TextAlignment = TextAlignment.Center;
+            instruction.TextWrapping = TextWrapping.Wrap;
+            instruction.MaxWidth = 820;
             instruction.Margin = new Thickness(0, 0, 0, 24);
             GamePanel.Children.Add(instruction);
 
@@ -533,29 +611,45 @@ namespace EnglishTypingGame
             promptBox.CornerRadius = new CornerRadius(26);
             promptBox.Padding = new Thickness(24);
             promptBox.Margin = new Thickness(0, 0, 0, 22);
-            promptBox.Width = 600;
+            promptBox.MaxWidth = 780;
+            promptBox.HorizontalAlignment = HorizontalAlignment.Center;
 
             _speedPromptText = CreateBigText("");
-            _speedPromptText.FontSize = 46;
+            _speedPromptText.FontSize = GetFontSize("PromptFontSize", 42);
             _speedPromptText.HorizontalAlignment = HorizontalAlignment.Center;
             _speedPromptText.TextAlignment = TextAlignment.Center;
+            _speedPromptText.TextWrapping = TextWrapping.Wrap;
+            _speedPromptText.MaxWidth = 740;
 
             promptBox.Child = _speedPromptText;
             GamePanel.Children.Add(promptBox);
 
             _speedHintText = CreateSmallText("");
             _speedHintText.HorizontalAlignment = HorizontalAlignment.Center;
+            _speedHintText.TextAlignment = TextAlignment.Center;
+            _speedHintText.TextWrapping = TextWrapping.Wrap;
+            _speedHintText.MaxWidth = 760;
             _speedHintText.Margin = new Thickness(0, 0, 0, 12);
             GamePanel.Children.Add(_speedHintText);
 
             _speedAnswerBox = new TextBox();
-            _speedAnswerBox.Width = 420;
-            _speedAnswerBox.Height = 54;
+            _speedAnswerBox.Width = 520;
+            _speedAnswerBox.MaxWidth = 780;
+            _speedAnswerBox.Height = 64;
+            _speedAnswerBox.FontSize = GetFontSize("InputFontSize", 24);
+            _speedAnswerBox.FontWeight = FontWeights.SemiBold;
             _speedAnswerBox.HorizontalAlignment = HorizontalAlignment.Center;
+            _speedAnswerBox.Background = GetBrush("InputBgBrush", Brushes.White);
+            _speedAnswerBox.Foreground = GetBrush("InputTextBrush", Brushes.Black);
+            _speedAnswerBox.CaretBrush = GetBrush("InputTextBrush", Brushes.Black);
+            _speedAnswerBox.BorderBrush = GetBrush("InputBorderBrush", Brushes.LightGray);
+            _speedAnswerBox.BorderThickness = new Thickness(2);
+            _speedAnswerBox.Padding = new Thickness(14, 8, 14, 8);
             _speedAnswerBox.KeyDown += SpeedAnswerBox_KeyDown;
+
             GamePanel.Children.Add(_speedAnswerBox);
 
-            Button skipButton = CreateButton("Пропустить", 150);
+            Button skipButton = CreateButton("Пропустить", 160);
             skipButton.Background = GetBrush("ButtonNeutralBrush", Brushes.Gray);
             skipButton.HorizontalAlignment = HorizontalAlignment.Center;
             skipButton.Margin = new Thickness(0, 18, 0, 0);
@@ -572,7 +666,12 @@ namespace EnglishTypingGame
             _speedTimer.Start();
 
             NextSpeedWord();
-            _speedAnswerBox.Focus();
+
+            Dispatcher.BeginInvoke(new Action(delegate
+            {
+                _speedAnswerBox.Focus();
+                Keyboard.Focus(_speedAnswerBox);
+            }), DispatcherPriority.Input);
         }
 
         private void SpeedTimer_Tick(object sender, EventArgs e)
@@ -591,6 +690,8 @@ namespace EnglishTypingGame
 
         private void NextSpeedWord()
         {
+            _speedAnswerLocked = false;
+
             if (_speedWords == null || _speedWords.Count == 0)
                 return;
 
@@ -599,8 +700,14 @@ namespace EnglishTypingGame
             _speedPromptText.Text = _speedCurrentWord.Russian;
             _speedHintText.Text = "Тема: " + _speedCurrentWord.Topic + " | Букв: " + _speedCurrentWord.English.Length;
 
+            _speedAnswerBox.IsEnabled = true;
             _speedAnswerBox.Clear();
-            _speedAnswerBox.Focus();
+
+            Dispatcher.BeginInvoke(new Action(delegate
+            {
+                _speedAnswerBox.Focus();
+                Keyboard.Focus(_speedAnswerBox);
+            }), DispatcherPriority.Input);
         }
 
         private void SpeedAnswerBox_KeyDown(object sender, KeyEventArgs e)
@@ -614,13 +721,20 @@ namespace EnglishTypingGame
 
         private async void CheckSpeedAnswer(bool skipped)
         {
+            if (_speedAnswerLocked)
+                return;
+
             if (_speedCurrentWord == null)
                 return;
+
+            _speedAnswerLocked = true;
 
             string answer = _speedAnswerBox.Text.Trim();
 
             if (skipped)
                 answer = "";
+
+            _speedAnswerBox.IsEnabled = false;
 
             bool isCorrect = !skipped &&
                              Normalize(answer) == Normalize(_speedCurrentWord.English);
@@ -636,6 +750,7 @@ namespace EnglishTypingGame
                 if (_settings.SoundEnabled)
                     SystemSounds.Asterisk.Play();
 
+                await Task.Delay(250);
                 NextSpeedWord();
             }
             else
@@ -657,7 +772,7 @@ namespace EnglishTypingGame
                 if (_settings.SoundEnabled)
                     SystemSounds.Hand.Play();
 
-                await Task.Delay(550);
+                await Task.Delay(650);
                 NextSpeedWord();
             }
         }
@@ -683,13 +798,14 @@ namespace EnglishTypingGame
 
             TextBlock title = CreateBigText("Найди пары: English + Russian");
             title.HorizontalAlignment = HorizontalAlignment.Center;
+            title.TextAlignment = TextAlignment.Center;
             title.Margin = new Thickness(0, 0, 0, 20);
             GamePanel.Children.Add(title);
 
             UniformGrid grid = new UniformGrid();
-            grid.Columns = 4;
-            grid.Rows = 3;
-            grid.Width = 760;
+            grid.Columns = 3;
+            grid.Rows = 4;
+            grid.MaxWidth = 820;
             grid.HorizontalAlignment = HorizontalAlignment.Center;
 
             List<Tuple<string, string, WordItem>> cards = new List<Tuple<string, string, WordItem>>();
@@ -704,8 +820,8 @@ namespace EnglishTypingGame
 
             foreach (Tuple<string, string, WordItem> card in cards)
             {
-                Button button = CreateButton("?", 160);
-                button.Height = 80;
+                Button button = CreateButton("?", 240);
+                button.Height = 92;
                 button.Margin = new Thickness(8);
                 button.Tag = card;
                 button.Background = GetBrush("ButtonMainBrush", Brushes.DodgerBlue);
@@ -733,7 +849,7 @@ namespace EnglishTypingGame
             if (card == null)
                 return;
 
-            button.Content = card.Item1;
+            SetButtonText(button, card.Item1);
             button.Background = GetBrush("ButtonMainBrush", Brushes.DodgerBlue);
 
             if (_memoryFirstButton == null)
@@ -761,8 +877,8 @@ namespace EnglishTypingGame
                 _memoryFirstButton.IsEnabled = false;
                 _memorySecondButton.IsEnabled = false;
 
-                _memoryFirstButton.Background = GetBrush("ButtonMainBrush", Brushes.ForestGreen);
-                _memorySecondButton.Background = GetBrush("ButtonMainBrush", Brushes.ForestGreen);
+                _memoryFirstButton.Background = GetBrush("ButtonSuccessBrush", Brushes.ForestGreen);
+                _memorySecondButton.Background = GetBrush("ButtonSuccessBrush", Brushes.ForestGreen);
 
                 FeedbackText.Foreground = Brushes.ForestGreen;
                 FeedbackText.Text = "Пара найдена!";
@@ -792,10 +908,11 @@ namespace EnglishTypingGame
                 if (_settings.SoundEnabled)
                     SystemSounds.Hand.Play();
 
-                await Task.Delay(700);
+                await Task.Delay(900);
 
-                _memoryFirstButton.Content = "?";
-                _memorySecondButton.Content = "?";
+                SetButtonText(_memoryFirstButton, "?");
+                SetButtonText(_memorySecondButton, "?");
+
                 _memoryFirstButton.Background = GetBrush("ButtonMainBrush", Brushes.DodgerBlue);
                 _memorySecondButton.Background = GetBrush("ButtonMainBrush", Brushes.DodgerBlue);
             }
@@ -830,11 +947,12 @@ namespace EnglishTypingGame
 
             TextBlock title = CreateBigText("Соедини английское слово с переводом");
             title.HorizontalAlignment = HorizontalAlignment.Center;
+            title.TextAlignment = TextAlignment.Center;
             title.Margin = new Thickness(0, 0, 0, 20);
             GamePanel.Children.Add(title);
 
             Grid grid = new Grid();
-            grid.Width = 760;
+            grid.MaxWidth = 860;
             grid.HorizontalAlignment = HorizontalAlignment.Center;
             grid.ColumnDefinitions.Add(new ColumnDefinition());
             grid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -847,8 +965,8 @@ namespace EnglishTypingGame
 
             foreach (WordItem word in words.OrderBy(w => _random.Next()))
             {
-                Button button = CreateButton(word.English, 260);
-                button.Height = 48;
+                Button button = CreateButton(word.English, 280);
+                button.MinHeight = 64;
                 button.Margin = new Thickness(8);
                 button.Tag = word;
                 button.Background = GetBrush("ButtonMainBrush", Brushes.DodgerBlue);
@@ -858,8 +976,8 @@ namespace EnglishTypingGame
 
             foreach (WordItem word in words.OrderBy(w => _random.Next()))
             {
-                Button button = CreateButton(word.Russian, 260);
-                button.Height = 48;
+                Button button = CreateButton(word.Russian, 280);
+                button.MinHeight = 64;
                 button.Margin = new Thickness(8);
                 button.Tag = word;
                 button.Background = GetBrush("ButtonMainBrush", Brushes.DodgerBlue);
@@ -875,6 +993,8 @@ namespace EnglishTypingGame
 
         private void MatchEnglish_Click(object sender, RoutedEventArgs e)
         {
+            ResetMatchSelectionColors();
+
             _matchEnglishButton = sender as Button;
             HighlightSelectedMatchButtons();
             TryCheckMatch();
@@ -882,6 +1002,8 @@ namespace EnglishTypingGame
 
         private void MatchRussian_Click(object sender, RoutedEventArgs e)
         {
+            ResetMatchSelectionColors();
+
             _matchRussianButton = sender as Button;
             HighlightSelectedMatchButtons();
             TryCheckMatch();
@@ -903,8 +1025,8 @@ namespace EnglishTypingGame
                 _matchEnglishButton.IsEnabled = false;
                 _matchRussianButton.IsEnabled = false;
 
-                _matchEnglishButton.Background = GetBrush("ButtonMainBrush", Brushes.ForestGreen);
-                _matchRussianButton.Background = GetBrush("ButtonMainBrush", Brushes.ForestGreen);
+                _matchEnglishButton.Background = GetBrush("ButtonSuccessBrush", Brushes.ForestGreen);
+                _matchRussianButton.Background = GetBrush("ButtonSuccessBrush", Brushes.ForestGreen);
 
                 FeedbackText.Foreground = Brushes.ForestGreen;
                 FeedbackText.Text = "Правильно!";
@@ -934,7 +1056,7 @@ namespace EnglishTypingGame
                 if (_settings.SoundEnabled)
                     SystemSounds.Hand.Play();
 
-                await Task.Delay(500);
+                await Task.Delay(550);
 
                 if (_matchEnglishButton != null && _matchEnglishButton.IsEnabled)
                     _matchEnglishButton.Background = GetBrush("ButtonMainBrush", Brushes.DodgerBlue);
@@ -964,6 +1086,15 @@ namespace EnglishTypingGame
                 _matchRussianButton.Background = GetBrush("ButtonAccentBrush", Brushes.Purple);
         }
 
+        private void ResetMatchSelectionColors()
+        {
+            if (_matchEnglishButton != null && _matchEnglishButton.IsEnabled)
+                _matchEnglishButton.Background = GetBrush("ButtonMainBrush", Brushes.DodgerBlue);
+
+            if (_matchRussianButton != null && _matchRussianButton.IsEnabled)
+                _matchRussianButton.Background = GetBrush("ButtonMainBrush", Brushes.DodgerBlue);
+        }
+
         // =========================================================
         // LETTER RAIN
         // =========================================================
@@ -985,7 +1116,7 @@ namespace EnglishTypingGame
             GamePanel.Children.Add(instruction);
 
             _answerPreview = CreateBigText("");
-            _answerPreview.FontSize = 30;
+            _answerPreview.FontSize = GetFontSize("PreviewFontSize", 30);
             _answerPreview.HorizontalAlignment = HorizontalAlignment.Center;
             _answerPreview.Margin = new Thickness(0, 0, 0, 14);
             GamePanel.Children.Add(_answerPreview);
@@ -1084,9 +1215,9 @@ namespace EnglishTypingGame
                 letter = alphabet[_random.Next(alphabet.Length)];
             }
 
-            Button button = CreateButton(letter.ToString(), 52);
-            button.Height = 46;
-            button.FontSize = 20;
+            Button button = CreateButton(letter.ToString(), 58);
+            button.Height = 52;
+            button.FontSize = GetFontSize("ButtonFontSize", 15);
             button.Tag = letter.ToString();
             button.Background = GetBrush("ButtonMainBrush", Brushes.DodgerBlue);
             button.Click += LetterButton_Click;
@@ -1223,9 +1354,11 @@ namespace EnglishTypingGame
             return new TextBlock
             {
                 Text = text,
-                FontSize = 34,
+                FontSize = GetFontSize("PromptFontSize", 34),
                 FontWeight = FontWeights.Bold,
                 TextWrapping = TextWrapping.Wrap,
+                TextAlignment = TextAlignment.Center,
+                MaxWidth = 840,
                 Foreground = GetBrush("DarkTextBrush", Brushes.Black)
             };
         }
@@ -1235,8 +1368,10 @@ namespace EnglishTypingGame
             return new TextBlock
             {
                 Text = text,
-                FontSize = 17,
+                FontSize = GetFontSize("NormalFontSize", 17),
                 TextWrapping = TextWrapping.Wrap,
+                TextAlignment = TextAlignment.Center,
+                MaxWidth = 840,
                 Foreground = GetBrush("DarkTextBrush", Brushes.Black)
             };
         }
@@ -1246,25 +1381,54 @@ namespace EnglishTypingGame
             return new TextBlock
             {
                 Text = text,
-                FontSize = 15,
+                FontSize = GetFontSize("SmallFontSize", 15),
+                TextWrapping = TextWrapping.Wrap,
+                TextAlignment = TextAlignment.Center,
+                MaxWidth = 840,
                 Foreground = GetBrush("SecondaryTextBrush", Brushes.Gray)
             };
         }
 
         private Button CreateButton(string text, double width)
         {
-            return new Button
+            Button button = new Button
             {
-                Content = text,
                 Width = width,
-                MinHeight = 44,
+                MinWidth = Math.Min(width, 80),
+                MaxWidth = width,
+                MinHeight = 46,
                 Margin = new Thickness(4),
                 Background = GetBrush("ButtonMainBrush", Brushes.DodgerBlue),
                 Foreground = Brushes.White,
                 FontWeight = FontWeights.SemiBold,
-                FontSize = 15,
-                BorderThickness = new Thickness(0)
+                FontSize = GetFontSize("ButtonFontSize", 15),
+                BorderThickness = new Thickness(0),
+                Padding = new Thickness(10, 8, 10, 8)
             };
+
+            SetButtonText(button, text);
+
+            return button;
+        }
+
+        private void SetButtonText(Button button, string text)
+        {
+            if (button == null)
+                return;
+
+            TextBlock textBlock = new TextBlock
+            {
+                Text = text,
+                TextWrapping = TextWrapping.Wrap,
+                TextAlignment = TextAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Foreground = Brushes.White,
+                FontWeight = FontWeights.SemiBold,
+                FontSize = GetFontSize("ButtonFontSize", 15)
+            };
+
+            button.Content = textBlock;
         }
 
         private Brush GetBrush(string key, Brush fallback)
@@ -1278,12 +1442,37 @@ namespace EnglishTypingGame
             return brush;
         }
 
+        private double GetFontSize(string key, double fallback)
+        {
+            object resource = Application.Current.Resources[key];
+
+            if (resource == null)
+                return fallback;
+
+            double value;
+
+            if (double.TryParse(resource.ToString(), out value))
+                return value;
+
+            return fallback;
+        }
+
         private string Normalize(string value)
         {
             if (value == null)
                 return "";
 
-            return value.Trim().ToLowerInvariant();
+            return value
+                .Trim()
+                .ToLowerInvariant()
+                .Replace("’", "'")
+                .Replace("-", " ")
+                .Replace("'", "")
+                .Replace(".", "")
+                .Replace("?", "")
+                .Replace("!", "")
+                .Replace(",", "")
+                .Replace("  ", " ");
         }
 
         private string NormalizeSentence(string value)
@@ -1294,10 +1483,14 @@ namespace EnglishTypingGame
             return value
                 .Trim()
                 .ToLowerInvariant()
+                .Replace("’", "'")
+                .Replace("-", " ")
+                .Replace("'", "")
                 .Replace(".", "")
                 .Replace("?", "")
                 .Replace("!", "")
-                .Replace(",", "");
+                .Replace(",", "")
+                .Replace("  ", " ");
         }
 
         private void FinishButton_Click(object sender, RoutedEventArgs e)
@@ -1359,7 +1552,6 @@ namespace EnglishTypingGame
             result.WrongWords = _wrong;
             result.Duration = _stopwatch.Elapsed;
             result.Mistakes = _mistakes;
-
             result.Accuracy = _correct * 100.0 / total;
 
             double minutes = Math.Max(_stopwatch.Elapsed.TotalMinutes, 0.1);

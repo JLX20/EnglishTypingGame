@@ -7,19 +7,37 @@ namespace EnglishTypingGame
     {
         public static void ApplyTheme(string themeName)
         {
-            ApplyTheme(themeName, "Sky");
+            SettingsData settings = SettingsService.Load();
+            ApplyTheme(themeName, settings.BackgroundName, settings.TextSizeName);
         }
 
         public static void ApplyTheme(string themeName, string backgroundName)
         {
+            SettingsData settings = SettingsService.Load();
+            ApplyTheme(themeName, backgroundName, settings.TextSizeName);
+        }
+
+        public static void ApplyTheme(string themeName, string backgroundName, string textSizeName)
+        {
             if (string.IsNullOrWhiteSpace(themeName))
+                themeName = "Blue";
+
+            if (themeName == "Dark")
                 themeName = "Blue";
 
             if (string.IsNullOrWhiteSpace(backgroundName))
                 backgroundName = "Sky";
 
+            if (backgroundName == "Night")
+                backgroundName = "Sky";
+
+            if (string.IsNullOrWhiteSpace(textSizeName))
+                textSizeName = "Normal";
+
             ApplyColorTheme(themeName);
             ApplyBackground(backgroundName);
+            ApplyInputColors();
+            ApplyTextSize(textSizeName);
         }
 
         private static void ApplyColorTheme(string themeName)
@@ -83,25 +101,6 @@ namespace EnglishTypingGame
                         "#7C2D12");
                     break;
 
-                case "Dark":
-                    ApplyPalette(
-                        "#1F2937",
-                        "#374151",
-                        "#F9FAFB",
-                        "#D1D5DB",
-
-                        "#60A5FA",
-                        "#818CF8",
-                        "#38BDF8",
-                        "#A78BFA",
-                        "#F87171",
-                        "#64748B",
-
-                        "#2563EB",
-                        "#E0F2FE",
-                        "#0F172A");
-                    break;
-
                 default:
                     ApplyPalette(
                         "#FFFFFF",
@@ -145,7 +144,6 @@ namespace EnglishTypingGame
             SetBrush("DarkTextBrush", darkText);
             SetBrush("SecondaryTextBrush", secondaryText);
 
-            // MAIN BUTTON RESOURCES
             SetBrush("ButtonMainBrush", buttonMain);
             SetBrush("ButtonAccentBrush", buttonAccent);
             SetBrush("ButtonSuccessBrush", buttonSuccess);
@@ -153,7 +151,6 @@ namespace EnglishTypingGame
             SetBrush("ButtonDangerBrush", buttonDanger);
             SetBrush("ButtonNeutralBrush", buttonNeutral);
 
-            // OLD RESOURCE NAMES — чтобы старый код тоже менял цвета
             SetBrush("PrimaryBrush", buttonMain);
             SetBrush("PrimaryHoverBrush", buttonMain);
             SetBrush("AccentBrush", buttonAccent);
@@ -193,23 +190,72 @@ namespace EnglishTypingGame
                     brush = CreateGradient("#FAF5FF", "#EDE9FE");
                     break;
 
-                case "Night":
-                    brush = CreateGradient("#0F172A", "#1E1B4B");
-                    break;
-
                 default:
                     brush = CreateGradient("#E0F2FE", "#F8FAFC");
                     break;
             }
 
             Application.Current.Resources["WindowBgBrush"] = brush;
+        }
 
-            if (backgroundName == "Night")
+        private static void ApplyInputColors()
+        {
+            SetBrush("InputBgBrush", "#FFFFFF");
+            SetBrush("InputTextBrush", "#0F172A");
+            SetBrush("InputBorderBrush", "#CBD5E1");
+        }
+
+        private static void ApplyTextSize(string textSizeName)
+        {
+            switch (textSizeName)
             {
-                SetBrush("CardBgBrush", "#1F2937");
-                SetBrush("SoftBgBrush", "#374151");
-                SetBrush("DarkTextBrush", "#F9FAFB");
-                SetBrush("SecondaryTextBrush", "#D1D5DB");
+                case "Small":
+                    SetFontSize("TitleFontSize", 30);
+                    SetFontSize("SubtitleFontSize", 15);
+                    SetFontSize("NormalFontSize", 15);
+                    SetFontSize("SmallFontSize", 13);
+                    SetFontSize("ButtonFontSize", 14);
+                    SetFontSize("InputFontSize", 20);
+                    SetFontSize("PromptFontSize", 34);
+                    SetFontSize("WordFontSize", 44);
+                    SetFontSize("PreviewFontSize", 26);
+                    break;
+
+                case "Large":
+                    SetFontSize("TitleFontSize", 38);
+                    SetFontSize("SubtitleFontSize", 18);
+                    SetFontSize("NormalFontSize", 18);
+                    SetFontSize("SmallFontSize", 16);
+                    SetFontSize("ButtonFontSize", 17);
+                    SetFontSize("InputFontSize", 26);
+                    SetFontSize("PromptFontSize", 46);
+                    SetFontSize("WordFontSize", 58);
+                    SetFontSize("PreviewFontSize", 34);
+                    break;
+
+                case "ExtraLarge":
+                    SetFontSize("TitleFontSize", 42);
+                    SetFontSize("SubtitleFontSize", 20);
+                    SetFontSize("NormalFontSize", 20);
+                    SetFontSize("SmallFontSize", 18);
+                    SetFontSize("ButtonFontSize", 18);
+                    SetFontSize("InputFontSize", 30);
+                    SetFontSize("PromptFontSize", 52);
+                    SetFontSize("WordFontSize", 66);
+                    SetFontSize("PreviewFontSize", 40);
+                    break;
+
+                default:
+                    SetFontSize("TitleFontSize", 34);
+                    SetFontSize("SubtitleFontSize", 16);
+                    SetFontSize("NormalFontSize", 16);
+                    SetFontSize("SmallFontSize", 14);
+                    SetFontSize("ButtonFontSize", 15);
+                    SetFontSize("InputFontSize", 24);
+                    SetFontSize("PromptFontSize", 40);
+                    SetFontSize("WordFontSize", 54);
+                    SetFontSize("PreviewFontSize", 30);
+                    break;
             }
         }
 
@@ -227,6 +273,11 @@ namespace EnglishTypingGame
         {
             Application.Current.Resources[key] =
                 new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
+        }
+
+        private static void SetFontSize(string key, double value)
+        {
+            Application.Current.Resources[key] = value;
         }
     }
 }

@@ -83,38 +83,45 @@ namespace EnglishTypingGame
     public class SettingsData
     {
         public int WordsPerRound { get; set; }
-        public int WordRainSeconds { get; set; }
-
         public bool SlowMode { get; set; }
         public bool SoundEnabled { get; set; }
         public bool ShowExamples { get; set; }
 
-        public double WordRainFallSpeedMultiplier { get; set; }
-        public int WordRainSpawnIntervalMilliseconds { get; set; }
-
-        public bool WordRainCloudMode { get; set; }
-        public bool WordRainVisualEffects { get; set; }
-
         public string ThemeName { get; set; }
         public string BackgroundName { get; set; }
+
+        // Новая настройка размера букв во всей программе:
+        // Small, Normal, Large, ExtraLarge
+        public string TextSizeName { get; set; }
+
+        /*
+         * Старые настройки Word Rain оставлены только для совместимости,
+         * если в проекте случайно остались старые классы.
+         * В окне настроек они больше не показываются и не используются.
+         */
+        public int WordRainSeconds { get; set; }
+        public double WordRainFallSpeedMultiplier { get; set; }
+        public int WordRainSpawnIntervalMilliseconds { get; set; }
+        public bool WordRainCloudMode { get; set; }
+        public bool WordRainVisualEffects { get; set; }
 
         public SettingsData()
         {
             WordsPerRound = 10;
-            WordRainSeconds = 60;
-
             SlowMode = false;
             SoundEnabled = true;
-            ShowExamples = true;
-
-            WordRainFallSpeedMultiplier = 1.0;
-            WordRainSpawnIntervalMilliseconds = 1300;
-
-            WordRainCloudMode = true;
-            WordRainVisualEffects = true;
+            ShowExamples = false;
 
             ThemeName = "Blue";
             BackgroundName = "Sky";
+
+            TextSizeName = "Normal";
+
+            WordRainSeconds = 60;
+            WordRainFallSpeedMultiplier = 1.0;
+            WordRainSpawnIntervalMilliseconds = 1300;
+            WordRainCloudMode = false;
+            WordRainVisualEffects = false;
         }
     }
 
@@ -139,7 +146,18 @@ namespace EnglishTypingGame
         CanCant,
         NumberTyping,
         DaysAndMonths,
-        ChooseReply
+        ChooseReply,
+
+        BigNumbers,
+        PastSimple,
+        FutureSimple,
+        TenseForms,
+        VerbRules,
+        ModalVerbsRules,
+        NounPluralRules,
+        CountableUncountable,
+        PossessiveS,
+        PartsOfSpeech
     }
 
     public class MiniGameInfo

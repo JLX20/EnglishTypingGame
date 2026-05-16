@@ -30,6 +30,8 @@ namespace EnglishTypingGame
         private int _wrong;
         private int _typedChars;
 
+        private bool _answerLocked;
+
         public GameWindow(string topic, string mode)
         {
             InitializeComponent();
@@ -45,7 +47,10 @@ namespace EnglishTypingGame
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            StopTimer();
+
             base.OnClosing(e);
+
             WindowNavigationService.HandleCloseToMain(this, e);
         }
 
@@ -91,6 +96,7 @@ namespace EnglishTypingGame
                             "Повтори это слово."))
                         .GroupBy(w => w.English.ToLower())
                         .Select(g => g.First())
+                        .OrderBy(w => Guid.NewGuid())
                         .ToList();
                 }
             }
@@ -111,6 +117,8 @@ namespace EnglishTypingGame
 
         private void ShowQuestion()
         {
+            _answerLocked = false;
+
             if (_index >= _words.Count)
             {
                 FinishGame();
@@ -125,17 +133,23 @@ namespace EnglishTypingGame
             PromptTitleText.Text = "Напиши английский перевод:";
             BigPromptText.Text = word.Russian;
 
+            InputBox.IsEnabled = true;
             InputBox.Clear();
-            InputBox.Foreground = GetBrush("DarkTextBrush", Brushes.Black);
-            InputBox.Background = Brushes.White;
+            InputBox.Background = GetBrush("InputBgBrush", Brushes.White);
+            InputBox.Foreground = GetBrush("InputTextBrush", Brushes.Black);
+            InputBox.CaretBrush = GetBrush("InputTextBrush", Brushes.Black);
+            InputBox.BorderBrush = GetBrush("InputBorderBrush", Brushes.LightGray);
 
             FeedbackText.Text = "";
             WordPreviewText.Inlines.Clear();
 
             BuildPreview("", word.English);
 
-            InputBox.Focus();
-            Keyboard.Focus(InputBox);
+            Dispatcher.BeginInvoke(new Action(delegate
+            {
+                InputBox.Focus();
+                Keyboard.Focus(InputBox);
+            }), DispatcherPriority.Input);
         }
 
         private void InputBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -214,6 +228,9 @@ namespace EnglishTypingGame
 
         private void CheckAnswer()
         {
+            if (_answerLocked)
+                return;
+
             if (_index >= _words.Count)
                 return;
 
@@ -227,6 +244,9 @@ namespace EnglishTypingGame
                 InputBox.Focus();
                 return;
             }
+
+            _answerLocked = true;
+            InputBox.IsEnabled = false;
 
             _typedChars += answer.Length;
 

@@ -6,149 +6,49 @@ namespace EnglishTypingGame
 {
     public static class MiniGameRepository
     {
-        private static readonly Random Random = new Random();
+        private static readonly Random Random = new Random(Guid.NewGuid().GetHashCode());
+
+        private static readonly Dictionary<string, Queue<string>> RecentWordsByTopic =
+            new Dictionary<string, Queue<string>>();
 
         public static List<MiniGameInfo> GetMiniGames()
         {
             return new List<MiniGameInfo>
             {
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.WordCards,
-                    Title = "Word Cards",
-                    Group = "Слова",
-                    Description = "Карточки для повторения слов из выбранной темы."
-                },
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.MemoryPairs,
-                    Title = "Memory Pairs",
-                    Group = "Слова",
-                    Description = "Найди пары: английское слово и русский перевод."
-                },
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.TranslationMatch,
-                    Title = "Translation Match",
-                    Group = "Слова",
-                    Description = "Соедини английские слова с переводами."
-                },
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.WordBuilder,
-                    Title = "Word Builder",
-                    Group = "Слова",
-                    Description = "Собери английское слово из букв."
-                },
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.MissingLetter,
-                    Title = "Missing Letter",
-                    Group = "Слова",
-                    Description = "Выбери пропущенную букву в слове."
-                },
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.SpeedTranslation,
-                    Title = "Speed Translation",
-                    Group = "Слова",
-                    Description = "Быстро переводи слова на английский."
-                },
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.LetterRain,
-                    Title = "Letter Rain",
-                    Group = "Слова",
-                    Description = "Лови буквы в правильном порядке."
-                },
+                new MiniGameInfo { Mode = MiniGameMode.WordCards, Title = "Word Cards", Group = "Слова", Description = "Карточки для повторения слов из выбранной темы." },
+                new MiniGameInfo { Mode = MiniGameMode.MemoryPairs, Title = "Memory Pairs", Group = "Слова", Description = "Найди пары: английское слово и русский перевод." },
+                new MiniGameInfo { Mode = MiniGameMode.TranslationMatch, Title = "Translation Match", Group = "Слова", Description = "Соедини английские слова с переводами." },
+                new MiniGameInfo { Mode = MiniGameMode.WordBuilder, Title = "Word Builder", Group = "Слова", Description = "Собери английское слово из букв." },
+                new MiniGameInfo { Mode = MiniGameMode.MissingLetter, Title = "Missing Letter", Group = "Слова", Description = "Выбери пропущенную букву в слове." },
+                new MiniGameInfo { Mode = MiniGameMode.SpeedTranslation, Title = "Speed Translation", Group = "Слова", Description = "Быстро переводи слова на английский." },
+                new MiniGameInfo { Mode = MiniGameMode.LetterRain, Title = "Letter Rain", Group = "Слова", Description = "Лови буквы в правильном порядке." },
 
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.ArticleGame,
-                    Title = "The Article Game",
-                    Group = "Грамматика",
-                    Description = "Выбери a, an или the."
-                },
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.HaveHas,
-                    Title = "Have / Has",
-                    Group = "Грамматика",
-                    Description = "Выбери have или has."
-                },
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.DoDoes,
-                    Title = "Do / Does",
-                    Group = "Грамматика",
-                    Description = "Выбери do или does в вопросах Present Simple."
-                },
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.PresentSimpleBuilder,
-                    Title = "Present Simple Builder",
-                    Group = "Грамматика",
-                    Description = "Собери простое предложение в Present Simple."
-                },
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.PresentSimpleVsContinuous,
-                    Title = "Present Simple vs Present Continuous",
-                    Group = "Грамматика",
-                    Description = "Выбери Present Simple или Present Continuous."
-                },
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.WasWere,
-                    Title = "Was / Were",
-                    Group = "Грамматика",
-                    Description = "Выбери was или were."
-                },
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.CanCant,
-                    Title = "Can / Can't",
-                    Group = "Грамматика",
-                    Description = "Выбери can или can't."
-                },
+                new MiniGameInfo { Mode = MiniGameMode.ArticleGame, Title = "The Article Game", Group = "Грамматика", Description = "Выбери a, an или the." },
+                new MiniGameInfo { Mode = MiniGameMode.HaveHas, Title = "Have / Has", Group = "Грамматика", Description = "Выбери have или has." },
+                new MiniGameInfo { Mode = MiniGameMode.DoDoes, Title = "Do / Does", Group = "Грамматика", Description = "Выбери do или does." },
+                new MiniGameInfo { Mode = MiniGameMode.PresentSimpleBuilder, Title = "Present Simple Builder", Group = "Грамматика", Description = "Собери предложение в Present Simple." },
+                new MiniGameInfo { Mode = MiniGameMode.PresentSimpleVsContinuous, Title = "Present Simple vs Continuous", Group = "Грамматика", Description = "Выбери Present Simple или Present Continuous." },
+                new MiniGameInfo { Mode = MiniGameMode.WasWere, Title = "Was / Were", Group = "Грамматика", Description = "Выбери was или were." },
+                new MiniGameInfo { Mode = MiniGameMode.CanCant, Title = "Can / Can't", Group = "Грамматика", Description = "Выбери can или can't." },
 
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.SentencePuzzle,
-                    Title = "Sentence Puzzle",
-                    Group = "Предложения",
-                    Description = "Собери английское предложение из слов."
-                },
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.TranslationSentenceBuilder,
-                    Title = "Translation Sentence Builder",
-                    Group = "Предложения",
-                    Description = "Собери английское предложение по русскому переводу."
-                },
+                new MiniGameInfo { Mode = MiniGameMode.BigNumbers, Title = "Big Numbers", Group = "Грамматика", Description = "Повтори большие числа: десятки, сотни и тысячу." },
+                new MiniGameInfo { Mode = MiniGameMode.PastSimple, Title = "Past Simple", Group = "Грамматика", Description = "Повтори прошедшее время: утверждение, отрицание и вопрос." },
+                new MiniGameInfo { Mode = MiniGameMode.FutureSimple, Title = "Future Simple", Group = "Грамматика", Description = "Повтори будущее время с will." },
+                new MiniGameInfo { Mode = MiniGameMode.TenseForms, Title = "Simple / Continuous / Perfect", Group = "Грамматика", Description = "Отличай Simple, Continuous и Perfect в настоящем, прошлом и будущем времени." },
+                new MiniGameInfo { Mode = MiniGameMode.VerbRules, Title = "Verb Rules", Group = "Грамматика", Description = "Правильные и неправильные глаголы." },
+                new MiniGameInfo { Mode = MiniGameMode.ModalVerbsRules, Title = "Modal Verbs", Group = "Грамматика", Description = "Can, must, should, may и правила после них." },
+                new MiniGameInfo { Mode = MiniGameMode.NounPluralRules, Title = "Noun Plurals", Group = "Грамматика", Description = "Множественное число существительных." },
+                new MiniGameInfo { Mode = MiniGameMode.CountableUncountable, Title = "Countable / Uncountable", Group = "Грамматика", Description = "Исчисляемые и неисчисляемые существительные." },
+                new MiniGameInfo { Mode = MiniGameMode.PossessiveS, Title = "Possessive 's", Group = "Грамматика", Description = "Притяжательный 's." },
+                new MiniGameInfo { Mode = MiniGameMode.PartsOfSpeech, Title = "Parts of Speech", Group = "Грамматика", Description = "Части речи: noun, verb, adjective, adverb, preposition." },
 
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.NumberTyping,
-                    Title = "Number Typing",
-                    Group = "Числа и даты",
-                    Description = "Напиши число английским словом."
-                },
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.DaysAndMonths,
-                    Title = "Days and Months",
-                    Group = "Числа и даты",
-                    Description = "Расставь дни недели или месяцы по порядку."
-                },
+                new MiniGameInfo { Mode = MiniGameMode.SentencePuzzle, Title = "Sentence Puzzle", Group = "Предложения", Description = "Собери английское предложение из слов." },
+                new MiniGameInfo { Mode = MiniGameMode.TranslationSentenceBuilder, Title = "Translation Sentence Builder", Group = "Предложения", Description = "Собери английское предложение по русскому переводу." },
 
-                new MiniGameInfo
-                {
-                    Mode = MiniGameMode.ChooseReply,
-                    Title = "Choose the Reply",
-                    Group = "Диалоги",
-                    Description = "Выбери правильный ответ в простом диалоге."
-                }
+                new MiniGameInfo { Mode = MiniGameMode.NumberTyping, Title = "Number Typing", Group = "Числа и даты", Description = "Напиши число английским словом." },
+                new MiniGameInfo { Mode = MiniGameMode.DaysAndMonths, Title = "Days and Months", Group = "Числа и даты", Description = "Расставь дни недели или месяцы по порядку." },
+
+                new MiniGameInfo { Mode = MiniGameMode.ChooseReply, Title = "Choose the Reply", Group = "Диалоги", Description = "Выбери правильный ответ в простом диалоге." }
             };
         }
 
@@ -185,12 +85,6 @@ namespace EnglishTypingGame
                 case MiniGameMode.PresentSimpleBuilder:
                     return BuildPresentSimpleBuilder();
 
-                case MiniGameMode.SentencePuzzle:
-                    return BuildSentencePuzzle();
-
-                case MiniGameMode.TranslationSentenceBuilder:
-                    return BuildTranslationSentenceBuilder();
-
                 case MiniGameMode.PresentSimpleVsContinuous:
                     return BuildPresentSimpleVsContinuous();
 
@@ -199,6 +93,42 @@ namespace EnglishTypingGame
 
                 case MiniGameMode.CanCant:
                     return BuildCanCant();
+
+                case MiniGameMode.BigNumbers:
+                    return BuildBigNumbers();
+
+                case MiniGameMode.PastSimple:
+                    return BuildPastSimple();
+
+                case MiniGameMode.FutureSimple:
+                    return BuildFutureSimple();
+
+                case MiniGameMode.TenseForms:
+                    return BuildTenseForms();
+
+                case MiniGameMode.VerbRules:
+                    return BuildVerbRules();
+
+                case MiniGameMode.ModalVerbsRules:
+                    return BuildModalVerbsRules();
+
+                case MiniGameMode.NounPluralRules:
+                    return BuildNounPluralRules();
+
+                case MiniGameMode.CountableUncountable:
+                    return BuildCountableUncountable();
+
+                case MiniGameMode.PossessiveS:
+                    return BuildPossessiveS();
+
+                case MiniGameMode.PartsOfSpeech:
+                    return BuildPartsOfSpeech();
+
+                case MiniGameMode.SentencePuzzle:
+                    return BuildSentencePuzzle();
+
+                case MiniGameMode.TranslationSentenceBuilder:
+                    return BuildTranslationSentenceBuilder();
 
                 case MiniGameMode.NumberTyping:
                     return BuildNumberTyping();
@@ -221,11 +151,96 @@ namespace EnglishTypingGame
             if (words == null || words.Count == 0)
                 words = LessonRepository.GetAllWords();
 
-            return words
+            words = words
+                .Where(w => w != null)
                 .Where(w => !string.IsNullOrWhiteSpace(w.English))
-                .OrderBy(w => Random.Next())
+                .GroupBy(w => w.English.ToLowerInvariant())
+                .Select(g => g.First())
+                .ToList();
+
+            if (words.Count == 0)
+                return new List<WordItem>();
+
+            string key = NormalizeTopicKey(topic);
+
+            if (!RecentWordsByTopic.ContainsKey(key))
+                RecentWordsByTopic[key] = new Queue<string>();
+
+            Queue<string> recent = RecentWordsByTopic[key];
+
+            List<WordItem> notRecentWords = words
+                .Where(w => !recent.Contains(w.English.ToLowerInvariant()))
+                .ToList();
+
+            List<WordItem> source;
+
+            if (notRecentWords.Count >= count)
+            {
+                source = notRecentWords;
+            }
+            else
+            {
+                source = words.ToList();
+            }
+
+            List<WordItem> selected = Shuffle(source)
                 .Take(count)
                 .ToList();
+
+            RememberRecentWords(key, selected, words.Count, count);
+
+            return selected;
+        }
+
+        private static string NormalizeTopicKey(string topic)
+        {
+            if (string.IsNullOrWhiteSpace(topic))
+                return "all";
+
+            return topic.Trim().ToLowerInvariant();
+        }
+
+        private static List<T> Shuffle<T>(IEnumerable<T> source)
+        {
+            List<T> list = source.ToList();
+
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                int j = Random.Next(i + 1);
+
+                T temp = list[i];
+                list[i] = list[j];
+                list[j] = temp;
+            }
+
+            return list;
+        }
+
+        private static void RememberRecentWords(string key, List<WordItem> selected, int totalWordsCount, int requestedCount)
+        {
+            if (!RecentWordsByTopic.ContainsKey(key))
+                RecentWordsByTopic[key] = new Queue<string>();
+
+            Queue<string> recent = RecentWordsByTopic[key];
+
+            foreach (WordItem word in selected)
+            {
+                string english = word.English.ToLowerInvariant();
+
+                if (!recent.Contains(english))
+                    recent.Enqueue(english);
+            }
+
+            int maxRecentCount = requestedCount * 3;
+
+            if (totalWordsCount > 0)
+                maxRecentCount = Math.Min(maxRecentCount, Math.Max(3, totalWordsCount / 2));
+
+            if (maxRecentCount < requestedCount)
+                maxRecentCount = requestedCount;
+
+            while (recent.Count > maxRecentCount)
+                recent.Dequeue();
         }
 
         private static List<MiniGameExercise> BuildWordCards(string topic)
@@ -267,29 +282,6 @@ namespace EnglishTypingGame
             return exercises;
         }
 
-        private static List<string> ShuffleLetters(string word)
-        {
-            List<string> letters = word
-                .ToCharArray()
-                .Select(c => c.ToString())
-                .ToList();
-
-            return letters.OrderBy(c => Random.Next()).ToList();
-        }
-
-        private static string PrepareSingleWord(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-                return "";
-
-            return value
-                .Trim()
-                .ToLowerInvariant()
-                .Replace(" ", "")
-                .Replace("-", "")
-                .Replace("'", "");
-        }
-
         private static List<MiniGameExercise> BuildMissingLetter(string topic)
         {
             List<MiniGameExercise> exercises = new List<MiniGameExercise>();
@@ -309,40 +301,18 @@ namespace EnglishTypingGame
                     "_" +
                     cleanWord.Substring(missingIndex + 1);
 
-                List<string> options = BuildLetterOptions(correct);
-
                 exercises.Add(new MiniGameExercise
                 {
                     Prompt = hidden + " — " + word.Russian,
                     RussianPrompt = word.Russian,
                     Answer = correct.ToString(),
-                    Options = options,
+                    Options = BuildLetterOptions(correct),
                     Explanation = "Полное слово: " + cleanWord,
                     Word = new WordItem(cleanWord, word.Russian, word.Topic, word.Level, word.Example)
                 });
             }
 
             return exercises;
-        }
-
-        private static List<string> BuildLetterOptions(char correct)
-        {
-            string vowels = "aeiou";
-            string consonants = "bcdfghjklmnpqrstvwxyz";
-            string source = vowels.Contains(correct) ? vowels : consonants;
-
-            List<string> options = new List<string>();
-            options.Add(correct.ToString());
-
-            while (options.Count < 4)
-            {
-                string letter = source[Random.Next(source.Length)].ToString();
-
-                if (!options.Contains(letter))
-                    options.Add(letter);
-            }
-
-            return options.OrderBy(x => Random.Next()).ToList();
         }
 
         private static List<MiniGameExercise> BuildSpeedTranslation(string topic)
@@ -352,16 +322,12 @@ namespace EnglishTypingGame
                 {
                     Prompt = w.Russian,
                     RussianPrompt = w.Russian,
-                    Answer = PrepareSingleWord(w.English),
+                    Answer = w.English,
                     Explanation = "Правильный ответ: " + w.English + ".",
                     Word = w
                 })
                 .ToList();
         }
-
-        // =========================================================
-        // GRAMMAR EXERCISES
-        // =========================================================
 
         private static List<MiniGameExercise> BuildArticleGame()
         {
@@ -369,12 +335,8 @@ namespace EnglishTypingGame
             {
                 OptionExercise("I have ___ dog.", "a", "Dog начинается с согласного звука: a dog.", "a", "an", "the"),
                 OptionExercise("She has ___ apple.", "an", "Apple начинается с гласного звука: an apple.", "a", "an", "the"),
-                OptionExercise("This is ___ egg.", "an", "Egg начинается с гласного звука: an egg.", "a", "an", "the"),
-                OptionExercise("He has ___ book.", "a", "Book начинается с согласного звука: a book.", "a", "an", "the"),
                 OptionExercise("Open ___ door, please.", "the", "Мы говорим о конкретной двери: the door.", "a", "an", "the"),
-                OptionExercise("Look at ___ board.", "the", "В классе понятно, о какой доске речь: the board.", "a", "an", "the"),
-                OptionExercise("I see ___ orange.", "an", "Orange начинается с гласного звука: an orange.", "a", "an", "the"),
-                OptionExercise("This is ___ table.", "a", "Table начинается с согласного звука: a table.", "a", "an", "the")
+                OptionExercise("I see ___ orange.", "an", "Orange начинается с гласного звука: an orange.", "a", "an", "the")
             };
         }
 
@@ -383,13 +345,9 @@ namespace EnglishTypingGame
             return new List<MiniGameExercise>
             {
                 OptionExercise("I ___ a book.", "have", "С I используется have.", "have", "has"),
-                OptionExercise("You ___ a pen.", "have", "С you используется have.", "have", "has"),
-                OptionExercise("We ___ a lesson today.", "have", "С we используется have.", "have", "has"),
-                OptionExercise("They ___ a dog.", "have", "С they используется have.", "have", "has"),
-                OptionExercise("He ___ a bike.", "has", "С he используется has.", "have", "has"),
                 OptionExercise("She ___ a cat.", "has", "С she используется has.", "have", "has"),
-                OptionExercise("Tom ___ a new bag.", "has", "Tom = he, поэтому has.", "have", "has"),
-                OptionExercise("My sister ___ a red dress.", "has", "My sister = she, поэтому has.", "have", "has")
+                OptionExercise("They ___ a dog.", "have", "С they используется have.", "have", "has"),
+                OptionExercise("Tom ___ a bike.", "has", "Tom = he, поэтому has.", "have", "has")
             };
         }
 
@@ -397,13 +355,9 @@ namespace EnglishTypingGame
         {
             return new List<MiniGameExercise>
             {
-                OptionExercise("___ you like apples?", "Do", "С you в вопросе используется Do.", "Do", "Does"),
-                OptionExercise("___ they go to school?", "Do", "С they используется Do.", "Do", "Does"),
-                OptionExercise("___ we have English today?", "Do", "С we используется Do.", "Do", "Does"),
+                OptionExercise("___ you like apples?", "Do", "С you используется Do.", "Do", "Does"),
                 OptionExercise("___ he like milk?", "Does", "С he используется Does.", "Do", "Does"),
-                OptionExercise("___ she play tennis?", "Does", "С she используется Does.", "Do", "Does"),
-                OptionExercise("___ Tom live here?", "Does", "Tom = he, поэтому Does.", "Do", "Does"),
-                OptionExercise("___ your friends speak English?", "Do", "Your friends = they, поэтому Do.", "Do", "Does"),
+                OptionExercise("___ they go to school?", "Do", "С they используется Do.", "Do", "Does"),
                 OptionExercise("___ Anna have a dog?", "Does", "Anna = she, поэтому Does.", "Do", "Does")
             };
         }
@@ -412,14 +366,10 @@ namespace EnglishTypingGame
         {
             return new List<MiniGameExercise>
             {
-                ArrangeExercise("Собери предложение: Я люблю яблоки.", "I like apples.", "I", "like", "apples"),
-                ArrangeExercise("Собери предложение: Он любит молоко.", "He likes milk.", "He", "likes", "milk"),
-                ArrangeExercise("Собери предложение: Она читает книги.", "She reads books.", "She", "reads", "books"),
-                ArrangeExercise("Собери предложение: Мы ходим в школу.", "We go to school.", "We", "go", "to", "school"),
-                ArrangeExercise("Собери предложение: Они играют в футбол.", "They play football.", "They", "play", "football"),
-                ArrangeExercise("Собери предложение: Том живёт здесь.", "Tom lives here.", "Tom", "lives", "here"),
-                ArrangeExercise("Собери предложение: Моя мама работает каждый день.", "My mother works every day.", "My", "mother", "works", "every", "day"),
-                ArrangeExercise("Собери предложение: Я изучаю английский.", "I study English.", "I", "study", "English")
+                ArrangeExercise("Я люблю яблоки.", "I like apples.", "I", "like", "apples"),
+                ArrangeExercise("Он любит молоко.", "He likes milk.", "He", "likes", "milk"),
+                ArrangeExercise("Мы ходим в школу.", "We go to school.", "We", "go", "to", "school"),
+                ArrangeExercise("Она читает книги.", "She reads books.", "She", "reads", "books")
             };
         }
 
@@ -427,14 +377,10 @@ namespace EnglishTypingGame
         {
             return new List<MiniGameExercise>
             {
-                OptionExercise("I usually ___ water in the morning.", "drink", "Usually показывает обычное действие: Present Simple.", "drink", "am drinking"),
-                OptionExercise("I ___ water now.", "am drinking", "Now показывает действие сейчас: Present Continuous.", "drink", "am drinking"),
-                OptionExercise("She often ___ books.", "reads", "Often показывает обычное действие.", "reads", "is reading"),
-                OptionExercise("She ___ a book now.", "is reading", "Now показывает действие сейчас.", "reads", "is reading"),
-                OptionExercise("They ___ football every day.", "play", "Every day показывает Present Simple.", "play", "are playing"),
-                OptionExercise("They ___ football now.", "are playing", "Now показывает Present Continuous.", "play", "are playing"),
-                OptionExercise("He usually ___ to school by bus.", "goes", "Usually показывает Present Simple.", "goes", "is going"),
-                OptionExercise("He ___ to school now.", "is going", "Now показывает Present Continuous.", "goes", "is going")
+                OptionExercise("I usually ___ water.", "drink", "Usually = обычное действие.", "drink", "am drinking"),
+                OptionExercise("I ___ water now.", "am drinking", "Now = действие сейчас.", "drink", "am drinking"),
+                OptionExercise("She often ___ books.", "reads", "Often = обычное действие.", "reads", "is reading"),
+                OptionExercise("She ___ a book now.", "is reading", "Now = действие сейчас.", "reads", "is reading")
             };
         }
 
@@ -443,13 +389,9 @@ namespace EnglishTypingGame
             return new List<MiniGameExercise>
             {
                 OptionExercise("I ___ at home yesterday.", "was", "С I используется was.", "was", "were"),
-                OptionExercise("He ___ at school yesterday.", "was", "С he используется was.", "was", "were"),
-                OptionExercise("She ___ tired yesterday.", "was", "С she используется was.", "was", "were"),
-                OptionExercise("It ___ cold yesterday.", "was", "С it используется was.", "was", "were"),
-                OptionExercise("We ___ in the classroom.", "were", "С we используется were.", "was", "were"),
-                OptionExercise("They ___ happy.", "were", "С they используется were.", "was", "were"),
-                OptionExercise("You ___ right.", "were", "С you используется were.", "was", "were"),
-                OptionExercise("My friends ___ at the park.", "were", "My friends = they, поэтому were.", "was", "were")
+                OptionExercise("They ___ at school.", "were", "С they используется were.", "was", "were"),
+                OptionExercise("She ___ tired.", "was", "С she используется was.", "was", "were"),
+                OptionExercise("We ___ happy.", "were", "С we используется were.", "was", "were")
             };
         }
 
@@ -459,18 +401,236 @@ namespace EnglishTypingGame
             {
                 OptionExercise("Birds ___ fly.", "can", "Птицы умеют летать.", "can", "can't"),
                 OptionExercise("Fish ___ walk.", "can't", "Рыбы не умеют ходить.", "can", "can't"),
-                OptionExercise("I ___ swim.", "can", "I can swim = Я умею плавать.", "can", "can't"),
                 OptionExercise("A baby ___ drive a car.", "can't", "Малыш не может водить машину.", "can", "can't"),
-                OptionExercise("A dog ___ run.", "can", "Собака может бегать.", "can", "can't"),
-                OptionExercise("A cat ___ read a book.", "can't", "Кошка не умеет читать книгу.", "can", "can't"),
-                OptionExercise("We ___ speak English.", "can", "We can speak English = Мы можем говорить по-английски.", "can", "can't"),
-                OptionExercise("A chair ___ jump.", "can't", "Стул не может прыгать.", "can", "can't")
+                OptionExercise("I ___ swim.", "can", "I can swim = Я умею плавать.", "can", "can't")
             };
         }
 
-        // =========================================================
-        // SENTENCES
-        // =========================================================
+        private static List<MiniGameExercise> BuildBigNumbers()
+        {
+            return new List<MiniGameExercise>
+            {
+                InputExercise("Напиши 20 словами.", "twenty", "20 = twenty."),
+                InputExercise("Напиши 60 словами.", "sixty", "60 = sixty."),
+                InputExercise("Напиши 90 словами.", "ninety", "90 = ninety."),
+                InputExercise("Напиши 100 словами.", "one hundred", "100 = one hundred."),
+                InputExercise("Напиши 200 словами.", "two hundred", "200 = two hundred."),
+                InputExercise("Напиши 1000 словами.", "one thousand", "1000 = one thousand."),
+                InputExercise("Напиши 125 словами.", "one hundred and twenty-five", "125 = one hundred and twenty-five."),
+                InputExercise("Напиши 365 словами.", "three hundred and sixty-five", "365 = three hundred and sixty-five.")
+            };
+        }
+
+        private static List<MiniGameExercise> BuildPastSimple()
+        {
+            return new List<MiniGameExercise>
+            {
+                OptionExercise("Yesterday I ___ football.", "played", "Play — правильный глагол: played.", "play", "played", "plays"),
+                OptionExercise("I ___ go to school yesterday.", "didn't", "В отрицании Past Simple используется didn't.", "don't", "didn't", "doesn't"),
+                OptionExercise("___ you watch TV yesterday?", "Did", "В вопросе Past Simple используется Did.", "Do", "Does", "Did"),
+                OptionExercise("I ___ to school yesterday.", "went", "Go — неправильный глагол: went.", "goed", "went", "go"),
+                OptionExercise("She ___ a cat last year.", "had", "Have — неправильный глагол: had.", "haved", "had", "has")
+            };
+        }
+
+        private static List<MiniGameExercise> BuildFutureSimple()
+        {
+            return new List<MiniGameExercise>
+            {
+                OptionExercise("Tomorrow I ___ help you.", "will", "Future Simple строится с will.", "will", "did", "does"),
+                OptionExercise("She ___ go tomorrow.", "won't", "Отрицание Future Simple: won't.", "doesn't", "didn't", "won't"),
+                OptionExercise("___ you come tomorrow?", "Will", "В вопросе will ставится в начало.", "Do", "Did", "Will"),
+                OptionExercise("He will ___ football.", "play", "После will глагол без -s.", "plays", "play", "played")
+            };
+        }
+
+        private static List<MiniGameExercise> BuildTenseForms()
+        {
+            return new List<MiniGameExercise>
+    {
+        OptionExercise(
+            "Какая форма показывает обычное действие или факт?",
+            "Simple",
+            "Simple показывает факт, привычку или обычное действие.",
+            "Simple",
+            "Continuous",
+            "Perfect"),
+
+        OptionExercise(
+            "Какая форма показывает действие в процессе?",
+            "Continuous",
+            "Continuous показывает процесс: am/is/are + verb + ing.",
+            "Simple",
+            "Continuous",
+            "Perfect"),
+
+        OptionExercise(
+            "Какая форма показывает результат или опыт?",
+            "Perfect",
+            "Perfect показывает результат или опыт: have/has/had + V3.",
+            "Simple",
+            "Continuous",
+            "Perfect"),
+
+        OptionExercise(
+            "I read books every day. Это...",
+            "Present Simple",
+            "Every day показывает обычное действие.",
+            "Present Simple",
+            "Present Continuous",
+            "Present Perfect"),
+
+        OptionExercise(
+            "I am reading now. Это...",
+            "Present Continuous",
+            "Now показывает действие сейчас.",
+            "Present Simple",
+            "Present Continuous",
+            "Present Perfect"),
+
+        OptionExercise(
+            "I have read this book. Это...",
+            "Present Perfect",
+            "Have + V3 показывает результат или опыт.",
+            "Present Simple",
+            "Present Continuous",
+            "Present Perfect"),
+
+        OptionExercise(
+            "She was watching TV at 6. Это...",
+            "Past Continuous",
+            "Was/were + ing показывает процесс в прошлом.",
+            "Past Simple",
+            "Past Continuous",
+            "Past Perfect"),
+
+        OptionExercise(
+            "She had finished before dinner. Это...",
+            "Past Perfect",
+            "Had + V3 показывает действие раньше другого прошлого действия.",
+            "Past Simple",
+            "Past Continuous",
+            "Past Perfect"),
+
+        OptionExercise(
+            "I will be studying at 6. Это...",
+            "Future Continuous",
+            "Will be + ing показывает процесс в будущем.",
+            "Future Simple",
+            "Future Continuous",
+            "Future Perfect"),
+
+        OptionExercise(
+            "I will have finished by 6. Это...",
+            "Future Perfect",
+            "Will have + V3 показывает результат к моменту в будущем.",
+            "Future Simple",
+            "Future Continuous",
+            "Future Perfect")
+    };
+        }
+
+        private static List<MiniGameExercise> BuildVerbRules()
+        {
+            return new List<MiniGameExercise>
+    {
+        OptionExercise("Past Simple от go:", "went", "Go — went — gone.", "goed", "went", "gone"),
+        OptionExercise("V3 от go:", "gone", "Go — went — gone.", "went", "gone", "goed"),
+
+        OptionExercise("Past Simple от see:", "saw", "See — saw — seen.", "saw", "seen", "seed"),
+        OptionExercise("V3 от see:", "seen", "See — saw — seen.", "saw", "seen", "seed"),
+
+        OptionExercise("Past Simple от eat:", "ate", "Eat — ate — eaten.", "eated", "ate", "eaten"),
+        OptionExercise("V3 от eat:", "eaten", "Eat — ate — eaten.", "ate", "eaten", "eated"),
+
+        OptionExercise("Past Simple от write:", "wrote", "Write — wrote — written.", "writed", "wrote", "written"),
+        OptionExercise("V3 от write:", "written", "Write — wrote — written.", "wrote", "written", "writed"),
+
+        OptionExercise("Past Simple от take:", "took", "Take — took — taken.", "taked", "took", "taken"),
+        OptionExercise("V3 от take:", "taken", "Take — took — taken.", "took", "taken", "taked"),
+
+        OptionExercise("Past Simple от have:", "had", "Have — had — had.", "haved", "had", "has"),
+        OptionExercise("V3 от have:", "had", "Have — had — had.", "had", "haved", "has"),
+
+        OptionExercise("Past Simple от do:", "did", "Do — did — done.", "did", "done", "doed"),
+        OptionExercise("V3 от do:", "done", "Do — did — done.", "did", "done", "doed"),
+
+        OptionExercise("Past Simple от make:", "made", "Make — made — made.", "maked", "made", "make"),
+        OptionExercise("Past Simple от come:", "came", "Come — came — come.", "comed", "came", "come"),
+
+        OptionExercise("После did нужен глагол:",
+            "без -ed",
+            "После did глагол идёт в простой форме: Did you play?",
+            "с -ed",
+            "без -ed",
+            "с -s"),
+
+        OptionExercise("После have / has в Perfect нужна форма:",
+            "V3",
+            "Perfect строится как have / has + V3.",
+            "V1",
+            "V2",
+            "V3")
+    };
+        }
+
+        private static List<MiniGameExercise> BuildModalVerbsRules()
+        {
+            return new List<MiniGameExercise>
+            {
+                OptionExercise("He can ___ swim.", "swim", "После can глагол без -s.", "swim", "swims", "swimming"),
+                OptionExercise("You ___ do your homework.", "must", "Must показывает обязанность.", "must", "can", "may"),
+                OptionExercise("You ___ sleep more.", "should", "Should используется для совета.", "should", "mustn't", "can't"),
+                OptionExercise("It ___ rain tomorrow.", "may", "May показывает возможность.", "may", "must", "can't"),
+                OptionExercise("You ___ run here.", "mustn't", "Mustn't означает нельзя.", "mustn't", "should", "may")
+            };
+        }
+
+        private static List<MiniGameExercise> BuildNounPluralRules()
+        {
+            return new List<MiniGameExercise>
+            {
+                OptionExercise("two ___", "cats", "Обычно добавляем -s.", "cat", "cats", "cates"),
+                OptionExercise("two ___", "boxes", "Box заканчивается на x, поэтому boxes.", "boxs", "boxes", "box"),
+                OptionExercise("two ___", "babies", "Baby → babies.", "babys", "babies", "baby"),
+                OptionExercise("two ___", "children", "Child → children.", "childs", "children", "childes"),
+                OptionExercise("two ___", "teeth", "Tooth → teeth.", "tooths", "teeth", "toothes")
+            };
+        }
+
+        private static List<MiniGameExercise> BuildCountableUncountable()
+        {
+            return new List<MiniGameExercise>
+            {
+                OptionExercise("___ books", "many", "Books можно посчитать, поэтому many.", "many", "much"),
+                OptionExercise("___ water", "much", "Water неисчисляемое, поэтому much.", "many", "much"),
+                OptionExercise("___ apples", "many", "Apples можно посчитать.", "many", "much"),
+                OptionExercise("___ milk", "much", "Milk неисчисляемое.", "many", "much")
+            };
+        }
+
+        private static List<MiniGameExercise> BuildPossessiveS()
+        {
+            return new List<MiniGameExercise>
+            {
+                InputExercise("Книга Тома:", "Tom's book", "Принадлежность: Tom's book."),
+                InputExercise("Сумка Анны:", "Anna's bag", "Принадлежность: Anna's bag."),
+                InputExercise("Кошка моей мамы:", "my mother's cat", "Принадлежность: my mother's cat."),
+                InputExercise("Парта учителя:", "teacher's desk", "Принадлежность: teacher's desk.")
+            };
+        }
+
+        private static List<MiniGameExercise> BuildPartsOfSpeech()
+        {
+            return new List<MiniGameExercise>
+            {
+                OptionExercise("Book — это...", "noun", "Book называет предмет.", "noun", "verb", "adjective"),
+                OptionExercise("Run — это...", "verb", "Run означает действие.", "noun", "verb", "adjective"),
+                OptionExercise("Red — это...", "adjective", "Red описывает предмет.", "noun", "verb", "adjective"),
+                OptionExercise("Quickly — это...", "adverb", "Quickly показывает как происходит действие.", "adverb", "noun", "preposition"),
+                OptionExercise("In — это...", "preposition", "In показывает связь слов.", "verb", "adjective", "preposition")
+            };
+        }
 
         private static List<MiniGameExercise> BuildSentencePuzzle()
         {
@@ -479,11 +639,7 @@ namespace EnglishTypingGame
                 ArrangeExercise("Собери предложение.", "I am happy.", "I", "am", "happy"),
                 ArrangeExercise("Собери предложение.", "This is my book.", "This", "is", "my", "book"),
                 ArrangeExercise("Собери предложение.", "She has a dog.", "She", "has", "a", "dog"),
-                ArrangeExercise("Собери предложение.", "We are students.", "We", "are", "students"),
-                ArrangeExercise("Собери предложение.", "They can swim.", "They", "can", "swim"),
-                ArrangeExercise("Собери предложение.", "He likes bananas.", "He", "likes", "bananas"),
-                ArrangeExercise("Собери предложение.", "I go to school every day.", "I", "go", "to", "school", "every", "day"),
-                ArrangeExercise("Собери предложение.", "The bus is near the station.", "The", "bus", "is", "near", "the", "station")
+                ArrangeExercise("Собери предложение.", "We are students.", "We", "are", "students")
             };
         }
 
@@ -494,17 +650,9 @@ namespace EnglishTypingGame
                 ArrangeExercise("Я люблю молоко.", "I like milk.", "I", "like", "milk"),
                 ArrangeExercise("У неё есть кошка.", "She has a cat.", "She", "has", "a", "cat"),
                 ArrangeExercise("Он умеет бегать.", "He can run.", "He", "can", "run"),
-                ArrangeExercise("Это моя книга.", "This is my book.", "This", "is", "my", "book"),
-                ArrangeExercise("Мы ходим в школу.", "We go to school.", "We", "go", "to", "school"),
-                ArrangeExercise("Они дома.", "They are at home.", "They", "are", "at", "home"),
-                ArrangeExercise("Мой брат играет в футбол.", "My brother plays football.", "My", "brother", "plays", "football"),
                 ArrangeExercise("Сегодня холодно.", "It is cold today.", "It", "is", "cold", "today")
             };
         }
-
-        // =========================================================
-        // NUMBERS, DAYS, MONTHS
-        // =========================================================
 
         private static List<MiniGameExercise> BuildNumberTyping()
         {
@@ -513,15 +661,9 @@ namespace EnglishTypingGame
                 InputExercise("1", "one", "1 = one"),
                 InputExercise("2", "two", "2 = two"),
                 InputExercise("3", "three", "3 = three"),
-                InputExercise("4", "four", "4 = four"),
-                InputExercise("5", "five", "5 = five"),
-                InputExercise("6", "six", "6 = six"),
-                InputExercise("7", "seven", "7 = seven"),
-                InputExercise("8", "eight", "8 = eight"),
-                InputExercise("9", "nine", "9 = nine"),
                 InputExercise("10", "ten", "10 = ten"),
-                InputExercise("11", "eleven", "11 = eleven"),
-                InputExercise("12", "twelve", "12 = twelve")
+                InputExercise("20", "twenty", "20 = twenty"),
+                InputExercise("100", "one hundred", "100 = one hundred")
             };
         }
 
@@ -529,116 +671,25 @@ namespace EnglishTypingGame
         {
             return new List<MiniGameExercise>
             {
-                ArrangeExercise(
-                    "Расставь дни недели по порядку.",
+                ArrangeExercise("Расставь дни недели по порядку.",
                     "Monday Tuesday Wednesday Thursday Friday Saturday Sunday",
                     "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"),
 
-                ArrangeExercise(
-                    "Расставь первые 6 месяцев по порядку.",
+                ArrangeExercise("Расставь первые 6 месяцев по порядку.",
                     "January February March April May June",
-                    "January", "February", "March", "April", "May", "June"),
-
-                ArrangeExercise(
-                    "Расставь последние 6 месяцев по порядку.",
-                    "July August September October November December",
-                    "July", "August", "September", "October", "November", "December")
+                    "January", "February", "March", "April", "May", "June")
             };
         }
-
-        // =========================================================
-        // SIMPLE DIALOGUES
-        // =========================================================
 
         private static List<MiniGameExercise> BuildChooseReply()
         {
             return new List<MiniGameExercise>
             {
-                OptionExercise(
-                    "A: Hello! How are you?\nB: ___",
-                    "I am fine, thank you.",
-                    "На How are you? можно ответить: I am fine, thank you.",
-                    "I am fine, thank you.",
-                    "I am a book.",
-                    "It is red."),
-
-                OptionExercise(
-                    "A: What is your name?\nB: ___",
-                    "My name is Anna.",
-                    "На вопрос об имени отвечаем: My name is...",
-                    "My name is Anna.",
-                    "I am fine.",
-                    "It is a dog."),
-
-                OptionExercise(
-                    "A: Nice to meet you.\nB: ___",
-                    "Nice to meet you too.",
-                    "Вежливый ответ: Nice to meet you too.",
-                    "Nice to meet you too.",
-                    "I have a pen.",
-                    "It is Monday."),
-
-                OptionExercise(
-                    "A: How old are you?\nB: ___",
-                    "I am ten.",
-                    "На вопрос о возрасте отвечаем: I am ten.",
-                    "I am ten.",
-                    "I am fine.",
-                    "This is my book."),
-
-                OptionExercise(
-                    "A: Can you help me?\nB: ___",
-                    "Yes, I can.",
-                    "На Can you...? можно ответить: Yes, I can.",
-                    "Yes, I can.",
-                    "Yes, I am.",
-                    "Yes, I do."),
-
-                OptionExercise(
-                    "A: Do you like apples?\nB: ___",
-                    "Yes, I do.",
-                    "На Do you...? можно ответить: Yes, I do.",
-                    "Yes, I do.",
-                    "Yes, I can.",
-                    "Yes, I am."),
-
-                OptionExercise(
-                    "A: Thank you.\nB: ___",
-                    "You're welcome.",
-                    "После Thank you можно сказать: You're welcome.",
-                    "You're welcome.",
-                    "Good morning.",
-                    "My name is Tom."),
-
-                OptionExercise(
-                    "A: Goodbye!\nB: ___",
-                    "Goodbye!",
-                    "На Goodbye можно ответить Goodbye.",
-                    "Goodbye!",
-                    "I am hungry.",
-                    "It is a cat."),
-
-                OptionExercise(
-                    "A: Good morning!\nB: ___",
-                    "Good morning!",
-                    "На Good morning можно ответить Good morning.",
-                    "Good morning!",
-                    "Good night!",
-                    "I have a dog."),
-
-                OptionExercise(
-                    "A: Where are you from?\nB: ___",
-                    "I am from Finland.",
-                    "На Where are you from? отвечаем: I am from...",
-                    "I am from Finland.",
-                    "I am ten.",
-                    "It is blue.")
+                OptionExercise("A: Hello! How are you?\nB: ___", "I am fine, thank you.", "На How are you? отвечаем: I am fine, thank you.", "I am fine, thank you.", "I am a book.", "It is red."),
+                OptionExercise("A: What is your name?\nB: ___", "My name is Anna.", "На вопрос об имени отвечаем: My name is...", "My name is Anna.", "I am fine.", "It is a dog."),
+                OptionExercise("A: Can you help me?\nB: ___", "Yes, I can.", "На Can you...? отвечаем: Yes, I can.", "Yes, I can.", "Yes, I am.", "Yes, I do.")
             };
         }
-
-        // =========================================================
-        // HELPERS
-        // =========================================================
 
         private static MiniGameExercise OptionExercise(string prompt, string answer, string explanation, params string[] options)
         {
@@ -670,6 +721,48 @@ namespace EnglishTypingGame
                 Explanation = "Правильный ответ: " + answer,
                 WordsToArrange = words.OrderBy(x => Random.Next()).ToList()
             };
+        }
+
+        private static List<string> ShuffleLetters(string word)
+        {
+            return word
+                .ToCharArray()
+                .Select(c => c.ToString())
+                .OrderBy(c => Random.Next())
+                .ToList();
+        }
+
+        private static string PrepareSingleWord(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return "";
+
+            return value
+                .Trim()
+                .ToLowerInvariant()
+                .Replace(" ", "")
+                .Replace("-", "")
+                .Replace("'", "");
+        }
+
+        private static List<string> BuildLetterOptions(char correct)
+        {
+            string vowels = "aeiou";
+            string consonants = "bcdfghjklmnpqrstvwxyz";
+            string source = vowels.Contains(correct) ? vowels : consonants;
+
+            List<string> options = new List<string>();
+            options.Add(correct.ToString());
+
+            while (options.Count < 4)
+            {
+                string letter = source[Random.Next(source.Length)].ToString();
+
+                if (!options.Contains(letter))
+                    options.Add(letter);
+            }
+
+            return options.OrderBy(x => Random.Next()).ToList();
         }
     }
 }

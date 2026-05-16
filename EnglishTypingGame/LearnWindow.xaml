@@ -2,38 +2,38 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Изучение слов"
-        Height="680"
-        Width="930"
-        MinHeight="620"
-        MinWidth="760"
+        Height="720"
+        Width="1020"
+        MinHeight="680"
+        MinWidth="900"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
         Background="{DynamicResource WindowBgBrush}">
 
-    <Grid Margin="26">
+    <Grid Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Margin="0,0,0,18">
+        <StackPanel Grid.Row="0" Margin="0,0,0,14">
             <TextBlock Text="Изучение слов"
-                       FontSize="36"
+                       FontSize="{DynamicResource TitleFontSize}"
                        FontWeight="Bold"
                        TextWrapping="Wrap"/>
 
             <TextBlock x:Name="TopicText"
-                       FontSize="16"
+                       FontSize="{DynamicResource SubtitleFontSize}"
                        Foreground="{DynamicResource SecondaryTextBrush}"
-                       Margin="0,6,0,0"
+                       Margin="0,4,0,0"
                        TextWrapping="Wrap"/>
         </StackPanel>
 
         <Border Grid.Row="1"
                 Background="{DynamicResource CardBgBrush}"
                 CornerRadius="30"
-                Padding="26"
+                Padding="24"
                 Effect="{StaticResource CardShadow}">
 
             <Grid>
@@ -41,114 +41,173 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <ProgressBar x:Name="LearnProgressBar"
                              Grid.Row="0"
                              Height="14"
                              Minimum="0"
-                             Maximum="100"/>
+                             Maximum="100"
+                             Margin="0,0,0,14"/>
 
-                <ScrollViewer Grid.Row="1"
-                              VerticalScrollBarVisibility="Auto"
-                              HorizontalScrollBarVisibility="Disabled"
-                              Margin="0,14,0,14">
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.15*"/>
+                        <ColumnDefinition Width="0.85*"/>
+                    </Grid.ColumnDefinitions>
 
-                    <StackPanel VerticalAlignment="Center"
-                                HorizontalAlignment="Center"
-                                MaxWidth="760">
+                    <Border Grid.Column="0"
+                            Background="{DynamicResource SoftBgBrush}"
+                            CornerRadius="26"
+                            Padding="22"
+                            Margin="0,0,18,0">
 
-                        <TextBlock x:Name="WordCounterText"
-                                   FontSize="16"
-                                   Foreground="{DynamicResource SecondaryTextBrush}"
-                                   HorizontalAlignment="Center"
-                                   TextWrapping="Wrap"
-                                   TextAlignment="Center"
-                                   Margin="0,0,0,14"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                        <TextBlock x:Name="EnglishWordText"
-                                   FontSize="54"
-                                   FontWeight="Bold"
-                                   HorizontalAlignment="Center"
-                                   TextAlignment="Center"
-                                   TextWrapping="Wrap"
-                                   MaxWidth="720"/>
-
-                        <TextBlock x:Name="RussianWordText"
-                                   FontSize="27"
-                                   Foreground="{DynamicResource ButtonMainBrush}"
-                                   HorizontalAlignment="Center"
-                                   TextAlignment="Center"
-                                   TextWrapping="Wrap"
-                                   MaxWidth="720"
-                                   Margin="0,8,0,14"/>
-
-                        <TextBlock x:Name="LevelText"
-                                   FontSize="16"
-                                   Foreground="{DynamicResource SecondaryTextBrush}"
-                                   HorizontalAlignment="Center"
-                                   TextAlignment="Center"
-                                   TextWrapping="Wrap"
-                                   MaxWidth="720"
-                                   Margin="0,0,0,18"/>
-
-                        <Border Background="{DynamicResource SoftBgBrush}"
-                                CornerRadius="24"
-                                Padding="20"
-                                MaxWidth="720"
-                                HorizontalAlignment="Stretch">
-
-                            <TextBlock x:Name="ExampleText"
-                                       FontSize="18"
+                            <TextBlock x:Name="WordCounterText"
+                                       Grid.Row="0"
+                                       FontSize="{DynamicResource NormalFontSize}"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       HorizontalAlignment="Center"
                                        TextWrapping="Wrap"
                                        TextAlignment="Center"
-                                       Foreground="{DynamicResource DarkTextBrush}"/>
+                                       Margin="0,0,0,12"/>
+
+                            <Viewbox Grid.Row="1"
+                                     Stretch="Uniform"
+                                     StretchDirection="DownOnly"
+                                     MaxHeight="260">
+
+                                <StackPanel Width="580">
+                                    <TextBlock x:Name="EnglishWordText"
+                                               FontSize="{DynamicResource WordFontSize}"
+                                               FontWeight="Bold"
+                                               HorizontalAlignment="Center"
+                                               TextAlignment="Center"
+                                               TextWrapping="Wrap"
+                                               MaxWidth="560"/>
+
+                                    <TextBlock x:Name="RussianWordText"
+                                               FontSize="{DynamicResource PromptFontSize}"
+                                               Foreground="{DynamicResource ButtonMainBrush}"
+                                               HorizontalAlignment="Center"
+                                               TextAlignment="Center"
+                                               TextWrapping="Wrap"
+                                               MaxWidth="560"
+                                               Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </Viewbox>
+
+                            <TextBlock x:Name="LevelText"
+                                       Grid.Row="2"
+                                       FontSize="{DynamicResource NormalFontSize}"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       HorizontalAlignment="Center"
+                                       TextAlignment="Center"
+                                       TextWrapping="Wrap"
+                                       Margin="0,12,0,0"/>
+                        </Grid>
+                    </Border>
+
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0"
+                                Background="{DynamicResource SoftBgBrush}"
+                                CornerRadius="26"
+                                Padding="20"
+                                Margin="0,0,0,14">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0"
+                                           Text="Пример"
+                                           FontSize="{DynamicResource NormalFontSize}"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,0,0,8"/>
+
+                                <TextBlock x:Name="ExampleText"
+                                           Grid.Row="1"
+                                           FontSize="{DynamicResource NormalFontSize}"
+                                           TextWrapping="Wrap"
+                                           TextAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource DarkTextBrush}"/>
+                            </Grid>
                         </Border>
 
-                        <TextBlock Text="Проверка: напиши это слово"
-                                   FontSize="16"
-                                   FontWeight="SemiBold"
-                                   Margin="0,22,0,6"
-                                   HorizontalAlignment="Center"
-                                   TextWrapping="Wrap"
-                                   TextAlignment="Center"/>
+                        <Border Grid.Row="1"
+                                Background="{DynamicResource SoftBgBrush}"
+                                CornerRadius="26"
+                                Padding="18">
 
-                        <TextBox x:Name="PracticeBox"
-                                 Width="390"
-                                 MaxWidth="680"
-                                 Height="54"
-                                 TextChanged="PracticeBox_TextChanged"/>
+                            <StackPanel>
+                                <TextBlock Text="Проверка: напиши это слово"
+                                           FontSize="{DynamicResource NormalFontSize}"
+                                           FontWeight="SemiBold"
+                                           HorizontalAlignment="Center"
+                                           TextWrapping="Wrap"
+                                           TextAlignment="Center"
+                                           Margin="0,0,0,8"/>
 
-                        <TextBlock x:Name="PracticeFeedbackText"
-                                   FontSize="17"
-                                   FontWeight="SemiBold"
-                                   HorizontalAlignment="Center"
-                                   TextAlignment="Center"
-                                   TextWrapping="Wrap"
-                                   MaxWidth="720"
-                                   Margin="0,12,0,0"/>
-                    </StackPanel>
-                </ScrollViewer>
+                                <TextBox x:Name="PracticeBox"
+                                         Height="58"
+                                         FontSize="{DynamicResource InputFontSize}"
+                                         Background="{DynamicResource InputBgBrush}"
+                                         Foreground="{DynamicResource InputTextBrush}"
+                                         CaretBrush="{DynamicResource InputTextBrush}"
+                                         BorderBrush="{DynamicResource InputBorderBrush}"
+                                         BorderThickness="2"
+                                         TextChanged="PracticeBox_TextChanged"/>
+
+                                <TextBlock x:Name="PracticeFeedbackText"
+                                           FontSize="{DynamicResource NormalFontSize}"
+                                           FontWeight="SemiBold"
+                                           HorizontalAlignment="Center"
+                                           TextAlignment="Center"
+                                           TextWrapping="Wrap"
+                                           Margin="0,10,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
 
                 <WrapPanel Grid.Row="2"
                            HorizontalAlignment="Center"
-                           Margin="0,4,0,0">
+                           Margin="0,16,0,0">
 
                     <Button Content="← Назад"
                             Width="125"
                             Height="46"
+                            FontSize="{DynamicResource ButtonFontSize}"
                             Background="{DynamicResource ButtonMainBrush}"
                             Click="PreviousButton_Click"/>
 
                     <Button Content="Я выучил слово"
                             Width="165"
                             Height="46"
+                            FontSize="{DynamicResource ButtonFontSize}"
                             Background="{DynamicResource ButtonMainBrush}"
                             Click="LearnedButton_Click"/>
 
                     <Button Content="Дальше →"
                             Width="125"
                             Height="46"
+                            FontSize="{DynamicResource ButtonFontSize}"
                             Background="{DynamicResource ButtonMainBrush}"
                             Click="NextButton_Click"/>
                 </WrapPanel>
@@ -157,23 +216,26 @@
 
         <WrapPanel Grid.Row="2"
                    HorizontalAlignment="Right"
-                   Margin="0,16,0,0">
+                   Margin="0,14,0,0">
 
             <Button Content="Перейти к мини-играм"
                     Width="205"
                     Height="46"
+                    FontSize="{DynamicResource ButtonFontSize}"
                     Background="{DynamicResource ButtonMainBrush}"
                     Click="MiniGamesButton_Click"/>
 
             <Button Content="Обычная игра"
                     Width="150"
                     Height="46"
+                    FontSize="{DynamicResource ButtonFontSize}"
                     Background="{DynamicResource ButtonMainBrush}"
                     Click="StartGameButton_Click"/>
 
             <Button Content="В меню"
                     Width="110"
                     Height="46"
+                    FontSize="{DynamicResource ButtonFontSize}"
                     Background="{DynamicResource ButtonNeutralBrush}"
                     Click="CloseButton_Click"/>
         </WrapPanel>

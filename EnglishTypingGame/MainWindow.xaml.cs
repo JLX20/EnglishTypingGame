@@ -35,6 +35,11 @@ namespace EnglishTypingGame
             WindowNavigationService.Navigate(this, new LearnWindow(SelectedTopic));
         }
 
+        private void GrammarButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowNavigationService.Navigate(this, new GrammarLearnWindow());
+        }
+
         private void MiniGamesButton_Click(object sender, RoutedEventArgs e)
         {
             WindowNavigationService.Navigate(this, new MiniGamesMenuWindow(SelectedTopic));

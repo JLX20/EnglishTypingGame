@@ -6,15 +6,24 @@ namespace EnglishTypingGame
     public static class WindowNavigationService
     {
         private static bool _isNavigating;
+        private static bool _isShuttingDown;
 
         public static bool IsNavigating
         {
             get { return _isNavigating; }
         }
 
+        public static bool IsShuttingDown
+        {
+            get { return _isShuttingDown; }
+        }
+
         public static void Navigate(Window currentWindow, Window nextWindow)
         {
             if (currentWindow == null || nextWindow == null)
+                return;
+
+            if (_isShuttingDown)
                 return;
 
             _isNavigating = true;
@@ -34,19 +43,22 @@ namespace EnglishTypingGame
 
         public static void HandleCloseToMain(Window currentWindow, CancelEventArgs e)
         {
-            if (_isNavigating)
+            if (_isNavigating || _isShuttingDown)
                 return;
 
-            if (currentWindow is MainWindow)
-                return;
-
-            e.Cancel = true;
-            NavigateToMain(currentWindow);
+            // Если пользователь нажал крестик, программа должна нормально закрыться,
+            // а не пытаться открыть главное меню.
+            _isShuttingDown = true;
+            e.Cancel = false;
+            Application.Current.Shutdown();
         }
 
         public static void Shutdown()
         {
-            _isNavigating = true;
+            if (_isShuttingDown)
+                return;
+
+            _isShuttingDown = true;
             Application.Current.Shutdown();
         }
     }

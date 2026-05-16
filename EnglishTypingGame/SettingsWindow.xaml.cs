@@ -23,37 +23,21 @@ namespace EnglishTypingGame
             SettingsData settings = SettingsService.Load();
 
             SelectComboBoxValue(WordsPerRoundComboBox, settings.WordsPerRound.ToString());
-            SelectComboBoxValue(RainSecondsComboBox, settings.WordRainSeconds.ToString());
 
             SelectTheme(settings.ThemeName);
             SelectBackground(settings.BackgroundName);
-
-            FallSpeedSlider.Value = settings.WordRainFallSpeedMultiplier;
-            SpawnSpeedSlider.Value = settings.WordRainSpawnIntervalMilliseconds;
-
-            CloudModeCheckBox.IsChecked = settings.WordRainCloudMode;
-            VisualEffectsCheckBox.IsChecked = settings.WordRainVisualEffects;
+            SelectTextSize(settings.TextSizeName);
 
             SlowModeCheckBox.IsChecked = settings.SlowMode;
             SoundCheckBox.IsChecked = settings.SoundEnabled;
             ExamplesCheckBox.IsChecked = settings.ShowExamples;
-
-            UpdateFallSpeedText();
-            UpdateSpawnSpeedText();
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            SettingsData settings = new SettingsData();
+            SettingsData settings = SettingsService.Load();
 
             settings.WordsPerRound = GetComboBoxInt(WordsPerRoundComboBox, 10);
-            settings.WordRainSeconds = GetComboBoxInt(RainSecondsComboBox, 60);
-
-            settings.WordRainFallSpeedMultiplier = FallSpeedSlider.Value;
-            settings.WordRainSpawnIntervalMilliseconds = (int)SpawnSpeedSlider.Value;
-
-            settings.WordRainCloudMode = CloudModeCheckBox.IsChecked == true;
-            settings.WordRainVisualEffects = VisualEffectsCheckBox.IsChecked == true;
 
             settings.SlowMode = SlowModeCheckBox.IsChecked == true;
             settings.SoundEnabled = SoundCheckBox.IsChecked == true;
@@ -61,9 +45,10 @@ namespace EnglishTypingGame
 
             settings.ThemeName = GetSelectedTheme();
             settings.BackgroundName = GetSelectedBackground();
+            settings.TextSizeName = GetSelectedTextSize();
 
             SettingsService.Save(settings);
-            ThemeService.ApplyTheme(settings.ThemeName, settings.BackgroundName);
+            ThemeService.ApplyTheme(settings.ThemeName, settings.BackgroundName, settings.TextSizeName);
 
             MessageBox.Show(
                 "Настройки сохранены.",
@@ -163,32 +148,33 @@ namespace EnglishTypingGame
             BackgroundComboBox.SelectedIndex = 0;
         }
 
-        private void FallSpeedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private string GetSelectedTextSize()
         {
-            UpdateFallSpeedText();
+            ComboBoxItem item = TextSizeComboBox.SelectedItem as ComboBoxItem;
+
+            if (item == null || item.Tag == null)
+                return "Normal";
+
+            return item.Tag.ToString();
         }
 
-        private void SpawnSpeedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void SelectTextSize(string textSizeName)
         {
-            UpdateSpawnSpeedText();
-        }
+            if (string.IsNullOrWhiteSpace(textSizeName))
+                textSizeName = "Normal";
 
-        private void UpdateFallSpeedText()
-        {
-            if (FallSpeedValueText == null)
-                return;
+            foreach (object obj in TextSizeComboBox.Items)
+            {
+                ComboBoxItem item = obj as ComboBoxItem;
 
-            FallSpeedValueText.Text =
-                "Скорость движения слов: x" + FallSpeedSlider.Value.ToString("0.0");
-        }
+                if (item != null && item.Tag != null && item.Tag.ToString() == textSizeName)
+                {
+                    TextSizeComboBox.SelectedItem = item;
+                    return;
+                }
+            }
 
-        private void UpdateSpawnSpeedText()
-        {
-            if (SpawnSpeedValueText == null)
-                return;
-
-            SpawnSpeedValueText.Text =
-                "Частота появления слов: каждые " + ((int)SpawnSpeedSlider.Value) + " мс";
+            TextSizeComboBox.SelectedIndex = 1;
         }
     }
 }
