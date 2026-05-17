@@ -9,24 +9,22 @@ namespace EnglishTypingGame
     public partial class MiniGamesMenuWindow : Window
     {
         private readonly string _topic;
-        private readonly List<MiniGameInfo> _allGames;
+
+        private List<MiniGameInfo> _allGames;
         private List<MiniGameInfo> _filteredGames;
-        private bool _isLoaded;
 
         public MiniGamesMenuWindow(string topic)
         {
             InitializeComponent();
 
-            _topic = topic;
-            _allGames = MiniGameRepository.GetMiniGames();
+            _topic = string.IsNullOrWhiteSpace(topic) ? "Все темы" : topic;
+
+            _allGames = new List<MiniGameInfo>();
             _filteredGames = new List<MiniGameInfo>();
 
-            TopicText.Text = "Тема слов: " + _topic;
+            TopicText.Text = "Тема: " + _topic;
 
-            _isLoaded = true;
-
-            SectionFilterComboBox.SelectedIndex = 0;
-            ApplyFilter("Все");
+            LoadGames();
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -35,33 +33,28 @@ namespace EnglishTypingGame
             WindowNavigationService.HandleCloseToMain(this, e);
         }
 
-        private void SectionFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void LoadGames()
         {
-            if (!_isLoaded)
-                return;
+            _allGames = MiniGameRepository.GetMiniGames();
 
-            ComboBoxItem selectedItem = SectionFilterComboBox.SelectedItem as ComboBoxItem;
+            if (SectionFilterComboBox != null && SectionFilterComboBox.SelectedIndex < 0)
+                SectionFilterComboBox.SelectedIndex = 0;
 
-            if (selectedItem == null || selectedItem.Tag == null)
-                return;
-
-            string filter = selectedItem.Tag.ToString();
-            ApplyFilter(filter);
+            ApplyFilter();
         }
 
-        private void ApplyFilter(string filter)
+        private void ApplyFilter()
         {
-            if (_allGames == null)
-                return;
+            string selectedSection = GetSelectedSection();
 
-            if (string.IsNullOrWhiteSpace(filter) || filter == "Все")
+            if (selectedSection == "Все")
             {
                 _filteredGames = _allGames.ToList();
             }
             else
             {
                 _filteredGames = _allGames
-                    .Where(game => GetFilterGroup(game) == filter)
+                    .Where(g => g.Group == selectedSection)
                     .ToList();
             }
 
@@ -76,56 +69,58 @@ namespace EnglishTypingGame
             }
             else
             {
-                ClearSelectedInfo();
+                ClearSelectedGameInfo();
             }
         }
 
-        private string GetFilterGroup(MiniGameInfo game)
+        private string GetSelectedSection()
         {
-            if (game == null || string.IsNullOrWhiteSpace(game.Group))
-                return "Слова";
+            ComboBoxItem item = SectionFilterComboBox.SelectedItem as ComboBoxItem;
 
-            if (game.Group == "Слова")
-                return "Слова";
+            if (item == null || item.Tag == null)
+                return "Все";
 
-            if (game.Group == "Грамматика")
-                return "Грамматика";
+            return item.Tag.ToString();
+        }
 
-            if (game.Group == "Предложения")
-                return "Предложения";
+        private void SectionFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_allGames == null)
+                return;
 
-            if (game.Group == "Диалоги")
-                return "Диалоги";
-
-            if (game.Group == "Числа" || game.Group == "Числа и даты")
-                return "Числа и даты";
-
-            return "Слова";
+            ApplyFilter();
         }
 
         private void GamesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MiniGameInfo info = GamesListBox.SelectedItem as MiniGameInfo;
+            MiniGameInfo selectedGame = GamesListBox.SelectedItem as MiniGameInfo;
 
-            if (info == null)
+            if (selectedGame == null)
             {
-                ClearSelectedInfo();
+                ClearSelectedGameInfo();
                 return;
             }
 
-            SelectedTitleText.Text = info.Title;
-            SelectedGroupText.Text = "Раздел: " + GetFilterGroup(info);
-            SelectedDescriptionText.Text = info.Description;
+            SelectedTitleText.Text = selectedGame.Title;
+            SelectedGroupText.Text = "Раздел: " + selectedGame.Group;
+            SelectedDescriptionText.Text = selectedGame.Description;
+        }
+
+        private void ClearSelectedGameInfo()
+        {
+            SelectedTitleText.Text = "Мини-игра не выбрана";
+            SelectedGroupText.Text = "";
+            SelectedDescriptionText.Text = "Выбери мини-игру из списка слева.";
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            MiniGameInfo info = GamesListBox.SelectedItem as MiniGameInfo;
+            MiniGameInfo selectedGame = GamesListBox.SelectedItem as MiniGameInfo;
 
-            if (info == null)
+            if (selectedGame == null)
             {
                 MessageBox.Show(
-                    "Выбери мини-игру.",
+                    "Сначала выбери мини-игру.",
                     "Мини-игра не выбрана",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -133,19 +128,27 @@ namespace EnglishTypingGame
                 return;
             }
 
-            WindowNavigationService.Navigate(this, new MiniGameWindow(_topic, info.Mode));
+            /*
+             * ВАЖНО:
+             * MiniGameWindow принимает аргументы в таком порядке:
+             * 1) MiniGameMode
+             * 2) string topic
+             *
+             * Поэтому правильно:
+             * new MiniGameWindow(selectedGame.Mode, _topic)
+             *
+             * Неправильно:
+             * new MiniGameWindow(_topic, selectedGame.Mode)
+             */
+
+            WindowNavigationService.Navigate(
+                this,
+                new MiniGameWindow(selectedGame.Mode, _topic));
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             WindowNavigationService.NavigateToMain(this);
-        }
-
-        private void ClearSelectedInfo()
-        {
-            SelectedTitleText.Text = "Нет мини-игр";
-            SelectedGroupText.Text = "";
-            SelectedDescriptionText.Text = "В выбранном разделе пока нет мини-игр.";
         }
     }
 }

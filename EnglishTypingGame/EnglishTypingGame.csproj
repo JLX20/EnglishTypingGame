@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ComputerWordsRepository.cs" />
     <Compile Include="GameInputMode.cs" />
     <Compile Include="GameWindow.xaml.cs">
       <DependentUpon>GameWindow.xaml</DependentUpon>
@@ -101,6 +102,7 @@
     <Compile Include="ThemeService.cs" />
     <Compile Include="TopicProgressInfo.cs" />
     <Compile Include="WindowNavigationService.cs" />
+    <Compile Include="WordBankService.cs" />
     <Page Include="GameWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

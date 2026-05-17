@@ -41,20 +41,18 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <ProgressBar x:Name="LearnProgressBar"
                              Grid.Row="0"
-                             Height="14"
                              Minimum="0"
                              Maximum="100"
                              Margin="0,0,0,14"/>
 
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.15*"/>
-                        <ColumnDefinition Width="0.85*"/>
+                        <ColumnDefinition Width="1.1*"/>
+                        <ColumnDefinition Width="0.9*"/>
                     </Grid.ColumnDefinitions>
 
                     <Border Grid.Column="0"
@@ -75,14 +73,13 @@
                                        FontSize="{DynamicResource NormalFontSize}"
                                        Foreground="{DynamicResource SecondaryTextBrush}"
                                        HorizontalAlignment="Center"
-                                       TextWrapping="Wrap"
                                        TextAlignment="Center"
+                                       TextWrapping="Wrap"
                                        Margin="0,0,0,12"/>
 
                             <Viewbox Grid.Row="1"
                                      Stretch="Uniform"
-                                     StretchDirection="DownOnly"
-                                     MaxHeight="260">
+                                     StretchDirection="DownOnly">
 
                                 <StackPanel Width="580">
                                     <TextBlock x:Name="EnglishWordText"
@@ -145,8 +142,7 @@
                                            FontSize="{DynamicResource NormalFontSize}"
                                            TextWrapping="Wrap"
                                            TextAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Foreground="{DynamicResource DarkTextBrush}"/>
+                                           VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
 
@@ -165,13 +161,9 @@
                                            Margin="0,0,0,8"/>
 
                                 <TextBox x:Name="PracticeBox"
-                                         Height="58"
+                                         Height="64"
+                                         MinHeight="64"
                                          FontSize="{DynamicResource InputFontSize}"
-                                         Background="{DynamicResource InputBgBrush}"
-                                         Foreground="{DynamicResource InputTextBrush}"
-                                         CaretBrush="{DynamicResource InputTextBrush}"
-                                         BorderBrush="{DynamicResource InputBorderBrush}"
-                                         BorderThickness="2"
                                          TextChanged="PracticeBox_TextChanged"/>
 
                                 <TextBlock x:Name="PracticeFeedbackText"
@@ -193,21 +185,18 @@
                     <Button Content="← Назад"
                             Width="125"
                             Height="46"
-                            FontSize="{DynamicResource ButtonFontSize}"
                             Background="{DynamicResource ButtonMainBrush}"
                             Click="PreviousButton_Click"/>
 
                     <Button Content="Я выучил слово"
                             Width="165"
                             Height="46"
-                            FontSize="{DynamicResource ButtonFontSize}"
                             Background="{DynamicResource ButtonMainBrush}"
                             Click="LearnedButton_Click"/>
 
                     <Button Content="Дальше →"
                             Width="125"
                             Height="46"
-                            FontSize="{DynamicResource ButtonFontSize}"
                             Background="{DynamicResource ButtonMainBrush}"
                             Click="NextButton_Click"/>
                 </WrapPanel>
@@ -221,21 +210,18 @@
             <Button Content="Перейти к мини-играм"
                     Width="205"
                     Height="46"
-                    FontSize="{DynamicResource ButtonFontSize}"
                     Background="{DynamicResource ButtonMainBrush}"
                     Click="MiniGamesButton_Click"/>
 
             <Button Content="Обычная игра"
                     Width="150"
                     Height="46"
-                    FontSize="{DynamicResource ButtonFontSize}"
                     Background="{DynamicResource ButtonMainBrush}"
                     Click="StartGameButton_Click"/>
 
             <Button Content="В меню"
                     Width="110"
                     Height="46"
-                    FontSize="{DynamicResource ButtonFontSize}"
                     Background="{DynamicResource ButtonNeutralBrush}"
                     Click="CloseButton_Click"/>
         </WrapPanel>

@@ -10,7 +10,14 @@ namespace EnglishTypingGame
 
         public GrammarLesson()
         {
+            Title = "";
+            Description = "";
             Rules = new List<GrammarRule>();
+        }
+
+        public override string ToString()
+        {
+            return Title;
         }
     }
 }

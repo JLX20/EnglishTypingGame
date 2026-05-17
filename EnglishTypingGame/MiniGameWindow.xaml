@@ -80,7 +80,6 @@
 
                 <ProgressBar x:Name="ProgressBar"
                              Grid.Row="0"
-                             Height="14"
                              Minimum="0"
                              Maximum="100"
                              Margin="0,0,0,16"/>
@@ -91,15 +90,18 @@
                         Padding="18"
                         ClipToBounds="True">
 
-                    <Viewbox Stretch="Uniform"
-                             StretchDirection="DownOnly">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
                         <StackPanel x:Name="GamePanel"
+                                    Grid.Row="0"
                                     Width="900"
-                                    MinHeight="360"
                                     HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"/>
-                    </Viewbox>
+                                    VerticalAlignment="Center"
+                                    ClipToBounds="True"/>
+                    </Grid>
                 </Border>
 
                 <Border Grid.Row="2"
@@ -126,14 +128,12 @@
             <Button Content="Завершить"
                     Width="135"
                     Height="48"
-                    FontSize="{DynamicResource ButtonFontSize}"
                     Background="{DynamicResource ButtonNeutralBrush}"
                     Click="FinishButton_Click"/>
 
             <Button Content="Закрыть"
                     Width="120"
                     Height="48"
-                    FontSize="{DynamicResource ButtonFontSize}"
                     Background="{DynamicResource ButtonNeutralBrush}"
                     Click="CloseButton_Click"/>
         </WrapPanel>

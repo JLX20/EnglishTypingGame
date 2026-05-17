@@ -222,12 +222,12 @@ namespace EnglishTypingGame
 
             List<TopicProgressInfo> result = new List<TopicProgressInfo>();
 
-            foreach (string topicUi in LessonRepository.GetTopicsForUi())
+            foreach (string topicUi in WordBankService.GetTopicsForUi())
             {
                 if (topicUi == "Все темы")
                     continue;
 
-                List<WordItem> words = LessonRepository.GetWords(topicUi);
+                List<WordItem> words = WordBankService.GetWords(topicUi);
 
                 int total = words.Count;
 
@@ -239,7 +239,7 @@ namespace EnglishTypingGame
 
                 foreach (MistakeRecord mistake in progress.Mistakes)
                 {
-                    WordItem word = LessonRepository.FindWordByEnglish(mistake.English);
+                    WordItem word = WordBankService.FindWordByEnglish(mistake.English);
 
                     if (word != null &&
                         words.Any(w => w.English.Equals(word.English, StringComparison.OrdinalIgnoreCase)))

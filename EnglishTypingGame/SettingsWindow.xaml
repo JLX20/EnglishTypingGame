@@ -99,10 +99,7 @@
                             Padding="16"
                             Margin="0,18,0,0">
 
-                        <TextBlock Text="Настройки Word Rain убраны, потому что эта игра больше не используется в программе."
-                                   FontSize="{DynamicResource SmallFontSize}"
-                                   Foreground="{DynamicResource SecondaryTextBrush}"
-                                   TextWrapping="Wrap"/>
+                        
                     </Border>
 
                     <StackPanel Orientation="Horizontal"

@@ -56,7 +56,6 @@
                         <ComboBox x:Name="LessonComboBox"
                                   Height="46"
                                   Margin="0,8,0,0"
-                                  DisplayMemberPath="Title"
                                   SelectionChanged="LessonComboBox_SelectionChanged"/>
                     </StackPanel>
 
@@ -202,13 +201,9 @@
 
                                 <TextBox x:Name="PracticeAnswerBox"
                                          Grid.Row="1"
-                                         Height="52"
+                                         Height="60"
+                                         MinHeight="60"
                                          FontSize="{DynamicResource InputFontSize}"
-                                         Background="{DynamicResource InputBgBrush}"
-                                         Foreground="{DynamicResource InputTextBrush}"
-                                         CaretBrush="{DynamicResource InputTextBrush}"
-                                         BorderBrush="{DynamicResource InputBorderBrush}"
-                                         BorderThickness="2"
                                          KeyDown="PracticeAnswerBox_KeyDown"/>
 
                                 <Grid Grid.Row="2" Margin="0,10,0,0">
@@ -222,7 +217,6 @@
                                             Content="Проверить"
                                             Width="130"
                                             Height="44"
-                                            FontSize="{DynamicResource ButtonFontSize}"
                                             Background="{DynamicResource ButtonMainBrush}"
                                             Click="CheckPracticeButton_Click"/>
 
@@ -230,7 +224,6 @@
                                             Content="Показать ответ"
                                             Width="155"
                                             Height="44"
-                                            FontSize="{DynamicResource ButtonFontSize}"
                                             Background="{DynamicResource ButtonNeutralBrush}"
                                             Click="ShowAnswerButton_Click"/>
 
@@ -256,14 +249,12 @@
             <Button Content="К мини-играм"
                     Width="150"
                     Height="48"
-                    FontSize="{DynamicResource ButtonFontSize}"
                     Background="{DynamicResource ButtonMainBrush}"
                     Click="MiniGamesButton_Click"/>
 
             <Button Content="В меню"
                     Width="120"
                     Height="48"
-                    FontSize="{DynamicResource ButtonFontSize}"
                     Background="{DynamicResource ButtonNeutralBrush}"
                     Click="CloseButton_Click"/>
         </WrapPanel>

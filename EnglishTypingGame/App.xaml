@@ -5,42 +5,22 @@
 
     <Application.Resources>
 
-        <!-- ===================================================== -->
-        <!-- BASE COLORS -->
-        <!-- ===================================================== -->
-
+        <!-- BACKGROUND -->
         <SolidColorBrush x:Key="WindowBgBrush" Color="#E0F2FE"/>
         <SolidColorBrush x:Key="CardBgBrush" Color="#FFFFFF"/>
         <SolidColorBrush x:Key="SoftBgBrush" Color="#F1F5F9"/>
 
+        <!-- TEXT -->
         <SolidColorBrush x:Key="DarkTextBrush" Color="#0F172A"/>
         <SolidColorBrush x:Key="SecondaryTextBrush" Color="#64748B"/>
 
-        <!-- ===================================================== -->
-        <!-- INPUT COLORS -->
-        <!-- ===================================================== -->
-
+        <!-- SAFE INPUT COLORS -->
+        <!-- Эти цвета специально не зависят от темы, чтобы текст всегда был виден -->
         <SolidColorBrush x:Key="InputBgBrush" Color="#FFFFFF"/>
         <SolidColorBrush x:Key="InputTextBrush" Color="#0F172A"/>
-        <SolidColorBrush x:Key="InputBorderBrush" Color="#CBD5E1"/>
+        <SolidColorBrush x:Key="InputBorderBrush" Color="#2563EB"/>
 
-        <!-- ===================================================== -->
-        <!-- COMBOBOX COLORS -->
-        <!-- Отдельные цвета, чтобы в тёмной теме текст не пропадал -->
-        <!-- ===================================================== -->
-
-        <SolidColorBrush x:Key="ComboBoxBgBrush" Color="#FFFFFF"/>
-        <SolidColorBrush x:Key="ComboBoxTextBrush" Color="#0F172A"/>
-        <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="#CBD5E1"/>
-        <SolidColorBrush x:Key="ComboBoxPopupBgBrush" Color="#FFFFFF"/>
-        <SolidColorBrush x:Key="ComboBoxHoverBgBrush" Color="#EFF6FF"/>
-        <SolidColorBrush x:Key="ComboBoxSelectedBgBrush" Color="#DBEAFE"/>
-        <SolidColorBrush x:Key="ComboBoxSelectedTextBrush" Color="#0F172A"/>
-
-        <!-- ===================================================== -->
-        <!-- BUTTON COLORS -->
-        <!-- ===================================================== -->
-
+        <!-- BUTTONS -->
         <SolidColorBrush x:Key="ButtonMainBrush" Color="#2563EB"/>
         <SolidColorBrush x:Key="ButtonAccentBrush" Color="#7C3AED"/>
         <SolidColorBrush x:Key="ButtonSuccessBrush" Color="#059669"/>
@@ -48,11 +28,10 @@
         <SolidColorBrush x:Key="ButtonDangerBrush" Color="#DC2626"/>
         <SolidColorBrush x:Key="ButtonNeutralBrush" Color="#64748B"/>
 
-        <!-- OLD NAMES KEPT FOR COMPATIBILITY -->
+        <!-- OLD BRUSH NAMES FOR COMPATIBILITY -->
         <SolidColorBrush x:Key="PrimaryBrush" Color="#2563EB"/>
         <SolidColorBrush x:Key="PrimaryHoverBrush" Color="#1D4ED8"/>
         <SolidColorBrush x:Key="AccentBrush" Color="#3B82F6"/>
-
         <SolidColorBrush x:Key="GreenBrush" Color="#059669"/>
         <SolidColorBrush x:Key="PurpleBrush" Color="#7C3AED"/>
         <SolidColorBrush x:Key="RedBrush" Color="#DC2626"/>
@@ -61,37 +40,18 @@
         <SolidColorBrush x:Key="SlateBrush" Color="#475569"/>
         <SolidColorBrush x:Key="GrayButtonBrush" Color="#64748B"/>
 
-        <SolidColorBrush x:Key="WordRainWordBrush" Color="#2563EB"/>
-        <SolidColorBrush x:Key="WordRainCloudBrush" Color="#EFF6FF"/>
-        <SolidColorBrush x:Key="WordRainCloudTextBrush" Color="#1E3A8A"/>
-
-        <!-- ===================================================== -->
         <!-- FONT SIZES -->
-        <!-- ===================================================== -->
+        <sys:Double x:Key="TitleFontSize" xmlns:sys="clr-namespace:System;assembly=mscorlib">34</sys:Double>
+        <sys:Double x:Key="SubtitleFontSize" xmlns:sys="clr-namespace:System;assembly=mscorlib">16</sys:Double>
+        <sys:Double x:Key="NormalFontSize" xmlns:sys="clr-namespace:System;assembly=mscorlib">16</sys:Double>
+        <sys:Double x:Key="SmallFontSize" xmlns:sys="clr-namespace:System;assembly=mscorlib">14</sys:Double>
+        <sys:Double x:Key="ButtonFontSize" xmlns:sys="clr-namespace:System;assembly=mscorlib">15</sys:Double>
+        <sys:Double x:Key="InputFontSize" xmlns:sys="clr-namespace:System;assembly=mscorlib">24</sys:Double>
+        <sys:Double x:Key="PromptFontSize" xmlns:sys="clr-namespace:System;assembly=mscorlib">40</sys:Double>
+        <sys:Double x:Key="WordFontSize" xmlns:sys="clr-namespace:System;assembly=mscorlib">54</sys:Double>
+        <sys:Double x:Key="PreviewFontSize" xmlns:sys="clr-namespace:System;assembly=mscorlib">30</sys:Double>
 
-        <sys:Double x:Key="TitleFontSize"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">34</sys:Double>
-        <sys:Double x:Key="SubtitleFontSize"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">16</sys:Double>
-        <sys:Double x:Key="NormalFontSize"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">16</sys:Double>
-        <sys:Double x:Key="SmallFontSize"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">14</sys:Double>
-        <sys:Double x:Key="ButtonFontSize"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">15</sys:Double>
-        <sys:Double x:Key="InputFontSize"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">24</sys:Double>
-        <sys:Double x:Key="PromptFontSize"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">40</sys:Double>
-        <sys:Double x:Key="WordFontSize"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">54</sys:Double>
-        <sys:Double x:Key="PreviewFontSize"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">30</sys:Double>
-
-        <!-- ===================================================== -->
         <!-- SHADOWS -->
-        <!-- ===================================================== -->
-
         <DropShadowEffect x:Key="CardShadow"
                           BlurRadius="18"
                           ShadowDepth="2"
@@ -104,27 +64,18 @@
                           Opacity="0.10"
                           Color="#000000"/>
 
-        <!-- ===================================================== -->
         <!-- WINDOW -->
-        <!-- ===================================================== -->
-
         <Style TargetType="Window">
             <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="Background" Value="{DynamicResource WindowBgBrush}"/>
         </Style>
 
-        <!-- ===================================================== -->
         <!-- TEXT -->
-        <!-- ===================================================== -->
-
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="{DynamicResource DarkTextBrush}"/>
         </Style>
 
-        <!-- ===================================================== -->
-        <!-- BUTTONS -->
-        <!-- ===================================================== -->
-
+        <!-- BUTTON -->
         <Style TargetType="Button">
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Padding" Value="16,10"/>
@@ -134,7 +85,7 @@
             <Setter Property="FontSize" Value="{DynamicResource ButtonFontSize}"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="MinHeight" Value="42"/>
+            <Setter Property="MinHeight" Value="44"/>
             <Setter Property="SnapsToDevicePixels" Value="True"/>
 
             <Setter Property="Template">
@@ -145,7 +96,6 @@
                                 CornerRadius="22"
                                 Padding="{TemplateBinding Padding}"
                                 Effect="{StaticResource SoftShadow}">
-
                             <ContentPresenter HorizontalAlignment="Center"
                                               VerticalAlignment="Center"
                                               RecognizesAccessKey="True"/>
@@ -158,11 +108,6 @@
 
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.75"/>
-                                <Setter TargetName="ButtonBorder" Property="RenderTransform">
-                                    <Setter.Value>
-                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
-                                    </Setter.Value>
-                                </Setter>
                             </Trigger>
 
                             <Trigger Property="IsEnabled" Value="False">
@@ -174,35 +119,40 @@
             </Setter>
         </Style>
 
-        <!-- ===================================================== -->
-        <!-- TEXTBOX -->
-        <!-- ===================================================== -->
-
+        <!-- SAFE TEXTBOX -->
         <Style TargetType="TextBox">
             <Setter Property="FontSize" Value="{DynamicResource InputFontSize}"/>
-            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="16,8"/>
             <Setter Property="Margin" Value="4"/>
+            <Setter Property="MinHeight" Value="56"/>
+            <Setter Property="Height" Value="Auto"/>
             <Setter Property="Background" Value="{DynamicResource InputBgBrush}"/>
             <Setter Property="Foreground" Value="{DynamicResource InputTextBrush}"/>
             <Setter Property="CaretBrush" Value="{DynamicResource InputTextBrush}"/>
             <Setter Property="SelectionBrush" Value="#93C5FD"/>
-            <Setter Property="SelectionOpacity" Value="0.6"/>
+            <Setter Property="SelectionOpacity" Value="0.65"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="MinHeight" Value="46"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="AcceptsReturn" Value="False"/>
+            <Setter Property="ClipToBounds" Value="True"/>
 
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
                         <Border x:Name="TextBoxBorder"
                                 Background="{TemplateBinding Background}"
-                                CornerRadius="18"
                                 BorderBrush="{DynamicResource InputBorderBrush}"
-                                BorderThickness="1"
-                                Padding="2"
+                                BorderThickness="2"
+                                CornerRadius="18"
+                                Padding="{TemplateBinding Padding}"
                                 Effect="{StaticResource SoftShadow}">
-
                             <ScrollViewer x:Name="PART_ContentHost"
-                                          Margin="{TemplateBinding Padding}"/>
+                                          VerticalAlignment="Center"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden"/>
                         </Border>
 
                         <ControlTemplate.Triggers>
@@ -210,16 +160,15 @@
                                 <Setter TargetName="TextBoxBorder"
                                         Property="BorderBrush"
                                         Value="{DynamicResource ButtonMainBrush}"/>
-
                                 <Setter TargetName="TextBoxBorder"
                                         Property="BorderThickness"
-                                        Value="2"/>
+                                        Value="3"/>
                             </Trigger>
 
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="TextBoxBorder"
                                         Property="Opacity"
-                                        Value="0.55"/>
+                                        Value="0.65"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -227,173 +176,24 @@
             </Setter>
         </Style>
 
-        <!-- ===================================================== -->
         <!-- COMBOBOX -->
-        <!-- Полностью кастомный стиль, чтобы тёмная тема не ломала текст -->
-        <!-- ===================================================== -->
-
         <Style TargetType="ComboBox">
             <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}"/>
-            <Setter Property="Foreground" Value="{DynamicResource ComboBoxTextBrush}"/>
-            <Setter Property="Background" Value="{DynamicResource ComboBoxBgBrush}"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorderBrush}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="Padding" Value="12,8"/>
             <Setter Property="Margin" Value="4"/>
             <Setter Property="MinHeight" Value="44"/>
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ComboBox">
-                        <Grid>
-                            <Border x:Name="MainBorder"
-                                    Background="{DynamicResource ComboBoxBgBrush}"
-                                    BorderBrush="{DynamicResource ComboBoxBorderBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="18"
-                                    MinHeight="{TemplateBinding MinHeight}"
-                                    Effect="{StaticResource SoftShadow}"/>
-
-                            <ContentPresenter x:Name="ContentSite"
-                                              IsHitTestVisible="False"
-                                              Content="{TemplateBinding SelectionBoxItem}"
-                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                              ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
-                                              Margin="16,0,42,0"
-                                              VerticalAlignment="Center"
-                                              HorizontalAlignment="Left"/>
-
-                            <TextBlock Text="▼"
-                                       IsHitTestVisible="False"
-                                       Foreground="{DynamicResource ComboBoxTextBrush}"
-                                       FontSize="12"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Right"
-                                       Margin="0,0,16,0"/>
-
-                            <ToggleButton x:Name="DropDownToggle"
-                                          Focusable="False"
-                                          Background="Transparent"
-                                          BorderThickness="0"
-                                          Opacity="0"
-                                          IsChecked="{Binding IsDropDownOpen,
-                                                              Mode=TwoWay,
-                                                              RelativeSource={RelativeSource TemplatedParent}}"
-                                          ClickMode="Press"/>
-
-                            <Popup x:Name="Popup"
-                                   Placement="Bottom"
-                                   AllowsTransparency="True"
-                                   Focusable="False"
-                                   IsOpen="{TemplateBinding IsDropDownOpen}"
-                                   PopupAnimation="Slide">
-
-                                <Grid MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
-                                      MaxHeight="{TemplateBinding MaxDropDownHeight}">
-
-                                    <Border Background="{DynamicResource ComboBoxPopupBgBrush}"
-                                            BorderBrush="{DynamicResource ComboBoxBorderBrush}"
-                                            BorderThickness="1"
-                                            CornerRadius="18"
-                                            Padding="6"
-                                            Effect="{StaticResource CardShadow}">
-
-                                        <ScrollViewer Margin="0"
-                                                      SnapsToDevicePixels="True">
-                                            <ItemsPresenter/>
-                                        </ScrollViewer>
-                                    </Border>
-                                </Grid>
-                            </Popup>
-                        </Grid>
-
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                                <Setter TargetName="MainBorder"
-                                        Property="BorderBrush"
-                                        Value="{DynamicResource ButtonMainBrush}"/>
-
-                                <Setter TargetName="MainBorder"
-                                        Property="BorderThickness"
-                                        Value="2"/>
-                            </Trigger>
-
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="MainBorder"
-                                        Property="Opacity"
-                                        Value="0.55"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
         </Style>
 
-        <Style TargetType="ComboBoxItem">
-            <Setter Property="Foreground" Value="{DynamicResource ComboBoxTextBrush}"/>
-            <Setter Property="Background" Value="{DynamicResource ComboBoxPopupBgBrush}"/>
-            <Setter Property="Padding" Value="12,9"/>
-            <Setter Property="Margin" Value="2"/>
-            <Setter Property="MinHeight" Value="38"/>
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ComboBoxItem">
-                        <Border x:Name="ItemBorder"
-                                Background="{TemplateBinding Background}"
-                                CornerRadius="14"
-                                Padding="{TemplateBinding Padding}">
-
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ItemBorder"
-                                        Property="Background"
-                                        Value="{DynamicResource ComboBoxHoverBgBrush}"/>
-                            </Trigger>
-
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="ItemBorder"
-                                        Property="Background"
-                                        Value="{DynamicResource ComboBoxSelectedBgBrush}"/>
-
-                                <Setter Property="Foreground"
-                                        Value="{DynamicResource ComboBoxSelectedTextBrush}"/>
-                            </Trigger>
-
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="ItemBorder"
-                                        Property="Opacity"
-                                        Value="0.55"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- ===================================================== -->
         <!-- CHECKBOX -->
-        <!-- ===================================================== -->
-
         <Style TargetType="CheckBox">
             <Setter Property="Foreground" Value="{DynamicResource DarkTextBrush}"/>
             <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}"/>
             <Setter Property="Margin" Value="0,7"/>
         </Style>
 
-        <!-- ===================================================== -->
         <!-- LISTBOX -->
-        <!-- ===================================================== -->
-
         <Style TargetType="ListBox">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="{DynamicResource DarkTextBrush}"/>
             <Setter Property="BorderThickness" Value="0"/>
         </Style>
 
@@ -401,65 +201,31 @@
             <Setter Property="Margin" Value="3"/>
             <Setter Property="Padding" Value="4"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            <Setter Property="Foreground" Value="{DynamicResource DarkTextBrush}"/>
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ListBoxItem">
-                        <Border x:Name="ItemBorder"
-                                CornerRadius="16"
-                                Background="Transparent"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter/>
-                        </Border>
-
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="ItemBorder"
-                                        Property="Background"
-                                        Value="{DynamicResource ComboBoxSelectedBgBrush}"/>
-                            </Trigger>
-
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ItemBorder"
-                                        Property="Background"
-                                        Value="{DynamicResource ComboBoxHoverBgBrush}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
         </Style>
 
-        <!-- ===================================================== -->
         <!-- DATAGRID -->
-        <!-- ===================================================== -->
-
         <Style TargetType="DataGrid">
             <Setter Property="Background" Value="{DynamicResource CardBgBrush}"/>
             <Setter Property="Foreground" Value="{DynamicResource DarkTextBrush}"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="RowBackground" Value="{DynamicResource CardBgBrush}"/>
-            <Setter Property="AlternatingRowBackground" Value="{DynamicResource SoftBgBrush}"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#F8FAFC"/>
             <Setter Property="GridLinesVisibility" Value="None"/>
             <Setter Property="HeadersVisibility" Value="Column"/>
         </Style>
 
         <Style TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="{DynamicResource SoftBgBrush}"/>
+            <Setter Property="Background" Value="#E2E8F0"/>
             <Setter Property="Foreground" Value="{DynamicResource DarkTextBrush}"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Padding" Value="10"/>
             <Setter Property="BorderThickness" Value="0"/>
         </Style>
 
-        <!-- ===================================================== -->
         <!-- PROGRESS BAR -->
-        <!-- ===================================================== -->
-
         <Style TargetType="ProgressBar">
             <Setter Property="Height" Value="14"/>
-            <Setter Property="Background" Value="{DynamicResource SoftBgBrush}"/>
+            <Setter Property="Background" Value="#E2E8F0"/>
             <Setter Property="Foreground" Value="{DynamicResource ButtonMainBrush}"/>
             <Setter Property="BorderThickness" Value="0"/>
         </Style>

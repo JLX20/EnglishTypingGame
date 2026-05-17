@@ -33,8 +33,9 @@ namespace EnglishTypingGame
         {
             InitializeComponent();
 
-            _topic = topic;
-            _level = level;
+            _topic = string.IsNullOrWhiteSpace(topic) ? "Все темы" : topic;
+            _level = string.IsNullOrWhiteSpace(level) ? "Все уровни" : level;
+
             _stopwatch = new Stopwatch();
             _settings = SettingsService.Load();
 
@@ -54,14 +55,20 @@ namespace EnglishTypingGame
 
             _exercises = MixedTrainingRepository.BuildExercises(_topic, _level);
 
-            if (_exercises.Count == 0)
+            if (_exercises == null || _exercises.Count == 0)
             {
-                MessageBox.Show("Нет заданий для смешанной тренировки.");
+                MessageBox.Show(
+                    "Нет заданий для смешанной тренировки.",
+                    "Нет заданий",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
                 WindowNavigationService.NavigateToMain(this);
                 return;
             }
 
             _stopwatch.Start();
+
             ShowExercise();
         }
 
@@ -82,31 +89,45 @@ namespace EnglishTypingGame
 
             PromptText.Text = exercise.Prompt;
             FeedbackText.Text = "";
-
             AnswerPanel.Children.Clear();
 
             if (exercise.Options != null && exercise.Options.Count > 0)
+            {
                 BuildOptions(exercise);
+            }
             else
+            {
                 BuildInput(exercise);
+            }
         }
 
         private void BuildOptions(MiniGameExercise exercise)
         {
             WrapPanel panel = new WrapPanel();
             panel.HorizontalAlignment = HorizontalAlignment.Center;
+            panel.MaxWidth = 860;
 
             foreach (string option in exercise.Options)
             {
                 string selected = option;
 
                 Button button = new Button();
-                button.Content = selected;
-                button.Width = 230;
+                button.Width = 250;
                 button.MinHeight = 54;
                 button.Margin = new Thickness(8);
-                button.FontSize = GetFontSize("ButtonFontSize", 15);
                 button.Background = GetBrush("ButtonMainBrush", Brushes.DodgerBlue);
+
+                TextBlock text = new TextBlock();
+                text.Text = selected;
+                text.TextWrapping = TextWrapping.Wrap;
+                text.TextAlignment = TextAlignment.Center;
+                text.HorizontalAlignment = HorizontalAlignment.Center;
+                text.VerticalAlignment = VerticalAlignment.Center;
+                text.Foreground = Brushes.White;
+                text.FontWeight = FontWeights.SemiBold;
+                text.FontSize = GetFontSize("ButtonFontSize", 15);
+
+                button.Content = text;
 
                 button.Click += delegate
                 {
@@ -121,17 +142,7 @@ namespace EnglishTypingGame
 
         private void BuildInput(MiniGameExercise exercise)
         {
-            _answerBox = new TextBox();
-            _answerBox.Width = 520;
-            _answerBox.Height = 62;
-            _answerBox.FontSize = GetFontSize("InputFontSize", 24);
-            _answerBox.FontWeight = FontWeights.SemiBold;
-            _answerBox.Background = GetBrush("InputBgBrush", Brushes.White);
-            _answerBox.Foreground = GetBrush("InputTextBrush", Brushes.Black);
-            _answerBox.CaretBrush = GetBrush("InputTextBrush", Brushes.Black);
-            _answerBox.BorderBrush = GetBrush("InputBorderBrush", Brushes.LightGray);
-            _answerBox.BorderThickness = new Thickness(2);
-            _answerBox.Padding = new Thickness(16, 8, 16, 8);
+            _answerBox = CreateSafeTextBox();
 
             _answerBox.KeyDown += delegate (object sender, KeyEventArgs e)
             {
@@ -146,10 +157,11 @@ namespace EnglishTypingGame
 
             Button check = new Button();
             check.Content = "Проверить";
-            check.Width = 150;
+            check.Width = 160;
             check.Height = 48;
             check.Margin = new Thickness(0, 14, 0, 0);
             check.Background = GetBrush("ButtonMainBrush", Brushes.DodgerBlue);
+
             check.Click += delegate
             {
                 CheckAnswer(exercise, _answerBox.Text);
@@ -170,9 +182,17 @@ namespace EnglishTypingGame
                 return;
 
             if (string.IsNullOrWhiteSpace(userAnswer))
+            {
+                FeedbackText.Foreground = Brushes.Firebrick;
+                FeedbackText.Text = "Сначала напиши ответ или нажми “Не знаю”.";
                 return;
+            }
 
             _locked = true;
+
+            if (_answerBox != null)
+                _answerBox.IsEnabled = false;
+
             _typedChars += userAnswer.Length;
 
             bool correct = SoftAnswerComparer.IsCorrect(userAnswer, exercise.Answer);
@@ -180,6 +200,7 @@ namespace EnglishTypingGame
             if (correct)
             {
                 _correct++;
+
                 FeedbackText.Foreground = Brushes.ForestGreen;
                 FeedbackText.Text = "Правильно!";
 
@@ -189,13 +210,19 @@ namespace EnglishTypingGame
                 if (_settings.SoundEnabled)
                     SystemSounds.Asterisk.Play();
 
-                GoNext(600);
+                GoNext(650);
             }
             else
             {
                 _wrong++;
+
+                string explanation = exercise.Explanation;
+
+                if (string.IsNullOrWhiteSpace(explanation))
+                    explanation = "Правильный ответ: " + exercise.Answer;
+
                 FeedbackText.Foreground = Brushes.Firebrick;
-                FeedbackText.Text = "Ошибка. " + exercise.Explanation;
+                FeedbackText.Text = "Ошибка. " + explanation;
 
                 AddMistake(exercise, userAnswer);
 
@@ -217,6 +244,10 @@ namespace EnglishTypingGame
             MiniGameExercise exercise = _exercises[_index];
 
             _locked = true;
+
+            if (_answerBox != null)
+                _answerBox.IsEnabled = false;
+
             _wrong++;
 
             FeedbackText.Foreground = Brushes.Firebrick;
@@ -224,11 +255,17 @@ namespace EnglishTypingGame
 
             AddMistake(exercise, "Не знаю");
 
+            if (_settings.SoundEnabled)
+                SystemSounds.Hand.Play();
+
             GoNext(1300);
         }
 
         private void AddMistake(MiniGameExercise exercise, string answer)
         {
+            if (exercise == null)
+                return;
+
             if (exercise.Word != null)
             {
                 _mistakes.Add(new MistakeRecord
@@ -257,12 +294,15 @@ namespace EnglishTypingGame
         {
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(delay);
+
             timer.Tick += delegate
             {
                 timer.Stop();
+
                 _index++;
                 ShowExercise();
             };
+
             timer.Start();
         }
 
@@ -301,6 +341,38 @@ namespace EnglishTypingGame
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             WindowNavigationService.NavigateToMain(this);
+        }
+
+        private TextBox CreateSafeTextBox()
+        {
+            TextBox textBox = new TextBox();
+
+            textBox.Width = 560;
+            textBox.MaxWidth = 760;
+            textBox.Height = 64;
+            textBox.MinHeight = 64;
+
+            textBox.FontSize = GetFontSize("InputFontSize", 24);
+            textBox.FontWeight = FontWeights.SemiBold;
+
+            textBox.HorizontalAlignment = HorizontalAlignment.Center;
+            textBox.VerticalAlignment = VerticalAlignment.Center;
+
+            textBox.Background = GetBrush("InputBgBrush", Brushes.White);
+            textBox.Foreground = GetBrush("InputTextBrush", Brushes.Black);
+            textBox.CaretBrush = GetBrush("InputTextBrush", Brushes.Black);
+            textBox.BorderBrush = GetBrush("InputBorderBrush", Brushes.DodgerBlue);
+            textBox.BorderThickness = new Thickness(2);
+
+            textBox.Padding = new Thickness(16, 8, 16, 8);
+            textBox.Margin = new Thickness(0, 0, 0, 8);
+
+            textBox.TextWrapping = TextWrapping.NoWrap;
+            textBox.AcceptsReturn = false;
+            textBox.VerticalContentAlignment = VerticalAlignment.Center;
+            textBox.HorizontalContentAlignment = HorizontalAlignment.Left;
+
+            return textBox;
         }
 
         private Brush GetBrush(string key, Brush fallback)

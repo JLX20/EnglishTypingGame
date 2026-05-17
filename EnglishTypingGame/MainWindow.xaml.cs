@@ -12,7 +12,7 @@ namespace EnglishTypingGame
             SettingsData settings = SettingsService.Load();
             ThemeService.ApplyTheme(settings.ThemeName, settings.BackgroundName, settings.TextSizeName);
 
-            TopicComboBox.ItemsSource = LessonRepository.GetTopicsForUi();
+            TopicComboBox.ItemsSource = LessonQueryService.GetTopicsForUi();
             TopicComboBox.SelectedIndex = 0;
 
             LevelComboBox.ItemsSource = LessonQueryService.GetLevelsForUi();

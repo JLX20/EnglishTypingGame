@@ -6,6 +6,11 @@ namespace EnglishTypingGame
 {
     public static class LessonQueryService
     {
+        public static List<string> GetTopicsForUi()
+        {
+            return WordBankService.GetTopicsForUi();
+        }
+
         public static List<string> GetLevelsForUi()
         {
             return new List<string>
@@ -19,7 +24,7 @@ namespace EnglishTypingGame
 
         public static List<WordItem> GetWords(string topicUi, string levelUi)
         {
-            List<WordItem> words = LessonRepository.GetWords(topicUi);
+            List<WordItem> words = WordBankService.GetWords(topicUi);
 
             string level = NormalizeLevel(levelUi);
 

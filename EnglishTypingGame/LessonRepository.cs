@@ -38,7 +38,7 @@ namespace EnglishTypingGame
         }
 
         // =====================================================
-        // COLOURS
+        // COLOURS — 32 words
         // =====================================================
 
         private static void AddColours(List<WordItem> words)
@@ -58,15 +58,29 @@ namespace EnglishTypingGame
             Add(words, "silver", "серебряный", "Colours", "A1", "The spoon is silver.");
             Add(words, "dark", "тёмный", "Colours", "A1", "The room is dark.");
             Add(words, "light", "светлый", "Colours", "A1", "The wall is light.");
+            Add(words, "bright", "яркий", "Colours", "A1", "The light is bright.");
+            Add(words, "pale", "бледный", "Colours", "A1", "The flower is pale pink.");
+            Add(words, "navy", "тёмно-синий", "Colours", "A1", "His jacket is navy.");
+            Add(words, "sky blue", "небесно-голубой", "Colours", "A1", "The wall is sky blue.");
+            Add(words, "turquoise", "бирюзовый", "Colours", "A1", "The sea is turquoise.");
+            Add(words, "beige", "бежевый", "Colours", "A1", "My coat is beige.");
+            Add(words, "cream", "кремовый", "Colours", "A1", "The cup is cream.");
+            Add(words, "violet", "фиолетовый / лиловый", "Colours", "A1", "The violet flower is small.");
+            Add(words, "lime", "лаймовый", "Colours", "A1", "The bag is lime green.");
+            Add(words, "olive", "оливковый", "Colours", "A1", "His shirt is olive.");
+            Add(words, "maroon", "бордовый", "Colours", "A2", "The scarf is maroon.");
+            Add(words, "peach", "персиковый", "Colours", "A1", "Her dress is peach.");
+            Add(words, "coral", "коралловый", "Colours", "A2", "The coral colour is bright.");
+            Add(words, "indigo", "индиго", "Colours", "A2", "Indigo is a dark blue colour.");
+            Add(words, "tan", "светло-коричневый", "Colours", "A2", "The shoes are tan.");
+            Add(words, "colour", "цвет", "Colours", "A0", "What colour is it?");
+            Add(words, "rainbow", "радуга", "Colours", "A1", "A rainbow has many colours.");
         }
 
         // =====================================================
         // NUMBERS
-        // Убраны 21-29.
-        // Убраны последние три составных числа:
-        // one hundred and one, two hundred and fifty,
-        // three hundred and sixty-five.
-        // Цифры расставлены по возрастанию.
+        // Без 21–29, без последних составных чисел.
+        // Расставлены по возрастанию.
         // =====================================================
 
         private static void AddNumbers(List<WordItem> words)
@@ -116,7 +130,7 @@ namespace EnglishTypingGame
         }
 
         // =====================================================
-        // ANIMALS
+        // ANIMALS — 32 words
         // =====================================================
 
         private static void AddAnimals(List<WordItem> words)
@@ -141,10 +155,22 @@ namespace EnglishTypingGame
             Add(words, "frog", "лягушка", "Animals", "A1", "A frog is green.");
             Add(words, "monkey", "обезьяна", "Animals", "A1", "A monkey can climb.");
             Add(words, "elephant", "слон", "Animals", "A1", "An elephant is very big.");
+            Add(words, "giraffe", "жираф", "Animals", "A1", "A giraffe has a long neck.");
+            Add(words, "zebra", "зебра", "Animals", "A1", "A zebra is black and white.");
+            Add(words, "snake", "змея", "Animals", "A1", "A snake has no legs.");
+            Add(words, "crocodile", "крокодил", "Animals", "A1", "A crocodile is dangerous.");
+            Add(words, "shark", "акула", "Animals", "A1", "A shark lives in the sea.");
+            Add(words, "whale", "кит", "Animals", "A1", "A whale is very big.");
+            Add(words, "dolphin", "дельфин", "Animals", "A1", "A dolphin is clever.");
+            Add(words, "penguin", "пингвин", "Animals", "A1", "A penguin can swim.");
+            Add(words, "kangaroo", "кенгуру", "Animals", "A1", "A kangaroo can jump.");
+            Add(words, "camel", "верблюд", "Animals", "A1", "A camel lives in the desert.");
+            Add(words, "goat", "коза", "Animals", "A1", "A goat eats grass.");
+            Add(words, "bee", "пчела", "Animals", "A1", "A bee makes honey.");
         }
 
         // =====================================================
-        // FOOD
+        // FOOD — 32 words
         // =====================================================
 
         private static void AddFood(List<WordItem> words)
@@ -174,10 +200,17 @@ namespace EnglishTypingGame
             Add(words, "vegetable", "овощ", "Food", "A1", "A carrot is a vegetable.");
             Add(words, "sugar", "сахар", "Food", "A1", "Tea with sugar is sweet.");
             Add(words, "salt", "соль", "Food", "A1", "Soup needs salt.");
+            Add(words, "butter", "масло", "Food", "A1", "I put butter on bread.");
+            Add(words, "honey", "мёд", "Food", "A1", "Honey is sweet.");
+            Add(words, "fish", "рыба", "Food", "A1", "We eat fish for dinner.");
+            Add(words, "chicken", "курица", "Food", "A1", "I like chicken.");
+            Add(words, "pasta", "макароны / паста", "Food", "A1", "Pasta is easy to cook.");
+            Add(words, "breakfast", "завтрак", "Food", "A1", "I eat breakfast in the morning.");
+            Add(words, "dinner", "ужин", "Food", "A1", "We have dinner at seven.");
         }
 
         // =====================================================
-        // FAMILY
+        // FAMILY — 32 words
         // =====================================================
 
         private static void AddFamily(List<WordItem> words)
@@ -201,10 +234,23 @@ namespace EnglishTypingGame
             Add(words, "husband", "муж", "Family", "A1", "Her husband is a doctor.");
             Add(words, "child", "ребёнок", "Family", "A0", "The child is happy.");
             Add(words, "children", "дети", "Family", "A1", "The children are playing.");
+            Add(words, "grandparents", "бабушка и дедушка", "Family", "A1", "My grandparents live near us.");
+            Add(words, "grandson", "внук", "Family", "A1", "He is their grandson.");
+            Add(words, "granddaughter", "внучка", "Family", "A1", "She is their granddaughter.");
+            Add(words, "nephew", "племянник", "Family", "A2", "My nephew is five.");
+            Add(words, "niece", "племянница", "Family", "A2", "My niece is seven.");
+            Add(words, "relative", "родственник", "Family", "A2", "He is my relative.");
+            Add(words, "twins", "близнецы", "Family", "A1", "The twins are brothers.");
+            Add(words, "older brother", "старший брат", "Family", "A1", "My older brother is tall.");
+            Add(words, "younger sister", "младшая сестра", "Family", "A1", "My younger sister is small.");
+            Add(words, "stepfather", "отчим", "Family", "A2", "Her stepfather is kind.");
+            Add(words, "stepmother", "мачеха", "Family", "A2", "His stepmother is nice.");
+            Add(words, "family name", "фамилия", "Family", "A1", "What is your family name?");
+            Add(words, "home", "дом / семья", "Family", "A0", "My family is at home.");
         }
 
         // =====================================================
-        // SCHOOL
+        // SCHOOL — 32 words
         // =====================================================
 
         private static void AddSchool(List<WordItem> words)
@@ -233,10 +279,18 @@ namespace EnglishTypingGame
             Add(words, "map", "карта", "School", "A1", "There is a map on the wall.");
             Add(words, "computer", "компьютер", "School", "A1", "We use a computer at school.");
             Add(words, "break", "перемена", "School", "A1", "We play during the break.");
+            Add(words, "classmate", "одноклассник", "School", "A1", "My classmate is friendly.");
+            Add(words, "subject", "предмет", "School", "A1", "English is my favourite subject.");
+            Add(words, "maths", "математика", "School", "A1", "Maths is difficult.");
+            Add(words, "English", "английский язык", "School", "A0", "I study English.");
+            Add(words, "history", "история", "School", "A1", "History is interesting.");
+            Add(words, "science", "естествознание / наука", "School", "A1", "Science is fun.");
+            Add(words, "dictionary", "словарь", "School", "A1", "I use a dictionary.");
+            Add(words, "library", "библиотека", "School", "A1", "Students read in the library.");
         }
 
         // =====================================================
-        // HOME
+        // HOME — 32 words
         // =====================================================
 
         private static void AddHome(List<WordItem> words)
@@ -263,10 +317,20 @@ namespace EnglishTypingGame
             Add(words, "clock", "часы", "Home", "A1", "The clock is on the wall.");
             Add(words, "blanket", "одеяло", "Home", "A1", "The blanket is warm.");
             Add(words, "pillow", "подушка", "Home", "A1", "The pillow is soft.");
+            Add(words, "carpet", "ковёр", "Home", "A1", "The carpet is on the floor.");
+            Add(words, "curtain", "штора", "Home", "A1", "The curtain is blue.");
+            Add(words, "shelf", "полка", "Home", "A1", "The book is on the shelf.");
+            Add(words, "wardrobe", "шкаф", "Home", "A1", "My clothes are in the wardrobe.");
+            Add(words, "stairs", "лестница", "Home", "A1", "The stairs are near the door.");
+            Add(words, "roof", "крыша", "Home", "A1", "The roof is red.");
+            Add(words, "garage", "гараж", "Home", "A1", "The car is in the garage.");
+            Add(words, "balcony", "балкон", "Home", "A1", "We sit on the balcony.");
+            Add(words, "living room", "гостиная", "Home", "A1", "We watch TV in the living room.");
+            Add(words, "bedroom", "спальня", "Home", "A1", "My bed is in the bedroom.");
         }
 
         // =====================================================
-        // CLOTHES
+        // CLOTHES — 32 words
         // =====================================================
 
         private static void AddClothes(List<WordItem> words)
@@ -291,10 +355,22 @@ namespace EnglishTypingGame
             Add(words, "shorts", "шорты", "Clothes", "A1", "I wear shorts in summer.");
             Add(words, "belt", "ремень", "Clothes", "A1", "His belt is black.");
             Add(words, "pocket", "карман", "Clothes", "A1", "The key is in my pocket.");
+            Add(words, "raincoat", "плащ", "Clothes", "A1", "I wear a raincoat in the rain.");
+            Add(words, "suit", "костюм", "Clothes", "A1", "He wears a suit at work.");
+            Add(words, "tie", "галстук", "Clothes", "A1", "His tie is blue.");
+            Add(words, "blouse", "блузка", "Clothes", "A1", "Her blouse is white.");
+            Add(words, "sandals", "сандалии", "Clothes", "A1", "I wear sandals in summer.");
+            Add(words, "trainers", "кроссовки", "Clothes", "A1", "My trainers are comfortable.");
+            Add(words, "slippers", "тапочки", "Clothes", "A1", "I wear slippers at home.");
+            Add(words, "pyjamas", "пижама", "Clothes", "A1", "I sleep in pyjamas.");
+            Add(words, "swimsuit", "купальник", "Clothes", "A1", "She has a red swimsuit.");
+            Add(words, "hoodie", "толстовка", "Clothes", "A1", "My hoodie is warm.");
+            Add(words, "size", "размер", "Clothes", "A1", "What size do you need?");
+            Add(words, "clothes", "одежда", "Clothes", "A0", "My clothes are clean.");
         }
 
         // =====================================================
-        // BODY
+        // BODY — 32 words
         // =====================================================
 
         private static void AddBody(List<WordItem> words)
@@ -319,10 +395,22 @@ namespace EnglishTypingGame
             Add(words, "shoulder", "плечо", "Body", "A1", "His shoulder hurts.");
             Add(words, "knee", "колено", "Body", "A1", "My knee hurts.");
             Add(words, "neck", "шея", "Body", "A1", "My neck hurts.");
+            Add(words, "body", "тело", "Body", "A0", "My body is tired.");
+            Add(words, "elbow", "локоть", "Body", "A1", "My elbow hurts.");
+            Add(words, "wrist", "запястье", "Body", "A1", "Her wrist is small.");
+            Add(words, "ankle", "лодыжка", "Body", "A1", "His ankle hurts.");
+            Add(words, "chin", "подбородок", "Body", "A1", "He has a small chin.");
+            Add(words, "cheek", "щека", "Body", "A1", "Her cheek is red.");
+            Add(words, "forehead", "лоб", "Body", "A1", "His forehead is hot.");
+            Add(words, "thumb", "большой палец", "Body", "A1", "This is my thumb.");
+            Add(words, "skin", "кожа", "Body", "A1", "Skin protects the body.");
+            Add(words, "heart", "сердце", "Body", "A1", "The heart is important.");
+            Add(words, "blood", "кровь", "Body", "A2", "Blood is red.");
+            Add(words, "bone", "кость", "Body", "A1", "A bone is hard.");
         }
 
         // =====================================================
-        // WEATHER
+        // WEATHER — 32 words
         // =====================================================
 
         private static void AddWeather(List<WordItem> words)
@@ -345,10 +433,24 @@ namespace EnglishTypingGame
             Add(words, "fog", "туман", "Weather", "A1", "There is fog in the morning.");
             Add(words, "temperature", "температура", "Weather", "A1", "The temperature is low.");
             Add(words, "season", "время года", "Weather", "A1", "Winter is a cold season.");
+            Add(words, "weather", "погода", "Weather", "A0", "The weather is nice.");
+            Add(words, "thunder", "гром", "Weather", "A1", "Thunder is loud.");
+            Add(words, "lightning", "молния", "Weather", "A1", "Lightning is bright.");
+            Add(words, "rainbow", "радуга", "Weather", "A1", "A rainbow appears after rain.");
+            Add(words, "ice", "лёд", "Weather", "A1", "There is ice on the road.");
+            Add(words, "frost", "мороз", "Weather", "A1", "There is frost in the morning.");
+            Add(words, "freezing", "очень холодно", "Weather", "A1", "It is freezing today.");
+            Add(words, "dry", "сухой", "Weather", "A1", "The weather is dry.");
+            Add(words, "wet", "мокрый", "Weather", "A1", "My shoes are wet.");
+            Add(words, "clear", "ясный", "Weather", "A1", "The sky is clear.");
+            Add(words, "stormy", "бурный / штормовой", "Weather", "A1", "It is stormy outside.");
+            Add(words, "forecast", "прогноз погоды", "Weather", "A2", "The forecast says it will rain.");
+            Add(words, "degree", "градус", "Weather", "A1", "It is ten degrees.");
+            Add(words, "umbrella", "зонт", "Weather", "A1", "Take an umbrella.");
         }
 
         // =====================================================
-        // TRANSPORT
+        // TRANSPORT — 32 words
         // =====================================================
 
         private static void AddTransport(List<WordItem> words)
@@ -371,10 +473,24 @@ namespace EnglishTypingGame
             Add(words, "stop", "остановка", "Transport", "A1", "The bus stop is near.");
             Add(words, "travel", "путешествовать", "Transport", "A1", "I like to travel.");
             Add(words, "walk", "ходить пешком", "Transport", "A0", "I walk to school.");
+            Add(words, "motorbike", "мотоцикл", "Transport", "A1", "A motorbike is fast.");
+            Add(words, "scooter", "самокат / скутер", "Transport", "A1", "He rides a scooter.");
+            Add(words, "lorry", "грузовик", "Transport", "A1", "The lorry is big.");
+            Add(words, "van", "фургон", "Transport", "A1", "The van is white.");
+            Add(words, "helicopter", "вертолёт", "Transport", "A1", "A helicopter can fly.");
+            Add(words, "subway", "метро", "Transport", "A1", "I take the subway.");
+            Add(words, "platform", "платформа", "Transport", "A1", "The train is at the platform.");
+            Add(words, "passenger", "пассажир", "Transport", "A1", "The passenger is on the bus.");
+            Add(words, "journey", "поездка", "Transport", "A1", "The journey is long.");
+            Add(words, "trip", "поездка / путешествие", "Transport", "A1", "We have a school trip.");
+            Add(words, "traffic", "движение / пробка", "Transport", "A2", "There is heavy traffic.");
+            Add(words, "bridge", "мост", "Transport", "A1", "The car goes over the bridge.");
+            Add(words, "crossing", "переход", "Transport", "A1", "Use the crossing.");
+            Add(words, "seat", "место / сиденье", "Transport", "A1", "This seat is free.");
         }
 
         // =====================================================
-        // PLACES
+        // PLACES — 32 words
         // =====================================================
 
         private static void AddPlaces(List<WordItem> words)
@@ -397,10 +513,24 @@ namespace EnglishTypingGame
             Add(words, "playground", "детская площадка", "Places", "A1", "Children play on the playground.");
             Add(words, "zoo", "зоопарк", "Places", "A0", "We see animals at the zoo.");
             Add(words, "beach", "пляж", "Places", "A1", "The beach is beautiful.");
+            Add(words, "school", "школа", "Places", "A0", "My school is near my house.");
+            Add(words, "home", "дом", "Places", "A0", "I am at home.");
+            Add(words, "office", "офис", "Places", "A1", "My father works in an office.");
+            Add(words, "factory", "фабрика", "Places", "A1", "The factory is big.");
+            Add(words, "farm", "ферма", "Places", "A1", "Animals live on a farm.");
+            Add(words, "church", "церковь", "Places", "A1", "The church is old.");
+            Add(words, "theatre", "театр", "Places", "A1", "We go to the theatre.");
+            Add(words, "stadium", "стадион", "Places", "A1", "The stadium is full.");
+            Add(words, "swimming pool", "бассейн", "Places", "A1", "I swim in the swimming pool.");
+            Add(words, "bus stop", "автобусная остановка", "Places", "A1", "The bus stop is near.");
+            Add(words, "train station", "железнодорожная станция", "Places", "A1", "The train station is busy.");
+            Add(words, "airport", "аэропорт", "Places", "A1", "The airport is far.");
+            Add(words, "square", "площадь", "Places", "A1", "The square is in the city centre.");
+            Add(words, "village", "деревня", "Places", "A1", "My grandmother lives in a village.");
         }
 
         // =====================================================
-        // DAILY ROUTINE
+        // DAILY ROUTINE — 32 words
         // =====================================================
 
         private static void AddDailyRoutine(List<WordItem> words)
@@ -423,10 +553,24 @@ namespace EnglishTypingGame
             Add(words, "walk", "гулять", "DailyRoutine", "A1", "I walk in the park.");
             Add(words, "start", "начинать", "DailyRoutine", "A1", "The lesson starts at nine.");
             Add(words, "finish", "заканчивать", "DailyRoutine", "A1", "I finish my homework.");
+            Add(words, "get up", "вставать", "DailyRoutine", "A1", "I get up at seven.");
+            Add(words, "go to bed", "ложиться спать", "DailyRoutine", "A1", "I go to bed at ten.");
+            Add(words, "have breakfast", "завтракать", "DailyRoutine", "A1", "I have breakfast at eight.");
+            Add(words, "have lunch", "обедать", "DailyRoutine", "A1", "I have lunch at school.");
+            Add(words, "have dinner", "ужинать", "DailyRoutine", "A1", "We have dinner at seven.");
+            Add(words, "go to school", "идти в школу", "DailyRoutine", "A1", "I go to school by bus.");
+            Add(words, "come home", "приходить домой", "DailyRoutine", "A1", "I come home after school.");
+            Add(words, "do homework", "делать домашнее задание", "DailyRoutine", "A1", "I do homework in the evening.");
+            Add(words, "take a shower", "принимать душ", "DailyRoutine", "A1", "I take a shower every day.");
+            Add(words, "make the bed", "заправлять кровать", "DailyRoutine", "A1", "I make the bed in the morning.");
+            Add(words, "get dressed", "одеваться", "DailyRoutine", "A1", "I get dressed quickly.");
+            Add(words, "leave home", "уходить из дома", "DailyRoutine", "A1", "I leave home at eight.");
+            Add(words, "arrive", "прибывать", "DailyRoutine", "A1", "I arrive at school at nine.");
+            Add(words, "relax", "расслабляться", "DailyRoutine", "A1", "I relax after dinner.");
         }
 
         // =====================================================
-        // ACTIONS
+        // ACTIONS — 32 words
         // =====================================================
 
         private static void AddActions(List<WordItem> words)
@@ -456,10 +600,17 @@ namespace EnglishTypingGame
             Add(words, "dance", "танцевать", "Actions", "A0", "They dance every day.");
             Add(words, "find", "находить", "Actions", "A1", "I find my pen.");
             Add(words, "try", "пробовать", "Actions", "A1", "Try again.");
+            Add(words, "carry", "нести", "Actions", "A1", "I carry my bag.");
+            Add(words, "bring", "приносить", "Actions", "A1", "Bring your book.");
+            Add(words, "send", "отправлять", "Actions", "A1", "I send a message.");
+            Add(words, "show", "показывать", "Actions", "A1", "Show me your picture.");
+            Add(words, "ask", "спрашивать", "Actions", "A1", "Ask a question.");
+            Add(words, "answer", "отвечать", "Actions", "A1", "Answer the question.");
+            Add(words, "learn", "учить / изучать", "Actions", "A1", "I learn English.");
         }
 
         // =====================================================
-        // FEELINGS
+        // FEELINGS — 32 words
         // =====================================================
 
         private static void AddFeelings(List<WordItem> words)
@@ -480,10 +631,26 @@ namespace EnglishTypingGame
             Add(words, "kind", "добрый", "Feelings", "A0", "My teacher is kind.");
             Add(words, "friendly", "дружелюбный", "Feelings", "A1", "The dog is friendly.");
             Add(words, "surprised", "удивлённый", "Feelings", "A1", "He is surprised.");
+            Add(words, "afraid", "испуганный / боящийся", "Feelings", "A1", "I am afraid of spiders.");
+            Add(words, "nervous", "нервный", "Feelings", "A1", "She is nervous before the test.");
+            Add(words, "lonely", "одинокий", "Feelings", "A1", "He feels lonely.");
+            Add(words, "comfortable", "удобно / комфортно", "Feelings", "A1", "I feel comfortable here.");
+            Add(words, "uncomfortable", "некомфортно", "Feelings", "A2", "This chair is uncomfortable.");
+            Add(words, "sleepy", "сонный", "Feelings", "A1", "I am sleepy.");
+            Add(words, "ill", "больной", "Feelings", "A1", "She is ill today.");
+            Add(words, "well", "здоровый / хорошо", "Feelings", "A1", "I feel well.");
+            Add(words, "busy", "занятый", "Feelings", "A1", "My mother is busy.");
+            Add(words, "free", "свободный", "Feelings", "A1", "I am free today.");
+            Add(words, "brave", "храбрый", "Feelings", "A1", "The boy is brave.");
+            Add(words, "confused", "сбитый с толку", "Feelings", "A2", "I am confused.");
+            Add(words, "relaxed", "расслабленный", "Feelings", "A1", "I feel relaxed.");
+            Add(words, "upset", "расстроенный", "Feelings", "A1", "She is upset.");
+            Add(words, "pleased", "довольный", "Feelings", "A2", "I am pleased with my result.");
+            Add(words, "safe", "в безопасности", "Feelings", "A1", "I feel safe at home.");
         }
 
         // =====================================================
-        // ADJECTIVES
+        // ADJECTIVES — 32 words
         // =====================================================
 
         private static void AddAdjectives(List<WordItem> words)
@@ -510,10 +677,20 @@ namespace EnglishTypingGame
             Add(words, "weak", "слабый", "Adjectives", "A1", "The baby is weak.");
             Add(words, "soft", "мягкий", "Adjectives", "A1", "The pillow is soft.");
             Add(words, "hard", "твёрдый / сложный", "Adjectives", "A1", "The test is hard.");
+            Add(words, "high", "высокий", "Adjectives", "A1", "The mountain is high.");
+            Add(words, "low", "низкий", "Adjectives", "A1", "The table is low.");
+            Add(words, "full", "полный", "Adjectives", "A1", "The glass is full.");
+            Add(words, "empty", "пустой", "Adjectives", "A1", "The box is empty.");
+            Add(words, "right", "правильный / правый", "Adjectives", "A1", "This answer is right.");
+            Add(words, "wrong", "неправильный", "Adjectives", "A1", "This answer is wrong.");
+            Add(words, "early", "ранний", "Adjectives", "A1", "It is early morning.");
+            Add(words, "late", "поздний", "Adjectives", "A1", "It is late.");
+            Add(words, "important", "важный", "Adjectives", "A2", "This rule is important.");
+            Add(words, "popular", "популярный", "Adjectives", "A2", "Football is popular.");
         }
 
         // =====================================================
-        // SPORTS
+        // SPORTS — 32 words
         // =====================================================
 
         private static void AddSports(List<WordItem> words)
@@ -530,10 +707,30 @@ namespace EnglishTypingGame
             Add(words, "team", "команда", "Sports", "A1", "Our team is strong.");
             Add(words, "player", "игрок", "Sports", "A1", "He is a good player.");
             Add(words, "game", "игра", "Sports", "A0", "This game is fun.");
+            Add(words, "sport", "спорт", "Sports", "A0", "Sport is good for you.");
+            Add(words, "hockey", "хоккей", "Sports", "A1", "Hockey is fast.");
+            Add(words, "baseball", "бейсбол", "Sports", "A1", "Baseball is popular in the USA.");
+            Add(words, "golf", "гольф", "Sports", "A1", "Golf is a quiet sport.");
+            Add(words, "boxing", "бокс", "Sports", "A1", "Boxing is difficult.");
+            Add(words, "cycling", "велоспорт", "Sports", "A1", "Cycling is fun.");
+            Add(words, "gymnastics", "гимнастика", "Sports", "A2", "Gymnastics is beautiful.");
+            Add(words, "athletics", "лёгкая атлетика", "Sports", "A2", "Athletics includes running.");
+            Add(words, "race", "гонка / забег", "Sports", "A1", "The race starts now.");
+            Add(words, "match", "матч", "Sports", "A1", "The match is today.");
+            Add(words, "score", "счёт", "Sports", "A1", "The score is two to one.");
+            Add(words, "goal", "гол", "Sports", "A1", "He scores a goal.");
+            Add(words, "winner", "победитель", "Sports", "A1", "She is the winner.");
+            Add(words, "coach", "тренер", "Sports", "A1", "The coach helps the team.");
+            Add(words, "training", "тренировка", "Sports", "A1", "Training starts at five.");
+            Add(words, "exercise", "упражнение", "Sports", "A1", "This exercise is easy.");
+            Add(words, "fit", "в хорошей форме", "Sports", "A1", "He is fit.");
+            Add(words, "competition", "соревнование", "Sports", "A2", "The competition is in May.");
+            Add(words, "medal", "медаль", "Sports", "A1", "She wins a medal.");
+            Add(words, "stadium", "стадион", "Sports", "A1", "The stadium is big.");
         }
 
         // =====================================================
-        // JOBS
+        // JOBS — 32 words
         // =====================================================
 
         private static void AddJobs(List<WordItem> words)
@@ -550,7 +747,6 @@ namespace EnglishTypingGame
             Add(words, "artist", "художник", "Jobs", "A1", "An artist draws pictures.");
             Add(words, "singer", "певец", "Jobs", "A1", "A singer sings songs.");
             Add(words, "student", "ученик / студент", "Jobs", "A0", "A student studies.");
-
             Add(words, "builder", "строитель", "Jobs", "A1", "A builder builds houses.");
             Add(words, "firefighter", "пожарный", "Jobs", "A1", "A firefighter helps in a fire.");
             Add(words, "dentist", "стоматолог", "Jobs", "A1", "A dentist helps with teeth.");
@@ -570,14 +766,11 @@ namespace EnglishTypingGame
             Add(words, "scientist", "учёный", "Jobs", "A1", "A scientist studies science.");
             Add(words, "musician", "музыкант", "Jobs", "A1", "A musician plays music.");
             Add(words, "photographer", "фотограф", "Jobs", "A1", "A photographer takes photos.");
-            Add(words, "lawyer", "юрист / адвокат", "Jobs", "A1", "A lawyer works with laws.");
-            Add(words, "postman", "почтальон", "Jobs", "A1", "A postman brings letters.");
-            Add(words, "soldier", "солдат", "Jobs", "A1", "A soldier works in the army.");
             Add(words, "vet", "ветеринар", "Jobs", "A1", "A vet helps animals.");
         }
 
         // =====================================================
-        // NATURE
+        // NATURE — 32 words
         // =====================================================
 
         private static void AddNature(List<WordItem> words)
@@ -594,7 +787,6 @@ namespace EnglishTypingGame
             Add(words, "sky", "небо", "Nature", "A0", "The sky is blue.");
             Add(words, "star", "звезда", "Nature", "A0", "I see a star.");
             Add(words, "moon", "луна", "Nature", "A0", "The moon is bright.");
-
             Add(words, "leaf", "лист", "Nature", "A1", "A leaf is green.");
             Add(words, "leaves", "листья", "Nature", "A1", "Leaves fall in autumn.");
             Add(words, "branch", "ветка", "Nature", "A1", "A branch is part of a tree.");
@@ -614,14 +806,11 @@ namespace EnglishTypingGame
             Add(words, "fire", "огонь", "Nature", "A1", "Fire is hot.");
             Add(words, "ice", "лёд", "Nature", "A1", "Ice is cold.");
             Add(words, "rainbow", "радуга", "Nature", "A1", "A rainbow has many colours.");
-            Add(words, "valley", "долина", "Nature", "A1", "The valley is green.");
             Add(words, "waterfall", "водопад", "Nature", "A1", "The waterfall is beautiful.");
-            Add(words, "cave", "пещера", "Nature", "A1", "The cave is dark.");
-            Add(words, "planet", "планета", "Nature", "A1", "Earth is a planet.");
         }
 
         // =====================================================
-        // SHOPPING
+        // SHOPPING — 32 words
         // =====================================================
 
         private static void AddShopping(List<WordItem> words)
@@ -638,10 +827,30 @@ namespace EnglishTypingGame
             Add(words, "expensive", "дорогой", "Shopping", "A1", "This phone is expensive.");
             Add(words, "buy", "покупать", "Shopping", "A1", "I buy bread.");
             Add(words, "pay", "платить", "Shopping", "A1", "I pay for the book.");
+            Add(words, "sell", "продавать", "Shopping", "A1", "They sell fruit.");
+            Add(words, "customer", "покупатель", "Shopping", "A1", "The customer buys milk.");
+            Add(words, "seller", "продавец", "Shopping", "A1", "The seller is friendly.");
+            Add(words, "receipt", "чек", "Shopping", "A2", "Keep the receipt.");
+            Add(words, "change", "сдача", "Shopping", "A1", "Here is your change.");
+            Add(words, "discount", "скидка", "Shopping", "A2", "There is a discount today.");
+            Add(words, "sale", "распродажа", "Shopping", "A1", "The shop has a sale.");
+            Add(words, "basket", "корзина", "Shopping", "A1", "Put the bread in the basket.");
+            Add(words, "trolley", "тележка", "Shopping", "A1", "The trolley is full.");
+            Add(words, "checkout", "касса", "Shopping", "A1", "Go to the checkout.");
+            Add(words, "cashier", "кассир", "Shopping", "A1", "The cashier is at the checkout.");
+            Add(words, "size", "размер", "Shopping", "A1", "What size do you need?");
+            Add(words, "try on", "примерять", "Shopping", "A1", "Can I try on this jacket?");
+            Add(words, "cost", "стоить", "Shopping", "A1", "How much does it cost?");
+            Add(words, "order", "заказ", "Shopping", "A1", "This is my order.");
+            Add(words, "online", "онлайн", "Shopping", "A1", "I buy books online.");
+            Add(words, "delivery", "доставка", "Shopping", "A2", "Delivery is fast.");
+            Add(words, "product", "товар", "Shopping", "A2", "This product is popular.");
+            Add(words, "gift", "подарок", "Shopping", "A1", "I buy a gift for my sister.");
+            Add(words, "wallet", "кошелёк", "Shopping", "A1", "My wallet is in my bag.");
         }
 
         // =====================================================
-        // DIALOGUE PHRASES
+        // DIALOGUE PHRASES — 32 phrases
         // =====================================================
 
         private static void AddDialoguePhrases(List<WordItem> words)
@@ -664,6 +873,20 @@ namespace EnglishTypingGame
             Add(words, "I do not know", "я не знаю", "DialoguePhrases", "A1", "I do not know.");
             Add(words, "excuse me", "извините", "DialoguePhrases", "A1", "Excuse me, where is the station?");
             Add(words, "you are welcome", "пожалуйста / не за что", "DialoguePhrases", "A1", "You are welcome.");
+            Add(words, "how old are you", "сколько тебе лет", "DialoguePhrases", "A1", "How old are you?");
+            Add(words, "I am ten", "мне десять лет", "DialoguePhrases", "A1", "I am ten.");
+            Add(words, "can you help me", "ты можешь мне помочь", "DialoguePhrases", "A1", "Can you help me?");
+            Add(words, "yes, I can", "да, могу", "DialoguePhrases", "A1", "Yes, I can.");
+            Add(words, "no, I can't", "нет, не могу", "DialoguePhrases", "A1", "No, I can't.");
+            Add(words, "I like it", "мне это нравится", "DialoguePhrases", "A1", "I like it.");
+            Add(words, "I don't like it", "мне это не нравится", "DialoguePhrases", "A1", "I don't like it.");
+            Add(words, "what time is it", "который час", "DialoguePhrases", "A1", "What time is it?");
+            Add(words, "where is the shop", "где магазин", "DialoguePhrases", "A1", "Where is the shop?");
+            Add(words, "how much is it", "сколько это стоит", "DialoguePhrases", "A1", "How much is it?");
+            Add(words, "I would like", "я бы хотел", "DialoguePhrases", "A1", "I would like some water.");
+            Add(words, "here you are", "вот, пожалуйста", "DialoguePhrases", "A1", "Here you are.");
+            Add(words, "have a nice day", "хорошего дня", "DialoguePhrases", "A1", "Have a nice day!");
+            Add(words, "see you later", "увидимся позже", "DialoguePhrases", "A1", "See you later.");
         }
 
         // =====================================================

@@ -146,15 +146,15 @@ namespace EnglishTypingGame
 
         public static List<WordItem> GetRandomWords(string topic, int count)
         {
-            List<WordItem> words = LessonRepository.GetWords(topic);
+            List<WordItem> words = WordBankService.GetWords(topic);
 
             if (words == null || words.Count == 0)
-                words = LessonRepository.GetAllWords();
+                words = WordBankService.GetAllWords();
 
             words = words
                 .Where(w => w != null)
                 .Where(w => !string.IsNullOrWhiteSpace(w.English))
-                .GroupBy(w => w.English.ToLowerInvariant())
+                .GroupBy(w => w.Topic + "|" + w.English.ToLowerInvariant())
                 .Select(g => g.First())
                 .ToList();
 
