@@ -297,6 +297,8 @@ namespace EnglishTypingGame
             return exercises;
         }
 
+
+
         private void Timer_Tick(object sender, EventArgs e)
         {
             TimerText.Text = "Время: " + _stopwatch.Elapsed.ToString(@"mm\:ss");
